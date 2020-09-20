@@ -14,10 +14,10 @@ import javax.persistence.*;
 public class Foods {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "food_name")
+    private String foodName;
 
     @Column(name = "total")
     private double total;
