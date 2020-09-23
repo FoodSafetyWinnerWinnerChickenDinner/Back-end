@@ -2,11 +2,13 @@ package com.example.backend.services;
 
 import com.example.backend.models.AuthorizationKey;
 import lombok.RequiredArgsConstructor;
+import org.apache.cxf.io.CachedOutputStream;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -19,8 +21,9 @@ public class FoodOpenApiService {
 
     private static final String SERVICE_NAME = "I2790", TYPE = "json", NEW_LINE = "\n";
 
-    public String requestFoods() {
+    public JSONObject requestFoods() {
         StringBuffer result = new StringBuffer();
+        JSONObject json = new JSONObject();
 
         try {
             StringBuilder urlBuilder = new StringBuilder("http://openapi.foodsafetykorea.go.kr/api");
@@ -36,20 +39,19 @@ public class FoodOpenApiService {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
 
-            BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            InputStream in = url.openStream();
+            CachedOutputStream bos = new CachedOutputStream();
+            IOUtils.copy(in, bos);
+            in.close();
+            bos.close();
 
-            String apiLines;
+            String data = bos.getOut().toString();
+            json.put("data", data);
 
-            while ((apiLines = reader.readLine()) != null) {
-                result.append(apiLines).append(NEW_LINE);
-            }
-
-            conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result.toString();
+        return json;
     }
 }
