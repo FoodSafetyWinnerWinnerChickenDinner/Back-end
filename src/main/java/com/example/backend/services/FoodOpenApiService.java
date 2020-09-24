@@ -9,6 +9,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -17,14 +20,16 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 @Service
-@RequiredArgsConstructor
+//@EnableScheduling
 public class FoodOpenApiService {
     @Autowired
     private AuthorizationKey authKey;
 
     private static final String SERVICE_NAME = "I2790", TYPE = "json", NEW_LINE = "\n";
 
-    public JSONObject requestFoods() {
+//    @Scheduled(cron = "0 0 18 * * *")
+//    public void requestFoods() {
+    public JSONObject requestFoods(){
         StringBuffer result = new StringBuffer();
         JSONObject json = new JSONObject();
 
@@ -60,15 +65,17 @@ public class FoodOpenApiService {
                 for(int i = 0; i < 5; i++) {
                     JSONObject food = (JSONObject) jsonArray.get(i);
 
-                    System.out.println("1 ==> " + food.get("NUTR_CONT1"));
-                    System.out.println("2 ==> " + food.get("NUTR_CONT2"));
-                    System.out.println("3 ==> " + food.get("NUTR_CONT3"));
-                    System.out.println("4 ==> " + food.get("NUTR_CONT4"));
-                    System.out.println("5 ==> " + food.get("NUTR_CONT5"));
-                    System.out.println("6 ==> " + food.get("NUTR_CONT6"));
-                    System.out.println("7 ==> " + food.get("NUTR_CONT7"));
-                    System.out.println("8 ==> " + food.get("NUTR_CONT8"));
-                    System.out.println("9 ==> " + food.get("NUTR_CONT9"));
+                    System.out.println("food_name \t" + food.get("DESC_KOR"));
+                    System.out.println("total \t" + food.get("SERVING_SIZE"));
+                    System.out.println("kcal \t" + food.get("NUTR_CONT1"));
+                    System.out.println("carbohydrate \t" + food.get("NUTR_CONT2"));
+                    System.out.println("protein \t" + food.get("NUTR_CONT3"));
+                    System.out.println("fat \t" + food.get("NUTR_CONT4"));
+                    System.out.println("sugar \t" + food.get("NUTR_CONT5"));
+                    System.out.println("sodium \t" + food.get("NUTR_CONT6"));
+                    System.out.println("cholesterol \t" + food.get("NUTR_CONT7"));
+                    System.out.println("saturated_fatty_acid \t" + food.get("NUTR_CONT8"));
+                    System.out.println("trans_fat \t" + food.get("NUTR_CONT9"));
                     System.out.println();
                 }
 

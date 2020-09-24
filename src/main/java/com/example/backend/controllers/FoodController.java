@@ -13,6 +13,10 @@ public class FoodController {
     @Autowired
     FoodOpenApiService openApi;
 
+//    @GetMapping("/api/v1/foods") public ResponseEntity<String> get() {
+//        return new ResponseEntity<>("return", HttpStatus.OK);
+//    }
+
     @GetMapping("/api/v1/foods") public ResponseEntity<JSONObject> get() {
         JSONObject response = openApi.requestFoods();
         return new ResponseEntity<>(response, HttpStatus.OK);
