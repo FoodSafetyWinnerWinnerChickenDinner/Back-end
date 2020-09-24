@@ -1,7 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.models.AuthorizationKey;
-import lombok.RequiredArgsConstructor;
+import com.example.backend.property_config.ApiConfigs;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.simple.JSONArray;
@@ -9,9 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -23,7 +19,7 @@ import java.net.URLEncoder;
 //@EnableScheduling
 public class FoodOpenApiService {
     @Autowired
-    private AuthorizationKey authKey;
+    private ApiConfigs foodApi;
 
     private static final String SERVICE_NAME = "I2790", TYPE = "json", NEW_LINE = "\n";
 
@@ -34,9 +30,9 @@ public class FoodOpenApiService {
         JSONObject json = new JSONObject();
 
         try {
-            StringBuilder urlBuilder = new StringBuilder("http://openapi.foodsafetykorea.go.kr/api");
+            StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
-            urlBuilder.append("/" + URLEncoder.encode(authKey.getKey(), "UTF-8"));
+            urlBuilder.append("/" + URLEncoder.encode(foodApi.getKey(), "UTF-8"));
             urlBuilder.append("/" + URLEncoder.encode(SERVICE_NAME, "UTF-8"));
             urlBuilder.append("/" + URLEncoder.encode(TYPE, "UTF-8"));
             urlBuilder.append("/" + URLEncoder.encode("1", "UTF-8"));
@@ -77,6 +73,8 @@ public class FoodOpenApiService {
                     System.out.println("saturated_fatty_acid \t" + food.get("NUTR_CONT8"));
                     System.out.println("trans_fat \t" + food.get("NUTR_CONT9"));
                     System.out.println();
+
+                    // DB update logic
                 }
 
             } catch (ParseException e) {
