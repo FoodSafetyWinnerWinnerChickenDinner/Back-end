@@ -1,24 +1,27 @@
 package com.example.backend.controllers;
 
-import com.example.backend.services.FoodOpenApiService;
-import org.json.simple.JSONObject;
+import com.example.backend.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@EnableScheduling
 public class FoodController {
     @Autowired
-    FoodOpenApiService openApi;
+    FoodService foodService;
 
 //    @GetMapping("/api/v1/foods") public ResponseEntity<String> get() {
 //        return new ResponseEntity<>("return", HttpStatus.OK);
 //    }
 
-    @GetMapping("/api/v1/foods") public ResponseEntity<JSONObject> get() {
-        JSONObject response = openApi.requestFoods();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @Scheduled(cron = "0 0 18 * * *")
+    public ResponseEntity<String> dataUpdateScheduler() {
+        foodService.foodOpenApiProcessor();
+
+        return new ResponseEntity<>("return", HttpStatus.OK);
     }
 }
