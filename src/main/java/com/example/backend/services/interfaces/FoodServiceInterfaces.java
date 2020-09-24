@@ -7,9 +7,11 @@ import java.util.Collection;
 public interface FoodServiceInterfaces {
     public Foods findById(Long id);
 
-    public void foodOpenApiProcessor();
+    public void dataUpdateProcessorByFoodOpenApi();
 
-    public void save(Foods account);
+    public void save(Foods food);
 
-    public void delete(Foods account);
+    public void delete(Foods food);
+
+    public double validation(String data);
 }

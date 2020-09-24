@@ -27,48 +27,78 @@ public class FoodService implements FoodServiceInterfaces {
     }
 
     @Override
-    public void foodOpenApiProcessor() {
-        String jsonText = openApiService.requestFoods();
-        JSONParser parser = new JSONParser();
+    public void dataUpdateProcessorByFoodOpenApi() {
+        int start = 1;
+        int end = 200;
 
-        try {
-            JSONObject json = (JSONObject) parser.parse(jsonText);
+        while(start <= 29274) {
+            String jsonText = openApiService.requestFoods(start + "", end + "");
+            JSONParser parser = new JSONParser();
 
-            JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
-            JSONArray jsonArray = (JSONArray) jsonFood.get("row");
+            try {
+                JSONObject json = (JSONObject) parser.parse(jsonText);
 
-            for(int i = 0; i < 5; i++) {
-                JSONObject food = (JSONObject) jsonArray.get(i);
+                JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
+                JSONArray jsonArray = (JSONArray) jsonFood.get("row");
 
-                System.out.println("food_name \t" + food.get("DESC_KOR"));
-                System.out.println("total \t" + food.get("SERVING_SIZE"));
-                System.out.println("kcal \t" + food.get("NUTR_CONT1"));
-                System.out.println("carbohydrate \t" + food.get("NUTR_CONT2"));
-                System.out.println("protein \t" + food.get("NUTR_CONT3"));
-                System.out.println("fat \t" + food.get("NUTR_CONT4"));
-                System.out.println("sugar \t" + food.get("NUTR_CONT5"));
-                System.out.println("sodium \t" + food.get("NUTR_CONT6"));
-                System.out.println("cholesterol \t" + food.get("NUTR_CONT7"));
-                System.out.println("saturated_fatty_acid \t" + food.get("NUTR_CONT8"));
-                System.out.println("trans_fat \t" + food.get("NUTR_CONT9"));
-                System.out.println();
+                int size = jsonArray.size();
+                for (int i = 0; i < size; i++) {
+                    JSONObject food = (JSONObject) jsonArray.get(i);
 
-                // DB update logic
+                    Foods apiData = new Foods();
+
+                    apiData.setFoodName(food.get("DESC_KOR").toString());
+                    apiData.setCategory(food.get("GROUP_NAME").toString());
+                    apiData.setTotal(validation(food.get("SERVING_SIZE").toString()));
+                    apiData.setKcal(validation(food.get("NUTR_CONT1").toString()));
+                    apiData.setCarbohydrate(validation(food.get("NUTR_CONT2").toString()));
+                    apiData.setProtein(validation(food.get("NUTR_CONT3").toString()));
+                    apiData.setFat(validation(food.get("NUTR_CONT4").toString()));
+                    apiData.setSugar(validation(food.get("NUTR_CONT5").toString()));
+                    apiData.setSodium(validation(food.get("NUTR_CONT6").toString()));
+                    apiData.setCholesterol(validation(food.get("NUTR_CONT7").toString()));
+                    apiData.setSaturatedFattyAcid(validation(food.get("NUTR_CONT8").toString()));
+                    apiData.setTransFat(validation(food.get("NUTR_CONT9").toString()));
+
+                    save(apiData);
+
+//                    System.out.println("food_name \t" + apiData.getFoodName());
+//                    System.out.println("group_name \t" + apiData.getCategory());
+//                    System.out.println("total \t" + apiData.getTotal());
+//                    System.out.println("kcal \t" + apiData.getKcal());
+//                    System.out.println("carbohydrate \t" + apiData.getCarbohydrate());
+//                    System.out.println("protein \t" + apiData.getProtein());
+//                    System.out.println("fat \t" + apiData.getFat());
+//                    System.out.println("sugar \t" + apiData.getSugar());
+//                    System.out.println("sodium \t" + apiData.getSodium());
+//                    System.out.println("cholesterol \t" + apiData.getCholesterol());
+//                    System.out.println("saturated_fatty_acid \t" + apiData.getSaturatedFattyAcid());
+//                    System.out.println("trans_fat \t" + apiData.getTransFat());
+//                    System.out.println();
+                }
+            } catch (ParseException parseException) {
+                System.out.println("failed!");
+                parseException.printStackTrace();
             }
 
-        } catch (ParseException e) {
-            System.out.println("failed!");
-            e.printStackTrace();
+            start += 200;
+            end += 200;
         }
     }
 
     @Override
-    public void save(Foods account) {
-
+    public void save(Foods food) {
+        foodRepository.save(food);
     }
 
     @Override
-    public void delete(Foods account) {
+    public void delete(Foods food) {
+        foodRepository.delete(food);
+    }
 
+    @Override
+    public double validation(String data) {
+        if(data.length() == 0) return 0.0;
+        else return Double.parseDouble(data);
     }
 }

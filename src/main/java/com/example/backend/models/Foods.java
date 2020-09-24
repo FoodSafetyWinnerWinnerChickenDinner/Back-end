@@ -19,6 +19,9 @@ public class Foods {
     @Column(name = "food_name")
     private String foodName;
 
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "total")
     private double total;
 

@@ -16,9 +16,9 @@ public class FoodOpenApiService {
     @Autowired
     private ApiConfigs foodApi;
 
-    private static final String SERVICE_NAME = "I2790", TYPE = "json", NEW_LINE = "\n";
+    private static final String SERVICE_NAME = "I2790", TYPE = "json";
 
-    public String requestFoods(){
+    public String requestFoods(String s, String e){
         String result = "";
 
         try {
@@ -27,10 +27,11 @@ public class FoodOpenApiService {
             urlBuilder.append("/" + URLEncoder.encode(foodApi.getKey(), "UTF-8"));
             urlBuilder.append("/" + URLEncoder.encode(SERVICE_NAME, "UTF-8"));
             urlBuilder.append("/" + URLEncoder.encode(TYPE, "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode("1", "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode("5", "UTF-8"));
+            urlBuilder.append("/" + URLEncoder.encode(s, "UTF-8"));
+            urlBuilder.append("/" + URLEncoder.encode(e, "UTF-8"));
 
             URL url = new URL(urlBuilder.toString());
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
@@ -38,13 +39,14 @@ public class FoodOpenApiService {
             CachedOutputStream cached = new CachedOutputStream();
             InputStream in = url.openStream();
             IOUtils.copy(in, cached);
-            in.close();
-            cached.close();
 
             result = cached.getOut().toString();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            in.close();
+            cached.close();
+            conn.disconnect();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
         return result;
