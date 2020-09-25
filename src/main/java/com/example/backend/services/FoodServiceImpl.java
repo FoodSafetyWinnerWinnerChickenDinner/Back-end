@@ -2,7 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodRepository;
-import com.example.backend.services.interfaces.FoodServiceInterfaces;
+import com.example.backend.services.interfaces.FoodService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FoodService implements FoodServiceInterfaces {
+public class FoodServiceImpl implements FoodService {
 
     @Autowired
-    private FoodOpenApiService openApiService;
+    private FoodOpenApiServiceImpl openApiService;
 
     @Autowired
     private FoodRepository foodRepository;

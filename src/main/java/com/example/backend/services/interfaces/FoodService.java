@@ -3,7 +3,7 @@ package com.example.backend.services.interfaces;
 import com.example.backend.models.Foods;
 
 
-public interface FoodServiceInterfaces {
+public interface FoodService {
     public Foods findById(Long id);
 
     public void dataUpdateProcessorByFoodOpenApi();

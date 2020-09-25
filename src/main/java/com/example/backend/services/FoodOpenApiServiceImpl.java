@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.property_config.ApiConfigs;
+import com.example.backend.services.interfaces.FoodOpenApiService;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 @Service
-public class FoodOpenApiService {
+public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     @Autowired
     private ApiConfigs foodApi;
 
     private static final String SERVICE_NAME = "I2790", TYPE = "json";
 
+    @Override
     public String requestFoods(String s, String e){
         String result = "";
 
