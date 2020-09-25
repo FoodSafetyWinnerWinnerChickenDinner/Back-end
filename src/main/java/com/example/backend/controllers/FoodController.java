@@ -18,7 +18,7 @@ public class FoodController {
 //        return new ResponseEntity<>("return", HttpStatus.OK);
 //    }
 
-    @Scheduled(cron = "0 0 4 ? * 0")
+    @Scheduled(cron = "0 0 4 * * *")
     public ResponseEntity<String> dataUpdateScheduler() {
         foodService.dataUpdateProcessorByFoodOpenApi();
 

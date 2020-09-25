@@ -61,20 +61,6 @@ public class FoodService implements FoodServiceInterfaces {
                     apiData.setTransFat(validation(food.get("NUTR_CONT9").toString()));
 
                     save(apiData);
-
-//                    System.out.println("food_name \t" + apiData.getFoodName());
-//                    System.out.println("group_name \t" + apiData.getCategory());
-//                    System.out.println("total \t" + apiData.getTotal());
-//                    System.out.println("kcal \t" + apiData.getKcal());
-//                    System.out.println("carbohydrate \t" + apiData.getCarbohydrate());
-//                    System.out.println("protein \t" + apiData.getProtein());
-//                    System.out.println("fat \t" + apiData.getFat());
-//                    System.out.println("sugar \t" + apiData.getSugar());
-//                    System.out.println("sodium \t" + apiData.getSodium());
-//                    System.out.println("cholesterol \t" + apiData.getCholesterol());
-//                    System.out.println("saturated_fatty_acid \t" + apiData.getSaturatedFattyAcid());
-//                    System.out.println("trans_fat \t" + apiData.getTransFat());
-//                    System.out.println();
                 }
             } catch (ParseException parseException) {
                 System.out.println("failed!");
