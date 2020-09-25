@@ -20,6 +20,7 @@ public class FoodService implements FoodServiceInterfaces {
     private FoodRepository foodRepository;
 
     private static final String SERVICE_NAME = "I2790";
+    private static final int INTERVAL = 200, LAST_INDEX = 29_274;
 
     @Override
     public Foods findById(Long id) {
@@ -29,9 +30,9 @@ public class FoodService implements FoodServiceInterfaces {
     @Override
     public void dataUpdateProcessorByFoodOpenApi() {
         int start = 1;
-        int end = 200;
+        int end = INTERVAL;
 
-        while(start <= 29274) {
+        while(start <= LAST_INDEX) {
             String jsonText = openApiService.requestFoods(start + "", end + "");
             JSONParser parser = new JSONParser();
 
@@ -67,8 +68,8 @@ public class FoodService implements FoodServiceInterfaces {
                 parseException.printStackTrace();
             }
 
-            start += 200;
-            end += 200;
+            start += INTERVAL;
+            end += INTERVAL;
         }
     }
 

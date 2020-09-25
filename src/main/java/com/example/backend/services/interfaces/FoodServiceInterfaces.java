@@ -2,7 +2,6 @@ package com.example.backend.services.interfaces;
 
 import com.example.backend.models.Foods;
 
-import java.util.Collection;
 
 public interface FoodServiceInterfaces {
     public Foods findById(Long id);
