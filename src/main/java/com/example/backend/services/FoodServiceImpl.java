@@ -10,6 +10,8 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class FoodServiceImpl implements FoodService {
 
@@ -64,7 +66,6 @@ public class FoodServiceImpl implements FoodService {
                     save(apiData);
                 }
             } catch (ParseException parseException) {
-                System.out.println("failed!");
                 parseException.printStackTrace();
             }
 
@@ -72,6 +73,20 @@ public class FoodServiceImpl implements FoodService {
             end += INTERVAL;
         }
     }
+
+    @Override
+    public ArrayList<String> menuRecommendation() {
+        /*
+            another methods called, and there needs @Autowired NutrientConfigs;
+            Nutrients nutrients = nutrientConfigs.getFoodName();
+            compare data from front with Nutrients(enum) -> make list and return
+
+            here TODO: logic -> recommendation menu, nutrient base requiring ingestion
+        */
+
+        return null;
+    }
+
 
     @Override
     public void save(Foods food) {

@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.property_config.ApiConfigs;
+import com.example.backend.api_config.ApiConfigs;
 import com.example.backend.services.interfaces.FoodOpenApiService;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;

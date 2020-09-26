@@ -1,4 +1,4 @@
-package com.example.backend.property_config;
+package com.example.backend.api_config;
 
 import lombok.Getter;
 import lombok.Setter;
