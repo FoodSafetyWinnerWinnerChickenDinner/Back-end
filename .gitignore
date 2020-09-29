@@ -28,3 +28,6 @@ target/
 
 # properties
 *.properties
+
+# others
+.DS_Store
