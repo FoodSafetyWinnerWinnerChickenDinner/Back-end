@@ -4,7 +4,10 @@ import com.example.backend.api_config.FoodOpenApiConfigs;
 import com.example.backend.services.interfaces.FoodOpenApiService;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -21,6 +24,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
     private static final String ENCODING_TYPE = "UTF-8";
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
     public String requestFoods(String startIndex, String endIndex){
@@ -51,7 +55,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             cached.close();
             conn.disconnect();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >>", exception);
         }
 
         return result;
