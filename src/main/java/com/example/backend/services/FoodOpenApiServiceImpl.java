@@ -17,20 +17,23 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     @Autowired
     private ApiConfigs foodApi;
 
-    private static final String SERVICE_NAME = "I2790", TYPE = "json";
+    private static final String SERVICE_NAME = "I2790";
+    private static final String TYPE = "json";
+    private static final String FORWARD_SLASH = "/";
+    private static final String ENCODING_TYPE = "UTF-8";
 
     @Override
-    public String requestFoods(String s, String e){
+    public String requestFoods(String startIndex, String endIndex){
         String result = "";
 
         try {
             StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
-            urlBuilder.append("/" + URLEncoder.encode(foodApi.getKey(), "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode(SERVICE_NAME, "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode(TYPE, "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode(s, "UTF-8"));
-            urlBuilder.append("/" + URLEncoder.encode(e, "UTF-8"));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(startIndex, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(endIndex, ENCODING_TYPE));
 
             URL url = new URL(urlBuilder.toString());
 
