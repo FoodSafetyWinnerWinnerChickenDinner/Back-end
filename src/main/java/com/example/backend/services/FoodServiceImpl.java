@@ -42,7 +42,7 @@ public class FoodServiceImpl implements FoodService {
         int end = INTERVAL;
 
         while(start <= LAST_INDEX) {
-            String jsonText = openApiService.requestFoods(start + "", end + "");
+            String jsonText = openApiService.requestFoods(start, end);
             JSONParser parser = new JSONParser();
 
             try {
@@ -72,6 +72,7 @@ public class FoodServiceImpl implements FoodService {
 
                     save(apiData);
                 }
+                System.out.println(size);
             } catch (ParseException parseException) {
                 LOGGER.error(">>> FoodsServiceImpl >> exception >> ", parseException);
                 parseException.printStackTrace();

@@ -18,6 +18,7 @@ public class FoodController {
     FoodServiceImpl foodServiceImpl;
 
     @GetMapping("/api/v1/foods") public ResponseEntity<String> get() {
+        foodServiceImpl.dataUpdateProcessorByFoodOpenApi();
         return new ResponseEntity<>("null", HttpStatus.OK);
     }
 

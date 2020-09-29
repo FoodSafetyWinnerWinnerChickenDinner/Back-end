@@ -30,7 +30,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public String requestFoods(String startIndex, String endIndex) {
+    public String requestFoods(int startIndex, int endIndex) {
         String result = "";
         StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
@@ -38,10 +38,11 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
-            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(startIndex, ENCODING_TYPE));
-            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(endIndex, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(startIndex);
+            urlBuilder.append(FORWARD_SLASH).append(endIndex);
 
             URL url = new URL(urlBuilder.toString());
+            System.out.println(urlBuilder.toString());
 
             try (CachedOutputStream cached = new CachedOutputStream();
                  InputStream in = url.openStream()) {
@@ -51,7 +52,6 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
                 conn.setRequestProperty("Content-type", "application/json");
 
                 IOUtils.copy(in, cached);
-
                 result = cached.getOut().toString();
 
                 conn.disconnect();
