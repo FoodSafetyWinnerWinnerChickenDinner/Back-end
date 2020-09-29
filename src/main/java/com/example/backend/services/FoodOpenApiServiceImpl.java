@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.api_config.ApiConfigs;
+import com.example.backend.api_config.FoodOpenApiConfigs;
 import com.example.backend.services.interfaces.FoodOpenApiService;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 @Service
 public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     @Autowired
-    private ApiConfigs foodApi;
+    private FoodOpenApiConfigs foodApi;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String TYPE = "json";
