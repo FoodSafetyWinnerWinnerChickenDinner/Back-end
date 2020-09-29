@@ -11,7 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -28,12 +30,11 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public String requestFoods(String startIndex, String endIndex){
+    public String requestFoods(String startIndex, String endIndex) {
         String result = "";
+        StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
         try {
-            StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
-
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
@@ -42,21 +43,27 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
             URL url = new URL(urlBuilder.toString());
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-type", "application/json");
+            try (CachedOutputStream cached = new CachedOutputStream();
+                 InputStream in = url.openStream()){
 
-            CachedOutputStream cached = new CachedOutputStream();
-            InputStream in = url.openStream();
-            IOUtils.copy(in, cached);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Content-type", "application/json");
 
-            result = cached.getOut().toString();
+                IOUtils.copy(in, cached);
 
-            in.close();
-            cached.close();
-            conn.disconnect();
-        } catch (Exception exception) {
-            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", exception);
+                result = cached.getOut().toString();
+
+                conn.disconnect();
+            } catch (Exception exception) {
+                LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", exception);
+            }
+        }
+        catch (UnsupportedEncodingException unsupportedEncodingException) {
+            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", unsupportedEncodingException);
+        }
+        catch (MalformedURLException malformedURLException) {
+            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", malformedURLException);
         }
 
         return result;
