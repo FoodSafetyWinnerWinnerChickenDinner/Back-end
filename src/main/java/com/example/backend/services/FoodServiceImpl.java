@@ -7,7 +7,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class FoodServiceImpl implements FoodService {
     private static final String LIST_FLAG = "row";
     private static final int INTERVAL = 200;
     private static final int LAST_INDEX = 29_274;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
     public Foods findById(Long id) {
@@ -68,6 +73,7 @@ public class FoodServiceImpl implements FoodService {
                     save(apiData);
                 }
             } catch (ParseException parseException) {
+                LOGGER.error(">>> FoodsServiceImpl >> exception >> ", parseException);
                 parseException.printStackTrace();
             }
 

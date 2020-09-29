@@ -24,6 +24,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
     private static final String ENCODING_TYPE = "UTF-8";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
@@ -55,7 +56,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             cached.close();
             conn.disconnect();
         } catch (Exception exception) {
-            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >>", exception);
+            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", exception);
         }
 
         return result;
