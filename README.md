@@ -10,7 +10,7 @@
 + 포화지방산 (Saturated fatty acid), 콜레스테롤 (Cholesterol), 트랜스지방 (Trans fat)<br>
 
 <br><br>
-## Version env
+## Version
 > - Springboot 2.3.4
 > - Java(IntelliJ) version :  IntelliJ (2020.2.1)
 > - Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
