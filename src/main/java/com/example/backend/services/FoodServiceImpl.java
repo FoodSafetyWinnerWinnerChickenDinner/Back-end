@@ -22,7 +22,9 @@ public class FoodServiceImpl implements FoodService {
     private FoodRepository foodRepository;
 
     private static final String SERVICE_NAME = "I2790";
-    private static final int INTERVAL = 200, LAST_INDEX = 29_274;
+    private static final String LIST_FLAG = "row";
+    private static final int INTERVAL = 200;
+    private static final int LAST_INDEX = 29_274;
 
     @Override
     public Foods findById(Long id) {
@@ -42,7 +44,7 @@ public class FoodServiceImpl implements FoodService {
                 JSONObject json = (JSONObject) parser.parse(jsonText);
 
                 JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
-                JSONArray jsonArray = (JSONArray) jsonFood.get("row");
+                JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
 
                 int size = jsonArray.size();
                 for (int i = 0; i < size; i++) {
