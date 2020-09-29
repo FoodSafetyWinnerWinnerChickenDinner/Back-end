@@ -44,7 +44,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             URL url = new URL(urlBuilder.toString());
 
             try (CachedOutputStream cached = new CachedOutputStream();
-                 InputStream in = url.openStream()){
+                 InputStream in = url.openStream()) {
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
