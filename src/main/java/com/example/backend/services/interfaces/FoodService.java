@@ -10,6 +10,8 @@ public interface FoodService {
 
     public void dataUpdateProcessorByFoodOpenApi();
 
+    public void foodListUpdater();
+
     public ArrayList<String> menuRecommendation();
 
     public void save(Foods food);

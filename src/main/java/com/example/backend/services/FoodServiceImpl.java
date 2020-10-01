@@ -24,6 +24,8 @@ public class FoodServiceImpl implements FoodService {
     @Autowired
     private FoodRepository foodRepository;
 
+    private ArrayList<Foods> foodDB;
+
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
     private static final int INTERVAL = 200;
@@ -84,6 +86,20 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public void foodListUpdater() {
+        foodDB = new ArrayList<>();
+
+        int seq = 0;
+        for(Long idx = 1L; idx <= LAST_INDEX; idx++) {
+            foodDB.add(findById(idx));
+//            Foods current = foodDB.get(seq++);
+//            System.out.print(current.getFoodName() + " " + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat() + " ");
+//            System.out.print(current.getKcal() + " " + current.getTotal() + " " + current.getSodium() + " " + current.getSugar() + " ");
+//            System.out.println(current.getSaturatedFattyAcid() + " " + current.getCholesterol() + " " + current.getTransFat());
+        }
+    }
+
+    @Override
     public ArrayList<String> menuRecommendation() {
         /*
             another methods called, and there needs @Autowired NutrientConfigs;
@@ -95,7 +111,6 @@ public class FoodServiceImpl implements FoodService {
 
         return null;
     }
-
 
     @Override
     public void save(Foods food) {
