@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.api_config.NutrientsConfigs;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.repositories.FoodRepository;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 public class FoodServiceImpl implements FoodService {
@@ -25,7 +26,11 @@ public class FoodServiceImpl implements FoodService {
     @Autowired
     private FoodRepository foodRepository;
 
+    @Autowired
+    private NutrientsConfigs nutrientsConfigs;
+
     private ArrayList<Foods> foodDB;
+    private HashMap<String, Nutrients> categories;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
@@ -87,24 +92,84 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public void categorySetter() {
+        categories = new HashMap<>();
+        categories.put("치킨", nutrientsConfigs.getChicken());
+        categories.put("돼지구이", nutrientsConfigs.getPig());
+        categories.put("소구이", nutrientsConfigs.getCow());
+        categories.put("생선구이", nutrientsConfigs.getFish());
+        categories.put("생선회", nutrientsConfigs.getRawFish());
+        categories.put("라면", nutrientsConfigs.getRamen());
+        categories.put("커피", nutrientsConfigs.getCoffee());
+        categories.put("음료수", nutrientsConfigs.getDrink());
+        categories.put("빵", nutrientsConfigs.getBread());
+        categories.put("피자", nutrientsConfigs.getPizza());
+        categories.put("김치", nutrientsConfigs.getKimchi());
+        categories.put("탕", nutrientsConfigs.getSoup());
+        categories.put("밥", nutrientsConfigs.getRice());
+        categories.put("떡볶이", nutrientsConfigs.getRedRiceCake());
+        categories.put("순대", nutrientsConfigs.getSundae());
+        categories.put("튀김", nutrientsConfigs.getFried());
+    }
+
+    /**
+     *
+     * @param eats: foods type
+     * @return user's total ingested nutrients
+     *
+     */
+    @Override
+    public double[] ingestedTotalNutrientsGetter(List<String> eats) {
+        double[] ingestedTotal = new double[10];
+
+        for(String eat: eats) {
+            StringTokenizer separator = new StringTokenizer(eat);
+            String category = separator.nextToken();
+            int amount = Integer.parseInt(separator.nextToken());
+
+            if(!categories.containsKey(category)) return null;
+
+            System.out.print(category + " ");
+            Nutrients nutrients = categories.get(category);
+            ingestedTotal[0] += nutrients.getTotal() * amount;
+            ingestedTotal[1] += nutrients.getKcal() * amount;
+            ingestedTotal[2] += nutrients.getCarbohydrate() * amount;
+            ingestedTotal[3] += nutrients.getProtein() * amount;
+            ingestedTotal[4] += nutrients.getFat() * amount;
+            ingestedTotal[5] += nutrients.getSugar() * amount;
+            ingestedTotal[6] += nutrients.getSodium() * amount;
+            ingestedTotal[7] += nutrients.getCholesterol() * amount;
+            ingestedTotal[8] += nutrients.getSaturatedFattyAcid() * amount;
+            ingestedTotal[9] += nutrients.getTransFat() * amount;
+        }
+
+        return ingestedTotal;
+    }
+
+    /**
+     * save DB data in list
+     */
+    @Override
     public void foodListUpdater() {
         foodDB = new ArrayList<>();
 
-        int seq = 0;
         for(Long idx = 1L; idx <= LAST_INDEX; idx++) {
             foodDB.add(findById(idx));
-//            Foods current = foodDB.get(seq++);
-//            System.out.print(current.getFoodName() + " " + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat() + " ");
-//            System.out.print(current.getKcal() + " " + current.getTotal() + " " + current.getSodium() + " " + current.getSugar() + " ");
-//            System.out.println(current.getSaturatedFattyAcid() + " " + current.getCholesterol() + " " + current.getTransFat());
         }
     }
 
     @Override
-    public ArrayList<String> menuRecommendation() {
+    public ArrayList<String> menuRecommendation(double[] ingested) {
+
+        System.out.println("의 총 영양소는 아래와 같습니다.");
+        System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
+        System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
+        System.out.println("당: " + ingested[5] + ", 나트륨: " + ingested[6]);
+        System.out.println("콜레스테롤: " + ingested[7] + ", 포화지방산: " + ingested[8] + ", 트랜스지방: " + ingested[9]);
+
         /*
             another methods called, and there needs @Autowired NutrientConfigs;
-            Nutrients nutrients = nutrientConfigs.getFoodName();
+            Nutrients nutrients = nutrientConfigs.getFoodName();                    --> completion
             compare data from front with Nutrients(enum) -> make list and return
 
             here TODO: logic -> recommendation menu, nutrient base requiring ingestion
