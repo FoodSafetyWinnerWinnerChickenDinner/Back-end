@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.models.Foods;
+import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.FoodService;
 import org.json.simple.JSONArray;
