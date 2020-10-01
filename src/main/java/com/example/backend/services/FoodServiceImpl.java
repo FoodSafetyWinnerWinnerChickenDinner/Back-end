@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.api_config.NutrientsConfigs;
+import com.example.backend.configurations.NutrientsConfigs;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.repositories.FoodRepository;

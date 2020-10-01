@@ -1,4 +1,4 @@
-package com.example.backend.api_config;
+package com.example.backend.configurations;
 
 import com.example.backend.models.data_enums.Nutrients;
 import lombok.Getter;
