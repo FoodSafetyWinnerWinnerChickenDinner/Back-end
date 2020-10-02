@@ -23,8 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/aops/logger/LoggingAspect.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/aop/logger/LoggingAspect.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,10 +197,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1601094373081" />
-    <state x="163" y="63" key="SettingsEditor" timestamp="1601356567641">
+    <state x="163" y="63" key="SettingsEditor" timestamp="1601616407518">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="163" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1601356567641" />
+    <state x="163" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1601616407518" />
     <state x="252" y="53" key="SettingsEditor/51.23.1389.877@51.23.1389.877" timestamp="1600851291876" />
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601093595049">
       <screen x="0" y="0" width="1440" height="900" />

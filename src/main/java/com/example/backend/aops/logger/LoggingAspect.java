@@ -1,4 +1,4 @@
-package com.example.backend.aop.logger;
+package com.example.backend.aops.logger;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
