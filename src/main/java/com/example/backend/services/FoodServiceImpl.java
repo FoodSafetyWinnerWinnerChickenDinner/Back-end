@@ -180,12 +180,8 @@ public class FoodServiceImpl implements FoodService {
             if(needs[i] < 0) needs[i] = 0;
         }
 
-        PriorityQueue<Foods> carboPrior = new PriorityQueue<>(new Comparator<Foods>() {
-            @Override
-            public int compare(Foods f1, Foods f2) {
-                return f1.getCarbohydrate() < f2.getCarbohydrate() ? -1: 1;
-            }
-        });
+        PriorityQueue<Foods> carboPrior =
+                new PriorityQueue<>((f1, f2) -> f1.getCarbohydrate() < f2.getCarbohydrate() ? -1: 1);
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
