@@ -1,8 +1,10 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.NutrientsConfigs;
+import com.example.backend.configurations.RDAConfigs;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
+import com.example.backend.models.data_enums.RDA;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.FoodService;
 import org.json.simple.JSONArray;
@@ -28,6 +30,9 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private NutrientsConfigs nutrientsConfigs;
+
+    @Autowired
+    private RDAConfigs rdaConfigs;
 
     private ArrayList<Foods> foodDB;
     private HashMap<String, Nutrients> categories;
@@ -129,7 +134,6 @@ public class FoodServiceImpl implements FoodService {
 
             if(!categories.containsKey(category)) return null;
 
-            System.out.print(category + " ");
             Nutrients nutrients = categories.get(category);
             ingestedTotal[0] += nutrients.getTotal() * amount;
             ingestedTotal[1] += nutrients.getKcal() * amount;
@@ -160,20 +164,44 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public ArrayList<String> menuRecommendation(double[] ingested) {
-
         System.out.println("의 총 영양소는 아래와 같습니다.");
         System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
         System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
         System.out.println("당: " + ingested[5] + ", 나트륨: " + ingested[6]);
         System.out.println("콜레스테롤: " + ingested[7] + ", 포화지방산: " + ingested[8] + ", 트랜스지방: " + ingested[9]);
 
-        /*
-            another methods called, and there needs @Autowired NutrientConfigs;
-            Nutrients nutrients = nutrientConfigs.getFoodName();                    --> completion
-            compare data from front with Nutrients(enum) -> make list and return
+        foodListUpdater();
+        RDA rda = rdaConfigs.getRecommendedDailyAllowance();
+        double[] needs = {
+                rda.getCarbohydrate() - ingested[2], rda.getProtein() - ingested[3], rda.getFat() - ingested[4]
+        };
 
-            here TODO: logic -> recommendation menu, nutrient base requiring ingestion
-        */
+        for(int i = 0; i < needs.length; i++) {
+            if(needs[i] < 0) needs[i] = 0;
+        }
+
+        PriorityQueue<Foods> carboPrior = new PriorityQueue<>(new Comparator<Foods>() {
+            @Override
+            public int compare(Foods f1, Foods f2) {
+                return f1.getCarbohydrate() < f2.getCarbohydrate() ? -1: 1;
+            }
+        });
+
+        for(Foods dbFood: foodDB) {
+            Foods element = dbFood;
+            element.setCarbohydrate(Math.abs(needs[0] - dbFood.getCarbohydrate()));
+            element.setProtein(Math.abs(needs[0] - dbFood.getProtein()));
+            element.setFat(Math.abs(needs[0] - dbFood.getFat()));
+
+            carboPrior.offer(element);
+        }
+
+        int size = 10;
+        while(size-- > 0) {
+            Foods current = carboPrior.poll();
+            System.out.println(current.getFoodName() + " "
+                    + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat());
+        }
 
         return null;
     }

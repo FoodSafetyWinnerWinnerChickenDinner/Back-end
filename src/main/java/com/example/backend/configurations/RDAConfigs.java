@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class RDAConfigs {
     private RDA recommendedDailyAllowance;
 
-    public RDAConfigs(RDA recommendedDailyAllowance) {
-        this.recommendedDailyAllowance = recommendedDailyAllowance;
+    public RDAConfigs() {
+        this.recommendedDailyAllowance = recommendedDailyAllowance.RECOMMENDED_DAILY_ALLOWANCE;
     }
 }

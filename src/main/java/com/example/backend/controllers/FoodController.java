@@ -28,10 +28,10 @@ public class FoodController {
 
         // test start
         ArrayList<String> tester = new ArrayList<>();
-        tester.add("치킨 2");
-        tester.add("돼지구이 8");
-        tester.add("떡볶이 4");
-        tester.add("소구이 11");
+        tester.add("치킨 1");
+        tester.add("돼지구이 1");
+        tester.add("떡볶이 2");
+        tester.add("소구이 3");
         tester.add("생선회 1");
         // test end
 
