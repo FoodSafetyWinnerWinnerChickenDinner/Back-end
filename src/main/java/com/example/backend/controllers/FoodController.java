@@ -37,6 +37,7 @@ public class FoodController {
 
         try {
             double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(tester);       // if null returns -> invalid category
+            foodServiceImpl.foodListUpdater();
             foodServiceImpl.menuRecommendation(ingested);
         }
         catch (NullPointerException nullPointerException) {

@@ -164,13 +164,11 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public ArrayList<String> menuRecommendation(double[] ingested) {
-        System.out.println("의 총 영양소는 아래와 같습니다.");
         System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
         System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
         System.out.println("당: " + ingested[5] + ", 나트륨: " + ingested[6]);
         System.out.println("콜레스테롤: " + ingested[7] + ", 포화지방산: " + ingested[8] + ", 트랜스지방: " + ingested[9]);
 
-        foodListUpdater();
         RDA rda = rdaConfigs.getRecommendedDailyAllowance();
         double[] needs = {
                 rda.getCarbohydrate() - ingested[2], rda.getProtein() - ingested[3], rda.getFat() - ingested[4]
@@ -180,24 +178,41 @@ public class FoodServiceImpl implements FoodService {
             if(needs[i] < 0) needs[i] = 0;
         }
 
-        PriorityQueue<Foods> carboPrior =
-                new PriorityQueue<>((f1, f2) -> f1.getCarbohydrate() < f2.getCarbohydrate() ? -1: 1);
+        PriorityQueue<Foods> recommender =
+                new PriorityQueue<>((f1, f2) -> f1.getTotal() < f2.getTotal() ? -1: 1);
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
-            element.setCarbohydrate(Math.abs(needs[0] - dbFood.getCarbohydrate()));
-            element.setProtein(Math.abs(needs[0] - dbFood.getProtein()));
-            element.setFat(Math.abs(needs[0] - dbFood.getFat()));
+            double thirdPrior = Math.abs(needs[0] - dbFood.getCarbohydrate()) * 0.65 +
+                    Math.abs(needs[0] - dbFood.getProtein()) * 0.15 + Math.abs(needs[0] - dbFood.getFat()) * 0.2;
 
-            carboPrior.offer(element);
+            element.setTotal(thirdPrior);
+            recommender.offer(element);
         }
 
         int size = 10;
-        while(size-- > 0) {
-            Foods current = carboPrior.poll();
-            System.out.println(current.getFoodName() + " "
+        while(size > 0) {
+            if(recommender.isEmpty()) break;
+            Foods current = recommender.poll();
+
+            /**
+             *
+             * TODO: make exceptCategorySetter() by HashSet -> ref) notion
+             *
+             */
+            System.out.println(current.getFoodName() + " " + current.getCategory() + " "
                     + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat());
+
+            size--;
         }
+
+//        HashSet<String> used = new HashSet<>();
+//        while(!recommender.isEmpty()) {
+//            Foods current = recommender.poll();
+//            used.add(current.getCategory());
+//
+//            if(current.getCategory().equals("우유 및 유제품류")) System.out.println(current.getFoodName());
+//        }
 
         return null;
     }
