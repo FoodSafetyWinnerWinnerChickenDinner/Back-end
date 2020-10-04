@@ -178,12 +178,13 @@ public class FoodServiceImpl implements FoodService {
         exceptCategories.add("빵류");  exceptCategories.add("주류");
         exceptCategories.add("기타");  exceptCategories.add("장류");
         exceptCategories.add("벌꿀 및 화분가공품류");  exceptCategories.add("유가공품류");
-        exceptCategories.add("유가공품");  exceptCategories.add("코코아 가공품류");
+        exceptCategories.add("유가공품");  exceptCategories.add("코코아가공품류");
         exceptCategories.add("조미료류");  exceptCategories.add("당류");
         exceptCategories.add("차류");  exceptCategories.add("빙과류");
         exceptCategories.add("식용유지류");  exceptCategories.add("유지류");
         exceptCategories.add("곡류 및 그 제품");  exceptCategories.add("과자류, 빵류 또는 떡류");
-        exceptCategories.add("동물성가공식품류");
+        exceptCategories.add("동물성가공식품류"); exceptCategories.add("농산가공식품류");
+        exceptCategories.add("감자 및 전분류");
     }
 
     @Override
@@ -214,12 +215,16 @@ public class FoodServiceImpl implements FoodService {
             recommender.offer(element);
         }
 
+        HashSet<String> alreadyRecommended = new HashSet<>();
+
         int size = 10;
         while(size > 0) {
             if(recommender.isEmpty()) break;
             Foods current = recommender.poll();
 
             if(current.getCategory().isEmpty() || exceptCategories.contains(current.getCategory())) continue;
+            if(alreadyRecommended.contains(current.getCategory())) continue;
+            alreadyRecommended.add(current.getCategory());
 
             System.out.println(current.getFoodName() + " " + current.getCategory() + " "
                     + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat());
