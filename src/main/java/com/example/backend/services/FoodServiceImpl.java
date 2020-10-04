@@ -36,6 +36,7 @@ public class FoodServiceImpl implements FoodService {
 
     private ArrayList<Foods> foodDB;
     private HashMap<String, Nutrients> categories;
+    private HashSet<String> exceptCategories;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
@@ -163,6 +164,29 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public double priorityCalculator(double carbohydrate, double protein, double fat) {
+        return Math.abs(carbohydrate) * 0.65 + Math.abs(protein) * 0.15 + Math.abs(fat) * 0.2;
+    }
+
+    @Override
+    public void exceptCategorySetter() {
+        exceptCategories = new HashSet<>();
+        exceptCategories.add("잼류"); exceptCategories.add("특수용도식품");
+        exceptCategories.add("초콜릿류");  exceptCategories.add("음료류");
+        exceptCategories.add("조미식품");  exceptCategories.add("기타식품류");
+        exceptCategories.add("즉석식품류");  exceptCategories.add("유가공식품");
+        exceptCategories.add("빵류");  exceptCategories.add("주류");
+        exceptCategories.add("기타");  exceptCategories.add("장류");
+        exceptCategories.add("벌꿀 및 화분가공품류");  exceptCategories.add("유가공품류");
+        exceptCategories.add("유가공품");  exceptCategories.add("코코아 가공품류");
+        exceptCategories.add("조미료류");  exceptCategories.add("당류");
+        exceptCategories.add("차류");  exceptCategories.add("빙과류");
+        exceptCategories.add("식용유지류");  exceptCategories.add("유지류");
+        exceptCategories.add("곡류 및 그 제품");  exceptCategories.add("과자류, 빵류 또는 떡류");
+        exceptCategories.add("동물성가공식품류");
+    }
+
+    @Override
     public ArrayList<String> menuRecommendation(double[] ingested) {
         System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
         System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
@@ -183,10 +207,10 @@ public class FoodServiceImpl implements FoodService {
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
-            double thirdPrior = Math.abs(needs[0] - dbFood.getCarbohydrate()) * 0.65 +
-                    Math.abs(needs[0] - dbFood.getProtein()) * 0.15 + Math.abs(needs[0] - dbFood.getFat()) * 0.2;
+            double priors = priorityCalculator(needs[0] - dbFood.getCarbohydrate(),
+                    needs[1] - dbFood.getProtein(), needs[2] - dbFood.getFat());
 
-            element.setTotal(thirdPrior);
+            element.setTotal(priors);
             recommender.offer(element);
         }
 
@@ -195,24 +219,13 @@ public class FoodServiceImpl implements FoodService {
             if(recommender.isEmpty()) break;
             Foods current = recommender.poll();
 
-            /**
-             *
-             * TODO: make exceptCategorySetter() by HashSet -> ref) notion
-             *
-             */
+            if(current.getCategory().isEmpty() || exceptCategories.contains(current.getCategory())) continue;
+
             System.out.println(current.getFoodName() + " " + current.getCategory() + " "
                     + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat());
 
             size--;
         }
-
-//        HashSet<String> used = new HashSet<>();
-//        while(!recommender.isEmpty()) {
-//            Foods current = recommender.poll();
-//            used.add(current.getCategory());
-//
-//            if(current.getCategory().equals("우유 및 유제품류")) System.out.println(current.getFoodName());
-//        }
 
         return null;
     }

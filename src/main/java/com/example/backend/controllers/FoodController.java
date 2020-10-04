@@ -23,16 +23,14 @@ public class FoodController {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @GetMapping("/api/v1/foods") public ResponseEntity<ArrayList<String>> get() {
-//        foodServiceImpl.foodListUpdater();
-        foodServiceImpl.categorySetter();
-
         // test start
+        foodServiceImpl.categorySetter();
+        foodServiceImpl.exceptCategorySetter();
+
         ArrayList<String> tester = new ArrayList<>();
-        tester.add("치킨 1");
         tester.add("돼지구이 1");
-        tester.add("떡볶이 2");
-        tester.add("소구이 3");
-        tester.add("생선회 1");
+        tester.add("소구이 1");
+        tester.add("밥 2");
         // test end
 
         try {
@@ -53,5 +51,6 @@ public class FoodController {
         foodServiceImpl.dataUpdateProcessorByFoodOpenApi();         // all of three methods are always run here
         foodServiceImpl.foodListUpdater();
         foodServiceImpl.categorySetter();
+        foodServiceImpl.exceptCategorySetter();
     }
 }
