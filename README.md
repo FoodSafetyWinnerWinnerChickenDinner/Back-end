@@ -30,7 +30,7 @@
 
 <br><br>
 ## Architecture
-> 진행중
+![](https://github.com/FoodSafetyWinnerWinnerChickenDinner/Back-end/blob/master/images/architecture_food_safety.png)
 
 
 <br><br>
