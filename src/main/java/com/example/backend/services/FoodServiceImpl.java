@@ -259,7 +259,8 @@ public class FoodServiceImpl implements FoodService {
             Collections.sort(candidates[i], (f1, f2) -> f1.getCarbohydrate() + f1.getProtein() + f1.getFat()
                     >= f2.getCarbohydrate() + f2.getProtein() + f2.getFat() ? -1: 1);
 
-            int mod = candidates[i].size() / 2;
+            int mod = candidates[i].size();
+            if(mod != 1) mod /= 2;
 
             Foods rec = candidates[i].get((int) (Math.random() * LAST_INDEX) % mod);
             while(rec.getCarbohydrate() + rec.getProtein() + rec.getFat() < 1) {
