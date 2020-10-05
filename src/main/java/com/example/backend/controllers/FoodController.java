@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.models.Foods;
 import com.example.backend.services.FoodServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,28 +23,28 @@ public class FoodController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    @GetMapping("/api/v1/foods") public ResponseEntity<ArrayList<String>> get() {
+    @GetMapping("/api/v1/foods") public ResponseEntity<ArrayList<Foods>> get() {
         // test start
         foodServiceImpl.categorySetter();
         foodServiceImpl.exceptCategorySetter();
 
-        ArrayList<String> tester = new ArrayList<>();
-        tester.add("돼지구이 1");
-        tester.add("소구이 1");
-        tester.add("밥 2");
+        ArrayList<String> tester = new ArrayList<>();           // input parameter
+        tester.add("라면 2");
         // test end
 
         try {
             double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(tester);       // if null returns -> invalid category
-            foodServiceImpl.foodListUpdater();
-            foodServiceImpl.menuRecommendation(ingested);
+            foodServiceImpl.foodListUpdater();                                              // test
+            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested);
+
+            return new ResponseEntity(foodServiceImpl.menuRecommendation(candidates), HttpStatus.OK);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);
             nullPointerException.printStackTrace();
         }
 
-        return new ResponseEntity("null", HttpStatus.OK);
+        return new ResponseEntity("null", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Scheduled(cron = "0 0 4 * * *")

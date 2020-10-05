@@ -22,7 +22,9 @@ public interface FoodService {
 
     public void exceptCategorySetter();
 
-    public ArrayList<String> menuRecommendation(double[] ingested);
+    public ArrayList<Foods>[] extractCandidates(double[] ingested);
+
+    public ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates);
 
     public void save(Foods food);
 

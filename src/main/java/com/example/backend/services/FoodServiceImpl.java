@@ -37,6 +37,7 @@ public class FoodServiceImpl implements FoodService {
     private ArrayList<Foods> foodDB;
     private HashMap<String, Nutrients> categories;
     private HashSet<String> exceptCategories;
+    private double[] needs;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
@@ -86,7 +87,7 @@ public class FoodServiceImpl implements FoodService {
 
                     save(apiData);
                 }
-                System.out.println(size);
+
             } catch (ParseException parseException) {
                 LOGGER.error(">>> FoodsServiceImpl >> exception >> ", parseException);
                 parseException.printStackTrace();
@@ -122,7 +123,6 @@ public class FoodServiceImpl implements FoodService {
      *
      * @param eats: foods type
      * @return user's total ingested nutrients
-     *
      */
     @Override
     public double[] ingestedTotalNutrientsGetter(List<String> eats) {
@@ -165,7 +165,11 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public double priorityCalculator(double carbohydrate, double protein, double fat) {
-        return Math.abs(carbohydrate) * 0.65 + Math.abs(protein) * 0.15 + Math.abs(fat) * 0.2;
+        if (carbohydrate < 0) return -1;
+        if (protein < 0) return -1;
+        if (fat < 0) return -1;
+
+        return Math.abs(carbohydrate) + Math.abs(protein) + Math.abs(fat);
     }
 
     @Override
@@ -182,57 +186,112 @@ public class FoodServiceImpl implements FoodService {
         exceptCategories.add("조미료류");  exceptCategories.add("당류");
         exceptCategories.add("차류");  exceptCategories.add("빙과류");
         exceptCategories.add("식용유지류");  exceptCategories.add("유지류");
-        exceptCategories.add("곡류 및 그 제품");  exceptCategories.add("과자류, 빵류 또는 떡류");
+        exceptCategories.add("과자류, 빵류 또는 떡류"); exceptCategories.add("가루 우유 및 유제품류");
         exceptCategories.add("동물성가공식품류"); exceptCategories.add("농산가공식품류");
-        exceptCategories.add("감자 및 전분류");
+        exceptCategories.add("감자 및 전분류"); exceptCategories.add("수산가공품");
+        exceptCategories.add("견과류 및 종실류"); exceptCategories.add("조리가공품류");
+        exceptCategories.add("곡류 및 그 제품");
     }
 
     @Override
-    public ArrayList<String> menuRecommendation(double[] ingested) {
+    public ArrayList<Foods>[] extractCandidates(double[] ingested) {
         System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
         System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
         System.out.println("당: " + ingested[5] + ", 나트륨: " + ingested[6]);
         System.out.println("콜레스테롤: " + ingested[7] + ", 포화지방산: " + ingested[8] + ", 트랜스지방: " + ingested[9]);
 
         RDA rda = rdaConfigs.getRecommendedDailyAllowance();
-        double[] needs = {
-                rda.getCarbohydrate() - ingested[2], rda.getProtein() - ingested[3], rda.getFat() - ingested[4]
-        };
+        needs = new double[3];
+        needs[0] = rda.getCarbohydrate() - ingested[2];
+        needs[1] = rda.getProtein() - ingested[3];
+        needs[2] = rda.getFat() - ingested[4];
 
         for(int i = 0; i < needs.length; i++) {
             if(needs[i] < 0) needs[i] = 0;
         }
 
-        PriorityQueue<Foods> recommender =
-                new PriorityQueue<>((f1, f2) -> f1.getTotal() < f2.getTotal() ? -1: 1);
+        PriorityQueue<Foods> dataArranger =
+                new PriorityQueue<>((f1, f2) -> f1.getCategory().equals(f2.getCategory())
+                        ? f1.getTotal() < f2.getTotal() ? -1: 1: f1.getCategory().compareTo(f2.getCategory()));
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
-            double priors = priorityCalculator(needs[0] - dbFood.getCarbohydrate(),
-                    needs[1] - dbFood.getProtein(), needs[2] - dbFood.getFat());
+            double priors = needs[0] + needs[1] + needs[2];
+            if(priors == -1) continue;
 
             element.setTotal(priors);
-            recommender.offer(element);
+            dataArranger.offer(element);
         }
 
-        HashSet<String> alreadyRecommended = new HashSet<>();
+        HashSet<String> alreadyContains = new HashSet<>();
+        int index = -1;
 
-        int size = 10;
-        while(size > 0) {
-            if(recommender.isEmpty()) break;
-            Foods current = recommender.poll();
+        ArrayList<Foods>[] candidate = new ArrayList[19];
+        for(int i = 0; i < candidate.length; i++) {
+            candidate[i] = new ArrayList<>();
+        }
+
+        while(!dataArranger.isEmpty()) {
+            Foods current = dataArranger.poll();
 
             if(current.getCategory().isEmpty() || exceptCategories.contains(current.getCategory())) continue;
-            if(alreadyRecommended.contains(current.getCategory())) continue;
-            alreadyRecommended.add(current.getCategory());
+            if(alreadyContains.contains(current.getCategory())){
+                candidate[index].add(current);
+                continue;
+            }
 
-            System.out.println(current.getFoodName() + " " + current.getCategory() + " "
-                    + current.getCarbohydrate() + " " + current.getProtein() + " " + current.getFat());
+            alreadyContains.add(current.getCategory());
 
-            size--;
+            index++;
+            candidate[index].add(current);
         }
 
-        return null;
+        return candidate;
+    }
+
+    @Override
+    public ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates) {
+        PriorityQueue<Foods> recommender =
+                new PriorityQueue<>((f1, f2) -> f1.getCarbohydrate() + f1.getProtein() + f1.getFat()
+                    > f2.getCarbohydrate() + f2.getProtein() + f2.getFat() ? -1: 1);
+
+        for(int i = 0; i < candidates.length; i++) {
+            Collections.sort(candidates[i], (f1, f2) -> f1.getCarbohydrate() + f1.getProtein() + f1.getFat()
+                    >= f2.getCarbohydrate() + f2.getProtein() + f2.getFat() ? -1: 1);
+
+            int mod = candidates[i].size() / 2;
+
+            Foods rec = candidates[i].get((int) (Math.random() * LAST_INDEX) % mod);
+            while(rec.getCarbohydrate() + rec.getProtein() + rec.getFat() < 1) {
+                rec = candidates[i].get((int) (Math.random() * LAST_INDEX) % mod);
+            }
+
+            if(rec.getCarbohydrate() == 0 && rec.getProtein() == 0 && rec.getFat() == 0) continue;
+
+            recommender.offer(rec);
+        }
+
+        ArrayList<Foods> result = new ArrayList<>();
+
+        while(!recommender.isEmpty()) {                 // save data in list and return
+            Foods menu = recommender.poll();
+
+            if(needs[0] - menu.getCarbohydrate() < 0) continue;
+            if(needs[1] - menu.getProtein() < 0) continue;
+            if(needs[2] - menu.getFat() < 0) continue;
+
+            needs[0] -= menu.getCarbohydrate();
+            needs[1] -= menu.getProtein();
+            needs[2] -= menu.getFat();
+
+            System.out.println(menu.getFoodName() + " " + menu.getCategory()
+                + " " + menu.getCarbohydrate() + " " + menu.getProtein() + " " + menu.getFat());
+            result.add(menu);
+        }
+
+        System.out.println("탄수화물 나머지: " + needs[0] + ", 단백질 나머지: " + needs[1] + ", 지방 나머지: " + needs[2]);
+
+        return result;
     }
 
     @Override
