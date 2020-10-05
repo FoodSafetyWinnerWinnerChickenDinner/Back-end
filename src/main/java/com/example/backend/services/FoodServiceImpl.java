@@ -164,15 +164,6 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public double priorityCalculator(double carbohydrate, double protein, double fat) {
-        if (carbohydrate < 0) return -1;
-        if (protein < 0) return -1;
-        if (fat < 0) return -1;
-
-        return Math.abs(carbohydrate) + Math.abs(protein) + Math.abs(fat);
-    }
-
-    @Override
     public void exceptCategorySetter() {
         exceptCategories = new HashSet<>();
         exceptCategories.add("잼류"); exceptCategories.add("특수용도식품");
@@ -217,7 +208,6 @@ public class FoodServiceImpl implements FoodService {
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
             double priors = needs[0] + needs[1] + needs[2];
-            if(priors == -1) continue;
 
             element.setTotal(priors);
             dataArranger.offer(element);

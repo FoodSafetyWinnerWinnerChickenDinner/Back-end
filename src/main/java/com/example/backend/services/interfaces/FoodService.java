@@ -17,8 +17,6 @@ public interface FoodService {
 
     public void foodListUpdater();
 
-    public double priorityCalculator(double carbohydrate, double protein, double fat);
-
     public void exceptCategorySetter();
 
     public ArrayList<Foods>[] extractCandidates(double[] ingested);
