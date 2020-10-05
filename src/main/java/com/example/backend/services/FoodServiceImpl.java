@@ -258,7 +258,6 @@ public class FoodServiceImpl implements FoodService {
             }
 
             if(rec.getCarbohydrate() == 0 && rec.getProtein() == 0 && rec.getFat() == 0) continue;
-
             recommender.offer(rec);
         }
 
