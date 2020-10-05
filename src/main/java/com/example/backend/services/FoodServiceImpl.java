@@ -291,7 +291,6 @@ public class FoodServiceImpl implements FoodService {
         }
 
         System.out.println("탄수화물 나머지: " + needs[0] + ", 단백질 나머지: " + needs[1] + ", 지방 나머지: " + needs[2]);
-
         return result;
     }
 
