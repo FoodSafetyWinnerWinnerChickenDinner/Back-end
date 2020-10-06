@@ -19,6 +19,8 @@ public interface FoodService {
 
     public void exceptCategorySetter();
 
+    public double priorCalculator(Foods food, double carbohydrate, double protein, double fat);
+
     public ArrayList<Foods>[] extractCandidates(double[] ingested);
 
     public ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates);

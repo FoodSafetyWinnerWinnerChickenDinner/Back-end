@@ -185,6 +185,15 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public double priorCalculator(Foods food, double carbohydrate, double protein, double fat) {
+        if((carbohydrate -= food.getCarbohydrate()) < 0) return -1;
+        if((protein -= food.getProtein()) < 0) return -1;
+        if((fat -= food.getFat()) < 0) return -1;
+
+        return carbohydrate + protein + fat;
+    }
+
+    @Override
     public ArrayList<Foods>[] extractCandidates(double[] ingested) {
         System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
         System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
@@ -207,7 +216,8 @@ public class FoodServiceImpl implements FoodService {
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
-            double priors = needs[0] + needs[1] + needs[2];
+            double priors = priorCalculator(element, needs[0], needs[1], needs[2]);
+            if (priors == -1) continue;
 
             element.setTotal(priors);
             dataArranger.offer(element);
