@@ -136,6 +136,11 @@ public class FoodServiceImpl implements FoodService {
             if(!categories.containsKey(category)) return null;
 
             Nutrients nutrients = categories.get(category);
+            System.out.println("사용자가 먹은 음식은 " + category + "이며, 포함된 영양 성분은 상세는 아래와 같습니다.");
+            System.out.println("탄수화물: " + nutrients.getCarbohydrate() + ", 단백질: " + nutrients.getProtein() + ", 지방: " + nutrients.getFat());
+            System.out.println("당: " + nutrients.getSugar() + ", 나트륨: " + nutrients.getSodium());
+            System.out.println("콜레스테롤: " + nutrients.getCholesterol() + ", 포화지방산: " + nutrients.getSaturatedFattyAcid() + ", 트랜스지방: " + nutrients.getTransFat());
+
             ingestedTotal[0] += nutrients.getTotal() * amount;
             ingestedTotal[1] += nutrients.getKcal() * amount;
             ingestedTotal[2] += nutrients.getCarbohydrate() * amount;
