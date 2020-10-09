@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class FoodController {
     private final FoodServiceImpl foodServiceImpl;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
+
     public FoodController(FoodServiceImpl foodServiceImpl) {
         this.foodServiceImpl = foodServiceImpl;
     }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @PostMapping("/recommend")
     public ResponseEntity<ArrayList<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
