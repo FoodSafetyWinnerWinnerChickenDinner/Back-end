@@ -18,8 +18,11 @@ import java.util.ArrayList;
 @EnableScheduling
 @RequestMapping("foods")
 public class FoodController {
-    @Autowired
-    FoodServiceImpl foodServiceImpl;
+    private final FoodServiceImpl foodServiceImpl;
+
+    public FoodController(FoodServiceImpl foodServiceImpl) {
+        this.foodServiceImpl = foodServiceImpl;
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
