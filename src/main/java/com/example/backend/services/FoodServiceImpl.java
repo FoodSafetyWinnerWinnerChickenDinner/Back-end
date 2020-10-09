@@ -13,7 +13,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +21,13 @@ import java.util.*;
 @Service
 public class FoodServiceImpl implements FoodService {
 
-    @Autowired
-    private FoodOpenApiServiceImpl openApiService;
+    private final FoodOpenApiServiceImpl openApiService;
 
-    @Autowired
-    private FoodRepository foodRepository;
+    private final FoodRepository foodRepository;
 
-    @Autowired
-    private NutrientsConfigs nutrientsConfigs;
+    private final NutrientsConfigs nutrientsConfigs;
 
-    @Autowired
-    private RDAConfigs rdaConfigs;
+    private final RDAConfigs rdaConfigs;
 
     private ArrayList<Foods> foodDB;
     private HashMap<String, Nutrients> categories;
@@ -45,6 +40,13 @@ public class FoodServiceImpl implements FoodService {
     private static final int LAST_INDEX = 29_274;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
+
+    public FoodServiceImpl(FoodOpenApiServiceImpl openApiService, FoodRepository foodRepository, NutrientsConfigs nutrientsConfigs, RDAConfigs rdaConfigs) {
+        this.openApiService = openApiService;
+        this.foodRepository = foodRepository;
+        this.nutrientsConfigs = nutrientsConfigs;
+        this.rdaConfigs = rdaConfigs;
+    }
 
     @Override
     public Foods findById(Long id) {
