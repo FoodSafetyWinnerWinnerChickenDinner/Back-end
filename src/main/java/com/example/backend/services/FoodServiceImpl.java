@@ -36,6 +36,7 @@ public class FoodServiceImpl implements FoodService {
 
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
+    private static final String DELIM = ", ";
     private static final int INTERVAL = 200;
     private static final int LAST_INDEX = 29_274;
 
@@ -252,6 +253,25 @@ public class FoodServiceImpl implements FoodService {
         return candidate;
     }
 
+    private static Foods menuConverter(Foods menu) {
+        Foods converted = menu;
+
+        if(menu.getFoodName().contains("라면") || menu.getFoodName().contains("우동")
+                || menu.getFoodName().contains("냉면") || menu.getFoodName().contains("탕면")
+                || menu.getFoodName().contains("청정원") || menu.getFoodName().contains("샘표")) {
+
+            System.out.println(menu.getFoodName() + " " + menu.getCarbohydrate());
+
+            converted.setFoodName("밥");
+            converted.setCategory("누룽지 곡류 및 그 제품");
+            converted.setCarbohydrate(90.98);
+            converted.setProtein(6.64);
+            converted.setFat(0.84);
+        }
+
+        return converted;
+    }
+
     @Override
     public ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates) {
         PriorityQueue<Foods> recommender =
@@ -279,6 +299,8 @@ public class FoodServiceImpl implements FoodService {
         while(!recommender.isEmpty()) {                 // save data in list and return
             Foods menu = recommender.poll();
 
+            menu = menuConverter(menu);
+
             if(needs[0] - menu.getCarbohydrate() < 0) continue;
             if(needs[1] - menu.getProtein() < 0) continue;
             if(needs[2] - menu.getFat() < 0) continue;
@@ -287,8 +309,6 @@ public class FoodServiceImpl implements FoodService {
             needs[1] -= menu.getProtein();
             needs[2] -= menu.getFat();
 
-            System.out.println(menu.getFoodName() + " " + menu.getCategory()
-                + " " + menu.getCarbohydrate() + " " + menu.getProtein() + " " + menu.getFat());
             result.add(menu);
         }
 
