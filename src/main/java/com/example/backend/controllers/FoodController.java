@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @RestController
@@ -28,23 +29,20 @@ public class FoodController {
 
     @PostMapping("/recommend")
     public ResponseEntity<ArrayList<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
-        // test start
-        foodServiceImpl.categorySetter();
-        foodServiceImpl.exceptCategorySetter();
+        ArrayList<Foods> recommends = null;
 
         try {
             double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate);       // if null returns -> invalid category
-            foodServiceImpl.foodListUpdater();                                           // test
-            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested);
 
-            return new ResponseEntity(foodServiceImpl.menuRecommendation(candidates), HttpStatus.OK);
+            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested);
+            recommends = foodServiceImpl.menuRecommendation(candidates);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);
             nullPointerException.printStackTrace();
         }
 
-        return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(recommends, HttpStatus.OK);
     }
 
     @Scheduled(cron = "0 0 4 * * *")
