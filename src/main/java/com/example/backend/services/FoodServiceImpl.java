@@ -36,7 +36,6 @@ public class FoodServiceImpl implements FoodService {
 
     private static final String SERVICE_NAME = "I2790";
     private static final String LIST_FLAG = "row";
-    private static final String DELIM = ", ";
     private static final int INTERVAL = 200;
     private static final int LAST_INDEX = 29_274;
 
@@ -199,12 +198,8 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public ArrayList<Foods>[] extractCandidates(double[] ingested) {
-        System.out.println("총: " + ingested[0] + ", 칼로리: " + ingested[1]);
-        System.out.println("탄수화물: " + ingested[2] + ", 단백질: " + ingested[3] + ", 지방: " + ingested[4]);
-        System.out.println("당: " + ingested[5] + ", 나트륨: " + ingested[6]);
-        System.out.println("콜레스테롤: " + ingested[7] + ", 포화지방산: " + ingested[8] + ", 트랜스지방: " + ingested[9]);
-
         RDA rda = rdaConfigs.getRecommendedDailyAllowance();
+
         needs = new double[3];
         needs[0] = rda.getCarbohydrate() - ingested[2];
         needs[1] = rda.getProtein() - ingested[3];
