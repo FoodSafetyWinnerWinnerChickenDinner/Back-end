@@ -73,7 +73,6 @@
 			<version>1.7.25</version>
 		</dependency>
 
-
 		<!-- test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

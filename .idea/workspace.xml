@@ -23,7 +23,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/aops/logger/LogAspect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/aops/logger/LoggingAspect.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +74,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build.android" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Application.BackendApplication (1)">
     <configuration name="BackendApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -187,27 +192,27 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600842391081" />
-    <state width="1398" height="200" key="GridCell.Tab.0.bottom" timestamp="1602661989161">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="200" key="GridCell.Tab.0.bottom" timestamp="1602664247670">
+      <screen x="51" y="23" width="1389" height="877" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1602661989161" />
-    <state width="1398" height="195" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1602487270527" />
-    <state width="1398" height="200" key="GridCell.Tab.0.center" timestamp="1602661989160">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="200" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1602663799427" />
+    <state width="1398" height="200" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1602664247670" />
+    <state width="1398" height="200" key="GridCell.Tab.0.center" timestamp="1602664247669">
+      <screen x="51" y="23" width="1389" height="877" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1602661989160" />
-    <state width="1398" height="195" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1602487270526" />
-    <state width="1398" height="200" key="GridCell.Tab.0.left" timestamp="1602661989159">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="200" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1602663799426" />
+    <state width="1398" height="200" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1602664247669" />
+    <state width="1398" height="200" key="GridCell.Tab.0.left" timestamp="1602664247668">
+      <screen x="51" y="23" width="1389" height="877" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1602661989159" />
+    <state width="1398" height="200" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1602663799425" />
     <state width="1398" height="355" key="GridCell.Tab.0.left/51.0.1389.900@51.0.1389.900" timestamp="1600995293539" />
-    <state width="1398" height="195" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1602487270526" />
-    <state width="1398" height="200" key="GridCell.Tab.0.right" timestamp="1602661989160">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state width="1398" height="200" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1602664247668" />
+    <state width="1398" height="200" key="GridCell.Tab.0.right" timestamp="1602664247669">
+      <screen x="51" y="23" width="1389" height="877" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1602661989160" />
-    <state width="1398" height="195" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1602487270527" />
+    <state width="1398" height="200" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1602663799426" />
+    <state width="1398" height="200" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1602664247669" />
     <state width="1398" height="304" key="GridCell.Tab.1.bottom" timestamp="1601714890904">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -228,14 +233,21 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1602659046702" />
-    <state x="163" y="63" key="SettingsEditor" timestamp="1602572261223">
+    <state x="264" y="103" key="SettingsEditor" timestamp="1602662664669">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="163" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1602572261223" />
+    <state x="264" y="103" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1602662664669" />
     <state x="252" y="53" key="SettingsEditor/51.23.1389.877@51.23.1389.877" timestamp="1600851291876" />
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601093595049">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1440.900@0.0.1440.900" timestamp="1601093595049" />
+    <state x="421" y="205" width="598" height="490" key="find.popup" timestamp="1602664107200">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="421" y="205" width="598" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1602664107200" />
+  </component>
+  <component name="se.expertsystem.intellij.aop.aspectj.AspectJProjectComponent">
+    <setting name="isActivated" value="false" />
   </component>
 </project>
