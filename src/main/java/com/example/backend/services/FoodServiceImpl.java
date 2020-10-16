@@ -272,8 +272,6 @@ public class FoodServiceImpl implements FoodService {
                 || menu.getFoodName().contains("냉면") || menu.getFoodName().contains("탕면")
                 || menu.getFoodName().contains("청정원") || menu.getFoodName().contains("샘표")) {
 
-            System.out.println(menu.getFoodName() + " " + menu.getCarbohydrate());
-
             converted.setFoodName("밥");
             converted.setCategory("누룽지 곡류 및 그 제품");
             converted.setCarbohydrate(90.98);
@@ -324,7 +322,6 @@ public class FoodServiceImpl implements FoodService {
             result.add(menu);
         }
 
-        System.out.println("탄수화물 나머지: " + needs[0] + ", 단백질 나머지: " + needs[1] + ", 지방 나머지: " + needs[2]);
         return result;
     }
 
