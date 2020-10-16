@@ -54,6 +54,16 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public Foods findByNameAndCategory(String name, String category, double total) {
+        return foodRepository.findByNameAndCategory(name, category, total);
+    }
+
+    @Override
+    public Long countAllData() {
+        return foodRepository.countAllData();
+    }
+
+    @Override
     public void dataUpdateProcessorByFoodOpenApi() {
         int start = 1;
         int end = INTERVAL;
@@ -73,10 +83,15 @@ public class FoodServiceImpl implements FoodService {
                     JSONObject food = (JSONObject) jsonArray.get(i);
 
                     Foods apiData = new Foods();
+                    String foodName = food.get("DESC_KOR").toString();
+                    String category = food.get("GROUP_NAME").toString();
+                    double total = validation(food.get("SERVING_SIZE").toString());
 
-                    apiData.setFoodName(food.get("DESC_KOR").toString());
-                    apiData.setCategory(food.get("GROUP_NAME").toString());
-                    apiData.setTotal(validation(food.get("SERVING_SIZE").toString()));
+                    if(findByNameAndCategory(foodName, category, total) != null) continue;
+
+                    apiData.setFoodName(foodName);
+                    apiData.setCategory(category);
+                    apiData.setTotal(total);
                     apiData.setKcal(validation(food.get("NUTR_CONT1").toString()));
                     apiData.setCarbohydrate(validation(food.get("NUTR_CONT2").toString()));
                     apiData.setProtein(validation(food.get("NUTR_CONT3").toString()));
@@ -160,8 +175,9 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public void foodListUpdater() {
         foodDB = new ArrayList<>();
+        Long size = countAllData();
 
-        for(Long idx = 1L; idx <= LAST_INDEX; idx++) {
+        for(Long idx = 1L; idx <= size; idx++) {
             foodDB.add(findById(idx));
         }
     }
@@ -215,6 +231,7 @@ public class FoodServiceImpl implements FoodService {
 
         for(Foods dbFood: foodDB) {
             Foods element = dbFood;
+
             double priors = priorCalculator(element, needs[0], needs[1], needs[2]);
             if (priors == -1) continue;
 

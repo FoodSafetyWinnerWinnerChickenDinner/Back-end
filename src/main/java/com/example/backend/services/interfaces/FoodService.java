@@ -7,27 +7,31 @@ import java.util.List;
 
 
 public interface FoodService {
-    public Foods findById(Long id);
+    Foods findById(Long id);
 
-    public void dataUpdateProcessorByFoodOpenApi();
+    Foods findByNameAndCategory(String name, String category, double total);
 
-    public void categorySetter();
+    Long countAllData();
 
-    public double[] ingestedTotalNutrientsGetter(List<String> eats);
+    void dataUpdateProcessorByFoodOpenApi();
 
-    public void foodListUpdater();
+    void categorySetter();
 
-    public void exceptCategorySetter();
+    double[] ingestedTotalNutrientsGetter(List<String> eats);
 
-    public double priorCalculator(Foods food, double carbohydrate, double protein, double fat);
+    void foodListUpdater();
 
-    public ArrayList<Foods>[] extractCandidates(double[] ingested);
+    void exceptCategorySetter();
 
-    public ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates);
+    double priorCalculator(Foods food, double carbohydrate, double protein, double fat);
 
-    public void save(Foods food);
+    ArrayList<Foods>[] extractCandidates(double[] ingested);
 
-    public void delete(Foods food);
+    ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates);
 
-    public double validation(String data);
+    void save(Foods food);
+
+    void delete(Foods food);
+
+    double validation(String data);
 }
