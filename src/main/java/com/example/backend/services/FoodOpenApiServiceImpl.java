@@ -42,7 +42,6 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             urlBuilder.append(FORWARD_SLASH).append(endIndex);
 
             URL url = new URL(urlBuilder.toString());
-            System.out.println(urlBuilder.toString());
 
             try (CachedOutputStream cached = new CachedOutputStream();
                  InputStream in = url.openStream()) {

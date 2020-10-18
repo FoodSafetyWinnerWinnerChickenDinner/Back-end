@@ -34,12 +34,12 @@ public class FoodServiceImpl implements FoodService {
     private HashSet<String> exceptCategories;
     private double[] needs;
 
-    private static final String SERVICE_NAME = "I2790";
-    private static final String LIST_FLAG = "row";
-    private static final int INTERVAL = 200;
-    private static final int LAST_INDEX = 29_274;
+    private final String SERVICE_NAME = "I2790";
+    private final String LIST_FLAG = "row";
+    private final int INTERVAL = 200;
+    private final int LAST_INDEX = 28_488;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     public FoodServiceImpl(FoodOpenApiServiceImpl openApiService, FoodRepository foodRepository, NutrientsConfigs nutrientsConfigs, RDAConfigs rdaConfigs) {
         this.openApiService = openApiService;
