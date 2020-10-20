@@ -29,7 +29,6 @@ public class FoodServiceImpl implements FoodService {
 
     private final RDAConfigs rdaConfigs;
 
-    private HashMap<String, Nutrients> categories;
     private double[] needs;
 
     private final String SERVICE_NAME = "I2790";
