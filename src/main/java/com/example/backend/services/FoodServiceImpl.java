@@ -150,7 +150,7 @@ public class FoodServiceImpl implements FoodService {
             String category = separator.nextToken();
             int amount = Integer.parseInt(separator.nextToken());
 
-            if(!categories.containsKey(category)) return null;
+            if(!categories.containsKey(category)) continue;
 
             Nutrients nutrients = categories.get(category);
 
@@ -239,7 +239,7 @@ public class FoodServiceImpl implements FoodService {
             dataArranger.offer(element);
         }
 
-        HashSet<String> alreadyContains = new HashSet<>();
+        HashSet<String> alreadyCategory = new HashSet<>();
         int index = -1;
 
         ArrayList<Foods>[] candidate = new ArrayList[19];
@@ -251,15 +251,13 @@ public class FoodServiceImpl implements FoodService {
             Foods current = dataArranger.poll();
 
             if(current.getCategory().isEmpty() || exceptCategories.contains(current.getCategory())) continue;
-            if(alreadyContains.contains(current.getCategory())){
+            if(alreadyCategory.contains(current.getCategory())){
                 candidate[index].add(current);
                 continue;
             }
 
-            alreadyContains.add(current.getCategory());
-
-            index++;
-            candidate[index].add(current);
+            alreadyCategory.add(current.getCategory());
+            candidate[++index].add(current);
         }
 
         return candidate;
@@ -308,7 +306,6 @@ public class FoodServiceImpl implements FoodService {
 
         while(!recommender.isEmpty()) {                 // save data in list and return
             Foods menu = recommender.poll();
-
             menu = menuConverter(menu);
 
             if(needs[0] - menu.getCarbohydrate() < 0) continue;

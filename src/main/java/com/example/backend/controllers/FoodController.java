@@ -30,6 +30,11 @@ public class FoodController {
     public ResponseEntity<ArrayList<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
         ArrayList<Foods> recommends = null;
 
+        //test
+        foodServiceImpl.foodListUpdater();
+        foodServiceImpl.categorySetter();
+        foodServiceImpl.exceptCategorySetter();
+
         try {
             double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate);       // if null returns -> invalid category
 

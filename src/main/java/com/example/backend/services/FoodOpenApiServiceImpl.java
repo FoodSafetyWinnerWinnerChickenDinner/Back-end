@@ -6,7 +6,6 @@ import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,8 @@ import java.net.URLEncoder;
 
 @Service
 public class FoodOpenApiServiceImpl implements FoodOpenApiService {
-    @Autowired
-    private FoodOpenApiConfigs foodApi;
+
+    private final FoodOpenApiConfigs foodApi;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String TYPE = "json";
@@ -28,6 +27,10 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final String ENCODING_TYPE = "UTF-8";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
+
+    public FoodOpenApiServiceImpl(FoodOpenApiConfigs foodApi) {
+        this.foodApi = foodApi;
+    }
 
     @Override
     public String requestFoods(int startIndex, int endIndex) {
