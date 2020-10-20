@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Foods;
+import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.services.FoodServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @RestController
 @CrossOrigin
@@ -30,15 +33,14 @@ public class FoodController {
     public ResponseEntity<ArrayList<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
         ArrayList<Foods> recommends = null;
 
-        //test
-        foodServiceImpl.foodListUpdater();
-        foodServiceImpl.categorySetter();
-        foodServiceImpl.exceptCategorySetter();
+        ArrayList<Foods> foodList = foodServiceImpl.foodListExtractFromDB();
+        HashSet<String> except = foodServiceImpl.exceptCategorySetter();
+        HashMap<String, Nutrients> categories = foodServiceImpl.categorySetter();
 
         try {
-            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate);       // if null returns -> invalid category
+            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate, categories);       // if null returns -> invalid category
 
-            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested);
+            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested, foodList, except);
             recommends = foodServiceImpl.menuRecommendation(candidates);
         }
         catch (NullPointerException nullPointerException) {
@@ -51,9 +53,6 @@ public class FoodController {
 
     @Scheduled(cron = "0 0 4 * * *")
     public void dataUpdateScheduler() {
-        foodServiceImpl.dataUpdateProcessorByFoodOpenApi();         // all of three methods are always run here
-        foodServiceImpl.foodListUpdater();
-        foodServiceImpl.categorySetter();
-        foodServiceImpl.exceptCategorySetter();
+        foodServiceImpl.dataUpdateProcessorByFoodOpenApi();
     }
 }

@@ -29,9 +29,7 @@ public class FoodServiceImpl implements FoodService {
 
     private final RDAConfigs rdaConfigs;
 
-    private ArrayList<Foods> foodDB;
     private HashMap<String, Nutrients> categories;
-    private HashSet<String> exceptCategories;
     private double[] needs;
 
     private final String SERVICE_NAME = "I2790";
@@ -49,18 +47,8 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Foods findById(Long id) {
-        return foodRepository.findById(id).orElse(null);
-    }
-
-    @Override
     public Foods findByNameAndCategory(String name, String category, double total) {
         return foodRepository.findByNameAndCategory(name, category, total);
-    }
-
-    @Override
-    public Long countAllData() {
-        return foodRepository.countAllData();
     }
 
     @Override
@@ -116,8 +104,9 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public void categorySetter() {
-        categories = new HashMap<>();
+    public HashMap<String, Nutrients> categorySetter() {
+        HashMap<String, Nutrients> categories = new HashMap<>();
+
         categories.put("치킨", nutrientsConfigs.getChicken());
         categories.put("돼지구이", nutrientsConfigs.getPig());
         categories.put("소구이", nutrientsConfigs.getCow());
@@ -134,6 +123,8 @@ public class FoodServiceImpl implements FoodService {
         categories.put("떡볶이", nutrientsConfigs.getRedRiceCake());
         categories.put("순대", nutrientsConfigs.getSundae());
         categories.put("튀김", nutrientsConfigs.getFried());
+
+        return categories;
     }
 
     /**
@@ -142,7 +133,7 @@ public class FoodServiceImpl implements FoodService {
      * @return user's total ingested nutrients
      */
     @Override
-    public double[] ingestedTotalNutrientsGetter(List<String> eats) {
+    public double[] ingestedTotalNutrientsGetter(List<String> eats, HashMap<String, Nutrients> categories) {
         double[] ingestedTotal = new double[10];
 
         for(String eat: eats) {
@@ -150,7 +141,7 @@ public class FoodServiceImpl implements FoodService {
             String category = separator.nextToken();
             int amount = Integer.parseInt(separator.nextToken());
 
-            if(!categories.containsKey(category)) continue;
+            if(!categories.containsKey(category)) return null;
 
             Nutrients nutrients = categories.get(category);
 
@@ -173,18 +164,17 @@ public class FoodServiceImpl implements FoodService {
      * save DB data in list
      */
     @Override
-    public void foodListUpdater() {
-        foodDB = new ArrayList<>();
-        Long size = countAllData();
+    public ArrayList<Foods> foodListExtractFromDB() {
+        ArrayList<Foods> foodDB = new ArrayList<>();
+        foodDB.addAll((Collection<? extends Foods>) foodRepository.findAll());
 
-        for(Long idx = 1L; idx <= size; idx++) {
-            foodDB.add(findById(idx));
-        }
+        return foodDB;
     }
 
     @Override
-    public void exceptCategorySetter() {
-        exceptCategories = new HashSet<>();
+    public HashSet<String> exceptCategorySetter() {
+        HashSet<String> exceptCategories = new HashSet<>();
+
         exceptCategories.add("잼류"); exceptCategories.add("특수용도식품");
         exceptCategories.add("초콜릿류");  exceptCategories.add("음료류");
         exceptCategories.add("조미식품");  exceptCategories.add("기타식품류");
@@ -201,6 +191,8 @@ public class FoodServiceImpl implements FoodService {
         exceptCategories.add("감자 및 전분류"); exceptCategories.add("수산가공품");
         exceptCategories.add("견과류 및 종실류"); exceptCategories.add("조리가공품류");
         exceptCategories.add("곡류 및 그 제품");
+
+        return exceptCategories;
     }
 
     @Override
@@ -213,7 +205,7 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public ArrayList<Foods>[] extractCandidates(double[] ingested) {
+    public ArrayList<Foods>[] extractCandidates(double[] ingested, ArrayList<Foods> foodDB, HashSet<String> except) {
         RDA rda = rdaConfigs.getRecommendedDailyAllowance();
 
         needs = new double[3];
@@ -250,7 +242,7 @@ public class FoodServiceImpl implements FoodService {
         while(!dataArranger.isEmpty()) {
             Foods current = dataArranger.poll();
 
-            if(current.getCategory().isEmpty() || exceptCategories.contains(current.getCategory())) continue;
+            if(current.getCategory().isEmpty() || except.contains(current.getCategory())) continue;
             if(alreadyCategory.contains(current.getCategory())){
                 candidate[index].add(current);
                 continue;
