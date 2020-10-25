@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.configurations.FoodOpenApiConfigs;
+import com.example.backend.configurations.FoodOpenApiConfig;
 import com.example.backend.services.interfaces.FoodOpenApiService;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 @Service
 public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
-    private final FoodOpenApiConfigs foodApi;
+    private final FoodOpenApiConfig foodApi;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String TYPE = "json";
@@ -28,7 +28,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public FoodOpenApiServiceImpl(FoodOpenApiConfigs foodApi) {
+    public FoodOpenApiServiceImpl(FoodOpenApiConfig foodApi) {
         this.foodApi = foodApi;
     }
 

@@ -1,7 +1,7 @@
 package com.example.backend.services;
 
-import com.example.backend.configurations.NutrientsConfigs;
-import com.example.backend.configurations.RDAConfigs;
+import com.example.backend.configurations.NutrientsConfig;
+import com.example.backend.configurations.RDAConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.models.data_enums.RDA;
@@ -25,9 +25,9 @@ public class FoodServiceImpl implements FoodService {
 
     private final FoodRepository foodRepository;
 
-    private final NutrientsConfigs nutrientsConfigs;
+    private final NutrientsConfig nutrientsConfig;
 
-    private final RDAConfigs rdaConfigs;
+    private final RDAConfig rdaConfig;
 
     private double[] needs;
 
@@ -38,11 +38,11 @@ public class FoodServiceImpl implements FoodService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public FoodServiceImpl(FoodOpenApiServiceImpl openApiService, FoodRepository foodRepository, NutrientsConfigs nutrientsConfigs, RDAConfigs rdaConfigs) {
+    public FoodServiceImpl(FoodOpenApiServiceImpl openApiService, FoodRepository foodRepository, NutrientsConfig nutrientsConfig, RDAConfig rdaConfig) {
         this.openApiService = openApiService;
         this.foodRepository = foodRepository;
-        this.nutrientsConfigs = nutrientsConfigs;
-        this.rdaConfigs = rdaConfigs;
+        this.nutrientsConfig = nutrientsConfig;
+        this.rdaConfig = rdaConfig;
     }
 
     @Override
@@ -106,22 +106,22 @@ public class FoodServiceImpl implements FoodService {
     public HashMap<String, Nutrients> categorySetter() {
         HashMap<String, Nutrients> categories = new HashMap<>();
 
-        categories.put("치킨", nutrientsConfigs.getChicken());
-        categories.put("돼지구이", nutrientsConfigs.getPig());
-        categories.put("소구이", nutrientsConfigs.getCow());
-        categories.put("생선구이", nutrientsConfigs.getFish());
-        categories.put("생선회", nutrientsConfigs.getRawFish());
-        categories.put("라면", nutrientsConfigs.getRamen());
-        categories.put("커피", nutrientsConfigs.getCoffee());
-        categories.put("음료수", nutrientsConfigs.getDrink());
-        categories.put("빵", nutrientsConfigs.getBread());
-        categories.put("피자", nutrientsConfigs.getPizza());
-        categories.put("김치", nutrientsConfigs.getKimchi());
-        categories.put("탕", nutrientsConfigs.getSoup());
-        categories.put("밥", nutrientsConfigs.getRice());
-        categories.put("떡볶이", nutrientsConfigs.getRedRiceCake());
-        categories.put("순대", nutrientsConfigs.getSundae());
-        categories.put("튀김", nutrientsConfigs.getFried());
+        categories.put("치킨", nutrientsConfig.getChicken());
+        categories.put("돼지구이", nutrientsConfig.getPig());
+        categories.put("소구이", nutrientsConfig.getCow());
+        categories.put("생선구이", nutrientsConfig.getFish());
+        categories.put("생선회", nutrientsConfig.getRawFish());
+        categories.put("라면", nutrientsConfig.getRamen());
+        categories.put("커피", nutrientsConfig.getCoffee());
+        categories.put("음료수", nutrientsConfig.getDrink());
+        categories.put("빵", nutrientsConfig.getBread());
+        categories.put("피자", nutrientsConfig.getPizza());
+        categories.put("김치", nutrientsConfig.getKimchi());
+        categories.put("탕", nutrientsConfig.getSoup());
+        categories.put("밥", nutrientsConfig.getRice());
+        categories.put("떡볶이", nutrientsConfig.getRedRiceCake());
+        categories.put("순대", nutrientsConfig.getSundae());
+        categories.put("튀김", nutrientsConfig.getFried());
 
         return categories;
     }
@@ -205,7 +205,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public ArrayList<Foods>[] extractCandidates(double[] ingested, ArrayList<Foods> foodDB, HashSet<String> except) {
-        RDA rda = rdaConfigs.getRecommendedDailyAllowance();
+        RDA rda = rdaConfig.getRecommendedDailyAllowance();
 
         needs = new double[3];
         needs[0] = rda.getCarbohydrate() - ingested[2];
