@@ -7,21 +7,12 @@ import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.models.data_enums.RDA;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.FoodService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class FoodServiceImpl implements FoodService {
-
-    private final FoodOpenApiServiceImpl openApiService;
 
     private final FoodRepository foodRepository;
 
@@ -31,75 +22,10 @@ public class FoodServiceImpl implements FoodService {
 
     private double[] needs;
 
-    private final String SERVICE_NAME = "I2790";
-    private final String LIST_FLAG = "row";
-    private final int INTERVAL = 200;
-    private final int LAST_INDEX = 28_488;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
-
-    public FoodServiceImpl(FoodOpenApiServiceImpl openApiService, FoodRepository foodRepository, NutrientsConfig nutrientsConfig, RDAConfig rdaConfig) {
-        this.openApiService = openApiService;
+    public FoodServiceImpl(FoodRepository foodRepository, NutrientsConfig nutrientsConfig, RDAConfig rdaConfig) {
         this.foodRepository = foodRepository;
         this.nutrientsConfig = nutrientsConfig;
         this.rdaConfig = rdaConfig;
-    }
-
-    @Override
-    public Foods findByNameAndCategory(String name, String category, double total) {
-        return foodRepository.findByNameAndCategory(name, category, total);
-    }
-
-    @Override
-    public void dataUpdateProcessorByFoodOpenApi() {
-        int start = 1;
-        int end = INTERVAL;
-
-        while(start <= LAST_INDEX) {
-            String jsonText = openApiService.requestFoodLists(start, end);
-            JSONParser parser = new JSONParser();
-
-            try {
-                JSONObject json = (JSONObject) parser.parse(jsonText);
-
-                JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
-                JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
-
-                int size = jsonArray.size();
-                for (int i = 0; i < size; i++) {
-                    JSONObject food = (JSONObject) jsonArray.get(i);
-
-                    Foods apiData = new Foods();
-                    String foodName = food.get("DESC_KOR").toString();
-                    String category = food.get("GROUP_NAME").toString();
-                    double total = validation(food.get("SERVING_SIZE").toString());
-
-                    if(findByNameAndCategory(foodName, category, total) != null) continue;
-
-                    apiData.setFoodName(foodName);
-                    apiData.setCategory(category);
-                    apiData.setTotal(total);
-                    apiData.setKcal(validation(food.get("NUTR_CONT1").toString()));
-                    apiData.setCarbohydrate(validation(food.get("NUTR_CONT2").toString()));
-                    apiData.setProtein(validation(food.get("NUTR_CONT3").toString()));
-                    apiData.setFat(validation(food.get("NUTR_CONT4").toString()));
-                    apiData.setSugar(validation(food.get("NUTR_CONT5").toString()));
-                    apiData.setSodium(validation(food.get("NUTR_CONT6").toString()));
-                    apiData.setCholesterol(validation(food.get("NUTR_CONT7").toString()));
-                    apiData.setSaturatedFattyAcid(validation(food.get("NUTR_CONT8").toString()));
-                    apiData.setTransFat(validation(food.get("NUTR_CONT9").toString()));
-
-                    save(apiData);
-                }
-
-            } catch (ParseException parseException) {
-                LOGGER.error(">>> FoodsServiceImpl >> exception >> ", parseException);
-                parseException.printStackTrace();
-            }
-
-            start += INTERVAL;
-            end += INTERVAL;
-        }
     }
 
     @Override
@@ -277,6 +203,8 @@ public class FoodServiceImpl implements FoodService {
                 new PriorityQueue<>((f1, f2) -> f1.getCarbohydrate() + f1.getProtein() + f1.getFat()
                     > f2.getCarbohydrate() + f2.getProtein() + f2.getFat() ? -1: 1);
 
+        int size = getTotalSize(candidates);
+
         for(int i = 0; i < candidates.length; i++) {
             Collections.sort(candidates[i], (f1, f2) -> f1.getCarbohydrate() + f1.getProtein() + f1.getFat()
                     >= f2.getCarbohydrate() + f2.getProtein() + f2.getFat() ? -1: 1);
@@ -284,9 +212,9 @@ public class FoodServiceImpl implements FoodService {
             int mod = candidates[i].size();
             if(mod != 1) mod /= 2;
 
-            Foods rec = candidates[i].get((int) (Math.random() * LAST_INDEX) % mod);
+            Foods rec = candidates[i].get((int) (Math.random() * size) % mod);
             while(rec.getCarbohydrate() + rec.getProtein() + rec.getFat() < 1) {
-                rec = candidates[i].get((int) (Math.random() * LAST_INDEX) % mod);
+                rec = candidates[i].get((int) (Math.random() * size) % mod);
             }
 
             if(rec.getCarbohydrate() == 0 && rec.getProtein() == 0 && rec.getFat() == 0) continue;
@@ -314,6 +242,17 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
+    public int getTotalSize(ArrayList<Foods>[] candidates) {
+        int size = 0;
+
+        for(int index = 0; index < candidates.length; index++) {
+            size += candidates[index].size();
+        }
+
+        return size;
+    }
+
+    @Override
     public void save(Foods food) {
         foodRepository.save(food);
     }
@@ -323,9 +262,4 @@ public class FoodServiceImpl implements FoodService {
         foodRepository.delete(food);
     }
 
-    @Override
-    public double validation(String data) {
-        if(data.length() == 0) return 0.0;
-        else return Double.parseDouble(data);
-    }
 }

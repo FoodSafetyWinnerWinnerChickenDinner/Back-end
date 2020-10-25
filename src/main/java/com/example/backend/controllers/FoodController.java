@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.HashSet;
 
 @RestController
 @CrossOrigin
-@EnableScheduling
 @RequestMapping("foods")
 public class FoodController {
     private final FoodServiceImpl foodServiceImpl;
@@ -49,10 +46,5 @@ public class FoodController {
         }
 
         return new ResponseEntity(recommends, HttpStatus.OK);
-    }
-
-    @Scheduled(cron = "0 0 4 * * *")
-    public void dataUpdateScheduler() {
-        foodServiceImpl.dataUpdateProcessorByFoodOpenApi();
     }
 }
