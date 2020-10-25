@@ -23,15 +23,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodOpenApiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/FoodOpenApiRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/FoodRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/FoodRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodOpenApiServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodOpenApiServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodOpenApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodOpenApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,10 +167,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="455" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1600585174499" />
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1603605568282">
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1603609573648">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1603605568282" />
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1603609573648" />
     <state x="445" y="146" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1600586162073">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -194,26 +187,26 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600842391081" />
-    <state width="1398" height="304" key="GridCell.Tab.0.bottom" timestamp="1603606518782">
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1603611204331">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="304" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1603606518782" />
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1603611204331" />
     <state width="1398" height="200" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1602819855659" />
-    <state width="1398" height="304" key="GridCell.Tab.0.center" timestamp="1603606518781">
+    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1603611204329">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="304" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1603606518781" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1603611204329" />
     <state width="1398" height="200" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1602819855658" />
-    <state width="1398" height="304" key="GridCell.Tab.0.left" timestamp="1603606518780">
+    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1603611204329">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="304" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1603606518780" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1603611204329" />
     <state width="1398" height="355" key="GridCell.Tab.0.left/51.0.1389.900@51.0.1389.900" timestamp="1600995293539" />
     <state width="1398" height="200" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1602819855658" />
-    <state width="1398" height="304" key="GridCell.Tab.0.right" timestamp="1603606518782">
+    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1603611204330">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="304" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1603606518782" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1603611204330" />
     <state width="1398" height="200" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1602819855659" />
     <state width="1398" height="304" key="GridCell.Tab.1.bottom" timestamp="1603606518784">
       <screen x="0" y="0" width="1440" height="900" />
@@ -248,6 +241,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="421" y="205" width="598" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1603604206002" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1603608201094">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1603608201094" />
   </component>
   <component name="se.expertsystem.intellij.aop.aspectj.AspectJProjectComponent">
     <setting name="isActivated" value="false" />

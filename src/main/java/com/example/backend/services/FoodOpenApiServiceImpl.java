@@ -1,9 +1,13 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.FoodOpenApiConfig;
+import com.example.backend.configurations.HttpConnectionConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodOpenApiRepository;
 import com.example.backend.services.interfaces.FoodOpenApiService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.simple.JSONArray;
@@ -12,6 +16,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +29,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FoodOpenApiServiceImpl implements FoodOpenApiService {
@@ -28,6 +38,8 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private final FoodOpenApiConfig foodApi;
 
     private final FoodOpenApiRepository foodOpenApiRepository;
+
+    private final HttpConnectionConfig restTemplate;
 
     private static final String SERVICE_NAME = "I2790";
     private static final String TYPE = "json";
@@ -40,7 +52,8 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public FoodOpenApiServiceImpl(FoodOpenApiConfig foodApi, FoodOpenApiRepository foodOpenApiRepository) {
+    public FoodOpenApiServiceImpl(HttpConnectionConfig restTemplate, FoodOpenApiConfig foodApi, FoodOpenApiRepository foodOpenApiRepository) {
+        this.restTemplate = restTemplate;
         this.foodApi = foodApi;
         this.foodOpenApiRepository = foodOpenApiRepository;
     }
@@ -99,41 +112,35 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     @Override
     public String requestFoodLists(int startIndex, int endIndex) {
-        String result = "";
+        String jsonInString = null;
+        Map<String, Object> jsonData = new HashMap<>();
         StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
         try {
+            HttpHeaders header = new HttpHeaders();
+            HttpEntity<?> entity = new HttpEntity<>(header);
+
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(startIndex);
             urlBuilder.append(FORWARD_SLASH).append(endIndex);
 
-            URL url = new URL(urlBuilder.toString());
+            ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
+                    .exchange(urlBuilder.toString(), HttpMethod.GET, entity, Map.class);
 
-            try (CachedOutputStream cached = new CachedOutputStream();
-                 InputStream in = url.openStream()) {
+            jsonData.put("statusCode", resultMap.getStatusCodeValue());   // http status
+            jsonData.put("header", resultMap.getHeaders());               // header
+            jsonData.put("body", resultMap.getBody());                    // body
 
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Content-type", "application/json");
-
-                IOUtils.copy(in, cached);
-                result = cached.getOut().toString();
-
-                conn.disconnect();
-            } catch (Exception exception) {
-                LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", exception);
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            jsonInString = mapper.writeValueAsString(resultMap.getBody());
         }
-        catch (UnsupportedEncodingException unsupportedEncodingException) {
+        catch (UnsupportedEncodingException | JsonProcessingException unsupportedEncodingException) {
             LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", unsupportedEncodingException);
         }
-        catch (MalformedURLException malformedURLException) {
-            LOGGER.error(">>> FoodOpenApiServiceImpl >> exception >> ", malformedURLException);
-        }
 
-        return result;
+        return jsonInString;
     }
 
     @Override
