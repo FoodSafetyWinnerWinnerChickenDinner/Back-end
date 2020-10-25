@@ -33,7 +33,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     }
 
     @Override
-    public String requestFoods(int startIndex, int endIndex) {
+    public String requestFoodLists(int startIndex, int endIndex) {
         String result = "";
         StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 

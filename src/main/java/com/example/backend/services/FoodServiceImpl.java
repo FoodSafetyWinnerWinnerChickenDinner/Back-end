@@ -56,7 +56,7 @@ public class FoodServiceImpl implements FoodService {
         int end = INTERVAL;
 
         while(start <= LAST_INDEX) {
-            String jsonText = openApiService.requestFoods(start, end);
+            String jsonText = openApiService.requestFoodLists(start, end);
             JSONParser parser = new JSONParser();
 
             try {
