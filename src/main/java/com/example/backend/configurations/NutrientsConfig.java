@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "nut")
 @Getter @Setter
-public class NutrientsConfigs {
+public class NutrientsConfig {
     private Nutrients chicken;
     private Nutrients pig;
     private Nutrients cow;
@@ -27,7 +27,7 @@ public class NutrientsConfigs {
     private Nutrients sundae;
     private Nutrients fried;
 
-    public NutrientsConfigs() {
+    public NutrientsConfig() {
         this.chicken = Nutrients.CHICKEN;
         this.pig = Nutrients.PIG;
         this.cow = Nutrients.COW;

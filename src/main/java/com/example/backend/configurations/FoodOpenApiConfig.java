@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter @Setter
 @PropertySource("classpath:openapi.properties")
-public class FoodOpenApiConfigs {
+public class FoodOpenApiConfig {
     @Value("${apiAuthKey}")
     private String key;
 

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "rda")
 @Getter @Setter
-public class RDAConfigs {
+public class RDAConfig {
     private RDA recommendedDailyAllowance;
 
-    public RDAConfigs() {
+    public RDAConfig() {
         this.recommendedDailyAllowance = recommendedDailyAllowance.RECOMMENDED_DAILY_ALLOWANCE;
     }
 }
