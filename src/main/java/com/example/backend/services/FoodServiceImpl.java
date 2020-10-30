@@ -7,6 +7,7 @@ import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.models.data_enums.RDA;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.FoodService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +23,7 @@ public class FoodServiceImpl implements FoodService {
 
     private double[] needs;
 
+    @Autowired
     public FoodServiceImpl(FoodRepository foodRepository, NutrientsConfig nutrientsConfig, RDAConfig rdaConfig) {
         this.foodRepository = foodRepository;
         this.nutrientsConfig = nutrientsConfig;
