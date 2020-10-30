@@ -5,7 +5,7 @@ import com.example.backend.models.Foods;
 import java.net.MalformedURLException;
 
 public interface FoodOpenApiService {
-    void nutireintsDataBaseUpdateProcessorByFoodOpenApi();
+    void nutrientsDataBaseUpdateProcessorByFoodOpenApi();
 
     String requestFoodLists(int startIndex, int endIndex) throws MalformedURLException;
 

@@ -21,6 +21,6 @@ public class FoodOpenApiController {
 
     @Scheduled(cron = "0 0 4 * * *")
     public void dataUpdateScheduler() {
-        foodOpenApiService.nutireintsDataBaseUpdateProcessorByFoodOpenApi();
+        foodOpenApiService.nutrientsDataBaseUpdateProcessorByFoodOpenApi();
     }
 }

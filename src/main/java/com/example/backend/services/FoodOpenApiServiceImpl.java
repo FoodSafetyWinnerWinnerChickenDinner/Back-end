@@ -52,7 +52,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     }
 
     @Override
-    public void nutireintsDataBaseUpdateProcessorByFoodOpenApi() {
+    public void nutrientsDataBaseUpdateProcessorByFoodOpenApi() {
         int start = 1;
         int end = INTERVAL;
 
