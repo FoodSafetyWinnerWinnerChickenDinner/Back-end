@@ -9,15 +9,20 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class HttpConnectionConfig {
+    private final HttpConnectionPropertiesConfig httpConnectionPropertiesConfig;
+
+    public HttpConnectionConfig(HttpConnectionPropertiesConfig httpConnectionPropertiesConfig) {
+        this.httpConnectionPropertiesConfig = httpConnectionPropertiesConfig;
+    }
 
     @Bean
     public RestTemplate getCustomRestTemplate(){
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        httpRequestFactory.setConnectTimeout(2000);
+        httpRequestFactory.setConnectTimeout(httpConnectionPropertiesConfig.getTimeOut());
 
         HttpClient httpClient = HttpClientBuilder.create()
-                .setMaxConnTotal(200)
-                .setMaxConnPerRoute(20)
+                .setMaxConnTotal(httpConnectionPropertiesConfig.getMaxTotal())
+                .setMaxConnPerRoute(httpConnectionPropertiesConfig.getMaxPerRoute())
                 .build();
 
         httpRequestFactory.setHttpClient(httpClient);
