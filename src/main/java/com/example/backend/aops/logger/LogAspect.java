@@ -16,7 +16,7 @@ public class LogAspect {
     /*@Around("execution(* com.example.backend..*.*(..))")*/
 
     @Around("execution(* com.example.backend.controllers..*.*(..))")
-    public Object logging(ProceedingJoinPoint pjp) throws Throwable {
+    public Object controllerLogger(ProceedingJoinPoint pjp) throws Throwable {
         logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
         Object result = pjp.proceed();
         logger.info("finished - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
