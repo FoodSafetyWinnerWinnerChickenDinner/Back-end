@@ -6,11 +6,13 @@
 + **식**사 메뉴 선정의 고**단함**을 해결해 주는
 
 <br><br>
-**영양소 항목** <br>
-+ 총 열량 (Kcal) <br>
-+ 탄수화물 (Carbohydrate), 단백질 (Protein), 지방 (Fat) <br>
-+ 당류 (Sugar), 나트륨 (Sodium) <br>
-+ 포화지방산 (Saturated fatty acid), 콜레스테롤 (Cholesterol), 트랜스지방 (Trans fat)<br>
+<details markdown="1">
+<summary> <b> 영양소 항목 </b> </summary>
+　　총 열량 (Kcal) <br>
+　　탄수화물 (Carbohydrate), 단백질 (Protein), 지방 (Fat) <br>
+　　당류 (Sugar), 나트륨 (Sodium) <br>
+　　포화지방산 (Saturated fatty acid), 콜레스테롤 (Cholesterol), 트랜스지방 (Trans fat) <br>
+</details>
 
 <br><br>
 ## Version
