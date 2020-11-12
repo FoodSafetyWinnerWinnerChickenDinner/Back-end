@@ -28,11 +28,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/ManualImages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/ManualImages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Manuals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Manuals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Recipes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Recipes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +42,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -190,7 +189,7 @@
       <workItem from="1605075792767" duration="1588000" />
       <workItem from="1605078330475" duration="9000" />
       <workItem from="1605088013775" duration="642000" />
-      <workItem from="1605153406685" duration="1994000" />
+      <workItem from="1605153406685" duration="3820000" />
     </task>
     <servers />
   </component>
@@ -238,6 +237,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="387" y="381" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1440.900@0.0.1440.900" timestamp="1600585455928" />
+    <state x="451" y="326" width="537" height="256" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1605156653095">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="451" y="326" width="537" height="256" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1440.900@0.0.1440.900" timestamp="1605156653095" />
     <state x="401" y="75" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1601022618902">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

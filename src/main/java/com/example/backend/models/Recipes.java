@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -33,13 +31,13 @@ public class Recipes {
     @Column(name = "cooking_completion_example")
     private String cookingCompletionExample;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "manuals_id")
-    private List<Manuals> manuals = new ArrayList<>();
+    private Manuals manuals;
 
-    @OneToMany
-    @JoinColumn(name = "manuals_id")
-    private List<ManualImages> manualImages = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "manualImages_id")
+    private ManualImages manualImages;
 
     @Column(name = "ingredients")
     private String ingredients;

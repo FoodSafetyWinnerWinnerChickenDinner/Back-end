@@ -80,8 +80,7 @@ public class ManualImages {
     @Column(name = "manual_image20")
     private String manualImage20;
 
-    @ManyToOne
-    @JoinColumn(name = "recipes_id")
-    private Recipes recipeId;
+    @OneToOne(mappedBy = "manual_images")
+    private Recipes recipe;
 
 }
