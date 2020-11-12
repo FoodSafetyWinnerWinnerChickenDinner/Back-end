@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="DietBoxAPI" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -23,7 +28,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/BackendApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="20ba57d3-05a8-43f6-b734-0ac4adab70c6" />
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -64,13 +74,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="project.structure.side.proportion" value="0.31954023" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
-  <component name="RunManager" selected="Application.BackendApplication (1)">
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
     <configuration name="BackendApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.backend.BackendApplication" />
       <module name="backend" />
@@ -84,28 +103,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BackendApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="example.backend.src.main.java.com.example.backend.BackendApplication" />
-      <module name="backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="example.backend.src.main.java.com.example.backend.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FoodOpenApiServiceImpl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.backend.services.FoodOpenApiServiceImpl" />
-      <module name="backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.backend.services.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -125,12 +129,51 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.backend.BackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sickthanharm" type="cloudfoundry-deploy" factoryName="CloudFoundry Deployment" server-name="PaaS-TA">
+      <deployment type="artifact" name="DietBoxAPI">
+        <settings>
+          <option name="appSettings">
+            <CFAppSettingsImpl>
+              <option name="instances" value="1" />
+            </CFAppSettingsImpl>
+          </option>
+          <option name="appSettingsRange">
+            <CFAppSettingsRangeImpl />
+          </option>
+          <option name="domain" value="paas-ta.org" />
+          <option name="infra" value="" />
+          <option name="manifest">
+            <CFManifest>
+              <option name="currentApplication" value="sickthanharm" />
+              <option name="path" value="$PROJECT_DIR$/manifest.yml" />
+            </CFManifest>
+          </option>
+          <option name="type" value="Ruby, Node.js" />
+        </settings>
+      </deployment>
+      <method v="2">
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="DietBoxAPI" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.BackendApplication (1)" />
+      <item itemvalue="CloudFoundry Deployment.sickthanharm" />
+      <item itemvalue="JUnit.FoodControllerTest" />
+      <item itemvalue="Spring Boot.BackendApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.BackendApplication (1)" />
         <item itemvalue="JUnit.FoodControllerTest" />
-        <item itemvalue="Application.FoodOpenApiServiceImpl" />
-        <item itemvalue="Application.BackendApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -142,8 +185,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600495157219</updated>
+      <workItem from="1604828257316" duration="851000" />
+      <workItem from="1604900106916" duration="5000" />
+      <workItem from="1605075792767" duration="1588000" />
+      <workItem from="1605078330475" duration="9000" />
+      <workItem from="1605088013775" duration="642000" />
+      <workItem from="1605153406685" duration="1994000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -158,18 +210,26 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="208" y="31" key="#Project_Structure" timestamp="1600586140712">
+    <state x="355" y="136" key="#CloudFoundry" timestamp="1604828579117">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="208" y="31" key="#Project_Structure/0.0.1440.900@0.0.1440.900" timestamp="1600586140712" />
+    <state x="355" y="136" key="#CloudFoundry/0.0.1440.900@0.0.1440.900" timestamp="1604828579117" />
+    <state x="208" y="31" key="#Project_Structure" timestamp="1604389411910">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="208" y="31" key="#Project_Structure/0.0.1440.900@0.0.1440.900" timestamp="1604389411910" />
+    <state x="144" y="97" width="1222" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604828581419">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="144" y="97" width="1222" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1604828581419" />
     <state x="455" y="259" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600585174499">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="455" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1600585174499" />
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1603609573648">
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1604472602146">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1603609573648" />
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1604472602146" />
     <state x="445" y="146" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1600586162073">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -186,27 +246,27 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600842391081" />
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1604133455764">
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1604474261204">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1604133455764" />
-    <state width="1398" height="200" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1602819855659" />
-    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1604133455764">
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1604474261204" />
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1604474261203">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1604133455764" />
-    <state width="1398" height="200" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1602819855658" />
-    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1604133455763">
+    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1604474261203" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1604474261202">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1604133455763" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1604474261202" />
     <state width="1398" height="355" key="GridCell.Tab.0.left/51.0.1389.900@51.0.1389.900" timestamp="1600995293539" />
-    <state width="1398" height="200" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1602819855658" />
-    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1604133455764">
+    <state width="1398" height="210" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1604400712143" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1604474261204">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1604133455764" />
-    <state width="1398" height="200" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1602819855659" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1604474261204" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
     <state width="1398" height="304" key="GridCell.Tab.1.bottom" timestamp="1603611762881">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -223,23 +283,23 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1398" height="304" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1603611762880" />
-    <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1603600797538">
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1604828867382">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1603600797538" />
-    <state x="264" y="103" key="SettingsEditor" timestamp="1604038328083">
+    <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1604828867382" />
+    <state x="255" y="63" key="SettingsEditor" timestamp="1605076892542">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="264" y="103" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1604038328083" />
+    <state x="255" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1605076892542" />
     <state x="252" y="53" key="SettingsEditor/51.23.1389.877@51.23.1389.877" timestamp="1600851291876" />
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601093595049">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1440.900@0.0.1440.900" timestamp="1601093595049" />
-    <state x="421" y="205" width="598" height="490" key="find.popup" timestamp="1603604206002">
+    <state x="421" y="205" width="598" height="490" key="find.popup" timestamp="1604650691249">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="421" y="205" width="598" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1603604206002" />
+    <state x="421" y="205" width="598" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1604650691249" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1603608201094">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
