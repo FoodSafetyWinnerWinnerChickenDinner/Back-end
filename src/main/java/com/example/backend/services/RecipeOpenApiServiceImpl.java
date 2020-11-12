@@ -3,6 +3,8 @@ package com.example.backend.services;
 import com.example.backend.configurations.HttpConnectionConfig;
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.models.Recipes;
+import com.example.backend.repositories.ManualImageRepository;
+import com.example.backend.repositories.ManualRepository;
 import com.example.backend.repositories.RecipeOpenApiRepository;
 import com.example.backend.services.interfaces.RecipeOpenApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,12 @@ import java.util.Map;
 public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final OpenApiConfig recipeApi;
+
+    private final ManualRepository manualRepository;
+
+    private final ManualServiceImpl manualService;
+
+    private final ManualImageRepository manualImageRepository;
 
     private final RecipeOpenApiRepository recipeOpenApiRepository;
 
@@ -47,8 +56,11 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Autowired
-    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, RecipeOpenApiRepository recipeOpenApiRepository, HttpConnectionConfig restTemplate) {
+    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, ManualRepository manualRepository, ManualServiceImpl manualService, ManualImageRepository manualImageRepository, RecipeOpenApiRepository recipeOpenApiRepository, HttpConnectionConfig restTemplate) {
         this.recipeApi = recipeApi;
+        this.manualRepository = manualRepository;
+        this.manualService = manualService;
+        this.manualImageRepository = manualImageRepository;
         this.recipeOpenApiRepository = recipeOpenApiRepository;
         this.restTemplate = restTemplate;
     }
@@ -75,12 +87,35 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
                     Recipes apiData = new Recipes();
                     String recipeName = recipe.get("RCP_NM").toString();
                     String category = recipe.get("RCP_PAT2").toString();
+                    String cookingCompletionExample = recipe.get("ATT_FILE_NO_MK").toString();
+                    String cookingCompletionExample1 = recipe.get("ATT_FILE_NO_MAIN").toString();
+                    String ingredient = recipe.get("RCP_PARTS_DTLS").toString();
+                    String cookingMethod = recipe.get("RCP_WAY2").toString();
+                    double kcal = validation(recipe.get("INFO_ENG").toString());
+                    double carbohydrate = validation(recipe.get("INFO_CAR").toString());
+                    double protein = validation(recipe.get("INFO_PRO").toString());
+                    double fat = validation(recipe.get("INFO_FAT").toString());
+                    double sodium = validation(recipe.get("INFO_NA").toString());
 
+                    ArrayList<String> manualList = manualBuilder("MANUAL");
+                    ArrayList<String> manualImageList = manualBuilder("MANUAL_IMG");
 
                     apiData.setRecipeName(recipeName);
                     apiData.setCategory(category);
+                    apiData.setCookingCompletionExample(cookingCompletionExample);
+                    apiData.setCookingCompletionExample1(cookingCompletionExample1);
+                    apiData.setIngredients(ingredient);
+                    apiData.setCookingMethod(cookingMethod);
+                    apiData.setKcal(kcal);
+                    apiData.setCarbohydrate(carbohydrate);
+                    apiData.setProtein(protein);
+                    apiData.setFat(fat);
+                    apiData.setFat(sodium);
 
                     save(apiData);
+
+                    // manuals
+                    manualService.manualListSaver(apiData, manualList);
                 }
 
             } catch (ParseException parseException) {
@@ -124,6 +159,27 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
         }
 
         return jsonInString;
+    }
+
+    @Override
+    public double validation(String data) {
+        if(data.length() == 0) return 0.0;
+        else return Double.parseDouble(data);
+    }
+
+    @Override
+    public ArrayList<String> manualBuilder(String target) {
+        ArrayList<String> list = new ArrayList<>();
+
+        for(int prev = 0; prev <= 2; prev++) {
+            StringBuilder keyBuilder = new StringBuilder();
+
+            for(int post = 1; post <= 9; post++) {
+                list.add(keyBuilder.append(target).append(prev).append(post).toString());
+            }
+        }
+
+        return list;
     }
 
     @Override

@@ -80,8 +80,7 @@ public class ManualImages {
     @Column(name = "manual_image20")
     private String manualImage20;
 
-    @OneToOne
-    @JoinColumn(name="recipe_id")
-    private Recipes recipe;
+    @Column(name="recipe_id")
+    private Long recipeId;
 
 }
