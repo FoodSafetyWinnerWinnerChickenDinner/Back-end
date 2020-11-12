@@ -29,12 +29,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/ManualImages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/ManualImages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Manuals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/Manuals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/ManualImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/ManualImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/ManualRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repositories/ManualRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeOpenApiServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeOpenApiServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeOpenApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeOpenApiService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +187,7 @@
       <workItem from="1605075792767" duration="1588000" />
       <workItem from="1605078330475" duration="9000" />
       <workItem from="1605088013775" duration="642000" />
-      <workItem from="1605153406685" duration="8769000" />
+      <workItem from="1605153406685" duration="9216000" />
     </task>
     <servers />
   </component>
@@ -228,10 +223,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="455" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1600585174499" />
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1605164357003">
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1605164830984">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1605164357003" />
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1605164830984" />
     <state x="445" y="146" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1600586162073">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

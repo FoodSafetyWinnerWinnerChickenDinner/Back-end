@@ -34,11 +34,9 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final OpenApiConfig recipeApi;
 
-    private final ManualRepository manualRepository;
-
     private final ManualServiceImpl manualService;
 
-    private final ManualImageRepository manualImageRepository;
+    private final ManualImageServiceImpl manualImageService;
 
     private final RecipeOpenApiRepository recipeOpenApiRepository;
 
@@ -56,11 +54,10 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Autowired
-    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, ManualRepository manualRepository, ManualServiceImpl manualService, ManualImageRepository manualImageRepository, RecipeOpenApiRepository recipeOpenApiRepository, HttpConnectionConfig restTemplate) {
+    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, ManualServiceImpl manualService, ManualImageServiceImpl manualImageService, RecipeOpenApiRepository recipeOpenApiRepository, HttpConnectionConfig restTemplate) {
         this.recipeApi = recipeApi;
-        this.manualRepository = manualRepository;
         this.manualService = manualService;
-        this.manualImageRepository = manualImageRepository;
+        this.manualImageService = manualImageService;
         this.recipeOpenApiRepository = recipeOpenApiRepository;
         this.restTemplate = restTemplate;
     }
@@ -114,8 +111,8 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
                     save(apiData);
 
-                    // manuals
                     manualService.manualListSaver(apiData, manualList);
+                    manualImageService.manualImageListSaver(apiData, manualImageList);
                 }
 
             } catch (ParseException parseException) {
