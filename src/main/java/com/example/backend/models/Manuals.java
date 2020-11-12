@@ -80,7 +80,8 @@ public class Manuals {
     @Column(name = "manual20")
     private String manual20;
 
-    @OneToOne(mappedBy = "manuals")
+    @OneToOne
+    @JoinColumn(name="recipe_id")
     private Recipes recipe;
 
 }

@@ -31,13 +31,8 @@ public class Recipes {
     @Column(name = "cooking_completion_example")
     private String cookingCompletionExample;
 
-    @OneToOne
-    @JoinColumn(name = "manuals_id")
-    private Manuals manuals;
-
-    @OneToOne
-    @JoinColumn(name = "manualImages_id")
-    private ManualImages manualImages;
+    @Column(name = "cooking_completion_example1")
+    private String cookingCompletionExample1;
 
     @Column(name = "ingredients")
     private String ingredients;

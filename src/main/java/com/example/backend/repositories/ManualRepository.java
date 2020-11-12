@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ManualRepository extends CrudRepository<Manuals, Long> {
     @Query("SELECT m FROM Manuals AS m, Recipes AS r WHERE r.id = ?1")
-    public Manuals findByRecipeId(int recipeId);
+    public Manuals findAllByRecipeId(int recipeId);
 }
