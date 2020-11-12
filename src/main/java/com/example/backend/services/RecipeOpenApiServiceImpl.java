@@ -94,9 +94,6 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
                     double fat = validation(recipe.get("INFO_FAT").toString());
                     double sodium = validation(recipe.get("INFO_NA").toString());
 
-                    ArrayList<String> manualList = manualBuilder("MANUAL");
-                    ArrayList<String> manualImageList = manualBuilder("MANUAL_IMG");
-
                     apiData.setRecipeName(recipeName);
                     apiData.setCategory(category);
                     apiData.setCookingCompletionExample(cookingCompletionExample);
@@ -111,7 +108,10 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
                     save(apiData);
 
+                    ArrayList<String> manualList = manualBuilder("MANUAL");
                     manualService.manualListSaver(apiData, manualList);
+
+                    ArrayList<String> manualImageList = manualBuilder("MANUAL_IMG");
                     manualImageService.manualImageListSaver(apiData, manualImageList);
                 }
 
