@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 @EnableScheduling
 @RequestMapping("open-api")
 public class OpenApiController {
