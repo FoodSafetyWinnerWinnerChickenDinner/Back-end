@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 @RestController
-@CrossOrigin
 @RequestMapping("foods")
 public class FoodController {
     private final FoodServiceImpl foodServiceImpl;
