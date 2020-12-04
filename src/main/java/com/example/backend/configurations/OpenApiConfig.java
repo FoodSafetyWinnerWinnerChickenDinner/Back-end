@@ -15,4 +15,10 @@ public class OpenApiConfig {
 
     @Value("${foodSafetyUrl}")
     private String url;
+
+    @Value("${nutrientDB}")
+    private String nutrientServiceName;
+
+    @Value("${recipeDB}")
+    private String recipeServiceName;
 }
