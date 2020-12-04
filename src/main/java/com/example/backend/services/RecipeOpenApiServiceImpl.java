@@ -42,7 +42,6 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final HttpConnectionConfig restTemplate;
 
-    private static final String SERVICE_NAME = "COOKRCP01";
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
     private static final String ENCODING_TYPE = "UTF-8";
@@ -74,7 +73,7 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
             try {
                 JSONObject json = (JSONObject) parser.parse(jsonText);
 
-                JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
+                JSONObject jsonFood = (JSONObject) json.get(recipeApi.getRecipeServiceName());
                 JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
 
                 int size = jsonArray.size();
@@ -136,7 +135,7 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
             HttpEntity<?> entity = new HttpEntity<>(header);
 
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getKey(), ENCODING_TYPE));
-            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getRecipeServiceName(), ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(startIndex);
             urlBuilder.append(FORWARD_SLASH).append(endIndex);

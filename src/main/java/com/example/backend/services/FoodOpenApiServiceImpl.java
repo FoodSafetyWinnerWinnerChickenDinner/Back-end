@@ -35,7 +35,6 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private final HttpConnectionConfig restTemplate;
 
-    private static final String SERVICE_NAME = "I2790";
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
     private static final String ENCODING_TYPE = "UTF-8";
@@ -65,7 +64,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             try {
                 JSONObject json = (JSONObject) parser.parse(jsonText);
 
-                JSONObject jsonFood = (JSONObject) json.get(SERVICE_NAME);
+                JSONObject jsonFood = (JSONObject) json.get(foodApi.getNutrientServiceName());
                 JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
 
                 int size = jsonArray.size();
@@ -116,7 +115,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             HttpEntity<?> entity = new HttpEntity<>(header);
 
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
-            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(SERVICE_NAME, ENCODING_TYPE));
+            urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getNutrientServiceName(), ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(TYPE, ENCODING_TYPE));
             urlBuilder.append(FORWARD_SLASH).append(startIndex);
             urlBuilder.append(FORWARD_SLASH).append(endIndex);
