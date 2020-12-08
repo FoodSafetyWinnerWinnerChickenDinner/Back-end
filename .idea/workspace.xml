@@ -28,10 +28,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6348f162-7092-4977-82ce-2ff3a188aa21" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/DietBoxAPI.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/OpenApiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/OpenApiConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/RDAConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/RDAConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/RecipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/RecipeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/models/data_enums/RDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/models/data_enums/RDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodOpenApiServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodOpenApiServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeOpenApiServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeOpenApiServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/FoodServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,8 +50,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -227,10 +235,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="455" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1600585174499" />
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1605164830984">
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser" timestamp="1607396820644">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1605164830984" />
+    <state x="533" y="163" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1607396820644" />
     <state x="445" y="146" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1600586162073">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -251,51 +259,51 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600842391081" />
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1606898314311">
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1607397285827">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1606898314311" />
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1607397285827" />
     <state width="1398" height="210" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
-    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1606898314310">
+    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1607397285826">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1606898314310" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1607397285826" />
     <state width="1398" height="210" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
-    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1606898314310">
+    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1607397285825">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1606898314310" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1607397285825" />
     <state width="1398" height="355" key="GridCell.Tab.0.left/51.0.1389.900@51.0.1389.900" timestamp="1600995293539" />
     <state width="1398" height="210" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1604400712143" />
-    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1606898314311">
+    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1607397285826">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1606898314311" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1607397285826" />
     <state width="1398" height="210" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
-    <state width="1398" height="245" key="GridCell.Tab.1.bottom" timestamp="1605165352393">
+    <state width="1398" height="304" key="GridCell.Tab.1.bottom" timestamp="1607396433997">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1605165352393" />
-    <state width="1398" height="245" key="GridCell.Tab.1.center" timestamp="1605165352393">
+    <state width="1398" height="304" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1607396433997" />
+    <state width="1398" height="304" key="GridCell.Tab.1.center" timestamp="1607396433996">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1605165352393" />
-    <state width="1398" height="245" key="GridCell.Tab.1.left" timestamp="1605165352392">
+    <state width="1398" height="304" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1607396433996" />
+    <state width="1398" height="304" key="GridCell.Tab.1.left" timestamp="1607396433996">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1605165352392" />
-    <state width="1398" height="245" key="GridCell.Tab.1.right" timestamp="1605165352393">
+    <state width="1398" height="304" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1607396433996" />
+    <state width="1398" height="304" key="GridCell.Tab.1.right" timestamp="1607396433997">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1605165352393" />
+    <state width="1398" height="304" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1607396433997" />
     <state x="258" y="112" key="Maven.ArtifactSearchDialog" timestamp="1604828867382">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="258" y="112" key="Maven.ArtifactSearchDialog/0.0.1440.900@0.0.1440.900" timestamp="1604828867382" />
-    <state x="255" y="63" key="SettingsEditor" timestamp="1605076892542">
+    <state x="255" y="63" key="SettingsEditor" timestamp="1607314853365">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="255" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1605076892542" />
+    <state x="255" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1607314853365" />
     <state x="252" y="53" key="SettingsEditor/51.23.1389.877@51.23.1389.877" timestamp="1600851291876" />
     <state x="330" y="67" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601093595049">
       <screen x="0" y="0" width="1440" height="900" />

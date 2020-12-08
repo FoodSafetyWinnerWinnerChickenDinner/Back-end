@@ -3,9 +3,7 @@ package com.example.backend.services.interfaces;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -15,17 +13,11 @@ public interface FoodService {
 
     double[] ingestedTotalNutrientsGetter(List<String> eats, HashMap<String, Nutrients> categories);
 
-    ArrayList<Foods> foodListExtractFromDB();
+    List<Foods> foodListExtractFromDB();
 
-    HashSet<String> exceptCategorySetter();
+    List<Foods> menuRecommendation(double[] ingested, List<Foods> foodDB);
 
-    double priorCalculator(Foods food, double carbohydrate, double protein, double fat);
-
-    ArrayList<Foods>[] extractCandidates(double[] ingested, ArrayList<Foods> foodDB, HashSet<String> except);
-
-    ArrayList<Foods> menuRecommendation(ArrayList<Foods>[] candidates);
-
-    int getTotalSize(ArrayList<Foods>[] candidates);
+    boolean edible(double[] remained, Foods food);
 
     void save(Foods food);
 
