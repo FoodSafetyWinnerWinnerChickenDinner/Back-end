@@ -1,11 +1,45 @@
 package com.example.backend.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.models.Foods;
+import com.example.backend.models.Recipes;
+import com.example.backend.services.RecipeServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("recipes")
 public class RecipeController {
-    
+    private final RecipeServiceImpl recipeServiceImpl;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
+
+    public RecipeController(RecipeServiceImpl recipeServiceImpl) {
+        this.recipeServiceImpl = recipeServiceImpl;
+    }
+
+    @PostMapping("/recommend")
+    public ResponseEntity<Recipes> menuRecommender(@RequestBody HashMap<String, Double> ate) {
+        Recipes recommend = null;
+
+        List<Recipes> recipeList = recipeServiceImpl.recipeListExtractFromDB();
+
+        try {
+            double[] ingested = {ate.get("Carbohydrate"), ate.get("Protein"), ate.get("Fat")};
+            recommend = recipeServiceImpl.termFrequencyInverseDocumentFrequency(ingested, recipeList);
+        }
+        catch (NullPointerException nullPointerException) {
+            LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);
+            nullPointerException.printStackTrace();
+        }
+
+        return new ResponseEntity(recommend, HttpStatus.OK);
+    }
 }

@@ -8,11 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("foods")
@@ -26,18 +29,15 @@ public class FoodController {
     }
 
     @PostMapping("/recommend")
-    public ResponseEntity<ArrayList<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
-        ArrayList<Foods> recommends = null;
+    public ResponseEntity<List<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
+        List<Foods> recommends = null;
 
-        ArrayList<Foods> foodList = foodServiceImpl.foodListExtractFromDB();
-        HashSet<String> except = foodServiceImpl.exceptCategorySetter();
+        List<Foods> foodList = foodServiceImpl.foodListExtractFromDB();
         HashMap<String, Nutrients> categories = foodServiceImpl.categorySetter();
 
         try {
-            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate, categories);       // if null returns -> invalid category
-
-            ArrayList<Foods>[] candidates = foodServiceImpl.extractCandidates(ingested, foodList, except);
-            recommends = foodServiceImpl.menuRecommendation(candidates);
+            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate, categories);
+            recommends = foodServiceImpl.menuRecommendation(ingested, foodList);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);

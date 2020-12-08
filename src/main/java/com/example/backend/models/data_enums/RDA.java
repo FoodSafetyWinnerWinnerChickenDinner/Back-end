@@ -1,10 +1,15 @@
 package com.example.backend.models.data_enums;
 
 public enum RDA {
-    RECOMMENDED_DAILY_ALLOWANCE(2600, 390
-            , 130, 86, 78
-            , 1.5, 0.3
-            , 20, 3);
+//    RECOMMENDED_DAILY_ALLOWANCE(2600, 390
+//            , 130, 86, 78
+//            , 1.5, 0.3
+//            , 20, 3);
+
+    A_MEAL_RECOMMENDED_DAILY_ALLOWANCE(919.916666667, 106.665833333
+            , 45.2033333333, 28.4203333333, 26
+            , 0.5, 0.1
+            , 6.6666667, 1);
 
     private double kcal;
     private double carbohydrate, protein, fat;

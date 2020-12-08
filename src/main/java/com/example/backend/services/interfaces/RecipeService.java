@@ -1,14 +1,16 @@
 package com.example.backend.services.interfaces;
 
-import com.example.backend.models.Foods;
+import com.example.backend.models.Recipes;
+
+import java.util.List;
 
 public interface RecipeService {
 
-    Long recommendRecipeByNutrients(double carbohydrate, double protein, double fat);
+    List<Recipes> recipeListExtractFromDB();
 
-    Long recommendRecipeByRecommendedFood(Foods food);
+    Recipes termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList);
 
-    void save(Foods food);
+    void save(Recipes recipe);
 
-    void delete(Foods food);
+    void delete(Recipes recipe);
 }

@@ -13,6 +13,6 @@ public class RDAConfig {
     private RDA recommendedDailyAllowance;
 
     public RDAConfig() {
-        this.recommendedDailyAllowance = recommendedDailyAllowance.RECOMMENDED_DAILY_ALLOWANCE;
+        this.recommendedDailyAllowance = recommendedDailyAllowance.A_MEAL_RECOMMENDED_DAILY_ALLOWANCE;
     }
 }

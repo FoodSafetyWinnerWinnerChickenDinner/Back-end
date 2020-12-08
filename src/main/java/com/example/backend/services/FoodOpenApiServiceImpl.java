@@ -110,7 +110,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
         Map<String, Object> jsonData = new HashMap<>();
         StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
 
-        try {
+        try { 
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
 
