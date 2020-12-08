@@ -31,6 +31,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/DietBoxAPI.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/RDAConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/configurations/RDAConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/FoodController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/RecipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controllers/RecipeController.java" afterDir="false" />
@@ -40,6 +41,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/RecipeServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/FoodService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/services/interfaces/RecipeService.java" afterDir="false" />
+=======
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,6 +262,7 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1600842391081" />
+<<<<<<< Updated upstream
     <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1607397285827">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -279,6 +283,28 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1607397285826" />
+=======
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom" timestamp="1607329855744">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1607329855744" />
+    <state width="1398" height="210" key="GridCell.Tab.0.bottom/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center" timestamp="1607329855742">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="210" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1607329855742" />
+    <state width="1398" height="210" key="GridCell.Tab.0.center/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left" timestamp="1607329855742">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="210" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1607329855742" />
+    <state width="1398" height="355" key="GridCell.Tab.0.left/51.0.1389.900@51.0.1389.900" timestamp="1600995293539" />
+    <state width="1398" height="210" key="GridCell.Tab.0.left/51.23.1389.877@51.23.1389.877" timestamp="1604400712143" />
+    <state width="1398" height="210" key="GridCell.Tab.0.right" timestamp="1607329855743">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="210" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1607329855743" />
+>>>>>>> Stashed changes
     <state width="1398" height="210" key="GridCell.Tab.0.right/51.23.1389.877@51.23.1389.877" timestamp="1604400712144" />
     <state width="1398" height="304" key="GridCell.Tab.1.bottom" timestamp="1607396433997">
       <screen x="0" y="0" width="1440" height="900" />
