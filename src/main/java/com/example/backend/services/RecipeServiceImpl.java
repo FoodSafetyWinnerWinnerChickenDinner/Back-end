@@ -1,27 +1,30 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.RDAConfig;
-import com.example.backend.models.Foods;
 import com.example.backend.models.Recipes;
 import com.example.backend.models.data_enums.RDA;
+import com.example.backend.repositories.ManualImageRepository;
+import com.example.backend.repositories.ManualRepository;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.RecipeService;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final ManualRepository manualRepository;
+    private final ManualImageRepository manualImageRepository;
 
     private final RDAConfig rdaConfig;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, RDAConfig rdaConfig) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, ManualRepository manualRepository, ManualImageRepository manualImageRepository, RDAConfig rdaConfig) {
         this.recipeRepository = recipeRepository;
+        this.manualRepository = manualRepository;
+        this.manualImageRepository = manualImageRepository;
         this.rdaConfig = rdaConfig;
     }
 
@@ -34,11 +37,11 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipes termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList) {
+    public List<Optional> termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList) {
         RDA rda = rdaConfig.getRecommendedDailyAllowance();
-        double car = rda.getCarbohydrate() * 2 - ingested[2];
-        double pro = rda.getProtein() * 2 - ingested[3];
-        double fat = rda.getFat() * 2 - ingested[4];
+        double car = rda.getCarbohydrate() * 2 - ingested[0];
+        double pro = rda.getProtein() * 2 - ingested[1];
+        double fat = rda.getFat() * 2 - ingested[2];
 
         double[] sum = new double[3];
         double[] max = new double[3];
@@ -59,13 +62,22 @@ public class RecipeServiceImpl implements RecipeService {
 
         double user = Math.log(current / avg) * (0.5 + (0.5 * current / nutrientsMax));
 
-        PriorityQueue<Double> tfidf = new PriorityQueue<>();
+        PriorityQueue<AbstractMap.SimpleEntry<Long, Double>> tfidf = new PriorityQueue<>((f1, f2) ->
+                f1.getValue() < f2.getValue() ? -1: 1);
         for(Recipes recipe: recipesArrayList) {
             current = recipe.getCarbohydrate() * recipe.getProtein() * recipe.getFat();
-            tfidf.offer(Math.abs(user - Math.log(current / avg) * (0.5 + (0.5 * current / nutrientsMax))));
+            tfidf.offer(new AbstractMap.SimpleEntry<>(recipe.getId()
+                    , Math.abs(user - Math.log(current / avg) * (0.5 + (0.5 * current / nutrientsMax)))));
         }
 
-        return null;
+        long target = tfidf.poll().getKey();
+
+        List<Optional> result = new ArrayList<>();
+        result.add(recipeRepository.findById(target));
+        result.add(manualRepository.findById(target));
+        result.add(manualImageRepository.findById(target));
+
+        return result;
     }
 
     @Override
