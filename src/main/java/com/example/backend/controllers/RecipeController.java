@@ -25,7 +25,7 @@ public class RecipeController {
     }
 
     @PostMapping("/recommend")
-    public ResponseEntity<Recipes> menuRecommender(@RequestBody Map<String, Double> ate) {
+    public ResponseEntity<List<Optional>> menuRecommender(@RequestBody Map<String, Double> ate) {
         List<Optional> recommend = null;
 
         List<Recipes> recipeList = recipeServiceImpl.recipeListExtractFromDB();
