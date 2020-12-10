@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import com.example.backend.models.Foods;
 import com.example.backend.models.Recipes;
 import com.example.backend.services.RecipeServiceImpl;
 import org.slf4j.Logger;
@@ -10,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("recipes")
@@ -26,8 +25,8 @@ public class RecipeController {
     }
 
     @PostMapping("/recommend")
-    public ResponseEntity<Recipes> menuRecommender(@RequestBody HashMap<String, Double> ate) {
-        Recipes recommend = null;
+    public ResponseEntity<Recipes> menuRecommender(@RequestBody Map<String, Double> ate) {
+        List<Optional> recommend = null;
 
         List<Recipes> recipeList = recipeServiceImpl.recipeListExtractFromDB();
 
