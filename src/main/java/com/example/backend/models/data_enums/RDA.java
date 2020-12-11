@@ -2,8 +2,8 @@ package com.example.backend.models.data_enums;
 
 public enum RDA {
     
-    A_MEAL_RECOMMENDED_DAILY_ALLOWANCE(919.916666667, 106.665833333
-            , 45.2033333333, 28.4203333333, 26
+    A_MEAL_RECOMMENDED_DAILY_ALLOWANCE(919.916666667, 126.665833333
+            , 44.2033333333, 27.4203333333, 26
             , 0.5, 0.1
             , 6.6666667, 1);
 

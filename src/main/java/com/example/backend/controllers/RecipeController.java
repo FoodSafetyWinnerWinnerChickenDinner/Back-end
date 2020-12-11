@@ -32,7 +32,8 @@ public class RecipeController {
 
         try {
             double[] ingested = {ate.get("Carbohydrate"), ate.get("Protein"), ate.get("Fat")};
-            recommend = recipeServiceImpl.termFrequencyInverseDocumentFrequency(ingested, recipeList);
+            double size = ate.get("Lists");
+            recommend = recipeServiceImpl.termFrequencyInverseDocumentFrequency(ingested, recipeList, size);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);
