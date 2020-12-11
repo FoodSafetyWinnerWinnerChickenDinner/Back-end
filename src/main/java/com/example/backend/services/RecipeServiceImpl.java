@@ -37,7 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Optional> termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList) {
+    public List<Optional> termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList, double responseSize) {
         RDA rda = rdaConfig.getRecommendedDailyAllowance();
         double car = rda.getCarbohydrate() * 2 - ingested[0];
         double pro = rda.getProtein() * 2 - ingested[1];
@@ -46,6 +46,7 @@ public class RecipeServiceImpl implements RecipeService {
         double[] sum = new double[3];
         double[] max = new double[3];
         int size = recipesArrayList.size();
+
         for(Recipes recipe: recipesArrayList) {
             sum[0] = recipe.getCarbohydrate();
             sum[1] = recipe.getProtein();
@@ -56,26 +57,32 @@ public class RecipeServiceImpl implements RecipeService {
             }
         }
 
-        double avg = (sum[0] * sum[1] * sum[2] / size);
-        double nutrientsMax = max[0] * max[1] * max[2];
-        double current = car * pro * fat;
+        double avg = (sum[0] + sum[1] + sum[2]) / size;
+        double nutrientsMax = max[0] + max[1] + max[2];
+        double current = car + pro + fat;
 
         double user = Math.log(current / avg) * (0.5 + (0.5 * current / nutrientsMax));
 
         PriorityQueue<AbstractMap.SimpleEntry<Long, Double>> tfidf = new PriorityQueue<>((f1, f2) ->
                 f1.getValue() < f2.getValue() ? -1: 1);
+
         for(Recipes recipe: recipesArrayList) {
-            current = recipe.getCarbohydrate() * recipe.getProtein() * recipe.getFat();
+            if(recipe.getCarbohydrate() > car || recipe.getProtein() > pro || recipe.getFat() > fat) continue;
+            current = recipe.getCarbohydrate() + recipe.getProtein() + recipe.getFat();
+
             tfidf.offer(new AbstractMap.SimpleEntry<>(recipe.getId()
                     , Math.abs(user - Math.log(current / avg) * (0.5 + (0.5 * current / nutrientsMax)))));
         }
 
-        long target = tfidf.poll().getKey();
-
         List<Optional> result = new ArrayList<>();
-        result.add(recipeRepository.findById(target));
-        result.add(manualRepository.findById(target));
-        result.add(manualImageRepository.findById(target));
+
+        while(responseSize-- > 0) {
+            long target = tfidf.poll().getKey();
+
+            result.add(recipeRepository.findById(target));
+            result.add(manualRepository.findById(target));
+            result.add(manualImageRepository.findById(target));
+        }
 
         return result;
     }
