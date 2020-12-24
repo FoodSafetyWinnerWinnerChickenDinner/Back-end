@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.models.Recipes;
 import com.example.backend.services.RecipeServiceImpl;
+import com.example.backend.services.interfaces.RecipeOpenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,18 @@ import java.util.Optional;
 @RequestMapping("recipes")
 public class RecipeController {
     private final RecipeServiceImpl recipeServiceImpl;
+    private final RecipeOpenApiService recipeOpenApiService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public RecipeController(RecipeServiceImpl recipeServiceImpl) {
+    public RecipeController(RecipeServiceImpl recipeServiceImpl, RecipeOpenApiService recipeOpenApiService) {
         this.recipeServiceImpl = recipeServiceImpl;
+        this.recipeOpenApiService = recipeOpenApiService;
     }
 
     @PostMapping("/recommend")
     public ResponseEntity<List<Optional>> menuRecommender(@RequestBody Map<String, Double> ate) {
+        recipeOpenApiService.recipesDataBaseUpdateProcessorByRecipeOpenApi();
         List<Optional> recommend = null;
 
         List<Recipes> recipeList = recipeServiceImpl.recipeListExtractFromDB();

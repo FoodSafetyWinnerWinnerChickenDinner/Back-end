@@ -1,9 +1,9 @@
 package com.example.backend.services;
 
 import com.example.backend.models.ManualImages;
-import com.example.backend.models.Recipes;
 import com.example.backend.repositories.ManualImageRepository;
 import com.example.backend.services.interfaces.ManualImageService;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +18,27 @@ public class ManualImageServiceImpl implements ManualImageService {
     }
 
     @Override
-    public void manualImageListSaver(Recipes recipe, List<String> manualImageList) {
+    public void manualImageListSaver(JSONObject json, long id, List<String> manualImageList) {
         ManualImages manualImages = new ManualImages();
-        manualImages.setRecipeId(recipe.getId());
-        manualImages.setManualImage1(manualImageList.get(0)); manualImages.setManualImage2(manualImageList.get(1));
-        manualImages.setManualImage3(manualImageList.get(2)); manualImages.setManualImage4(manualImageList.get(3)); manualImages.setManualImage5(manualImageList.get(4));
-        manualImages.setManualImage6(manualImageList.get(5)); manualImages.setManualImage7(manualImageList.get(6)); manualImages.setManualImage8(manualImageList.get(7));
-        manualImages.setManualImage9(manualImageList.get(8)); manualImages.setManualImage10(manualImageList.get(9)); manualImages.setManualImage11(manualImageList.get(10));
-        manualImages.setManualImage12(manualImageList.get(11)); manualImages.setManualImage13(manualImageList.get(12)); manualImages.setManualImage14(manualImageList.get(13));
-        manualImages.setManualImage15(manualImageList.get(14)); manualImages.setManualImage16(manualImageList.get(15)); manualImages.setManualImage17(manualImageList.get(16));
-        manualImages.setManualImage18(manualImageList.get(17)); manualImages.setManualImage19(manualImageList.get(18)); manualImages.setManualImage20(manualImageList.get(19));
+        manualImages.setRecipeId(id);
+        manualImages.setManualImage1(nullChecker(0, json, manualImageList)); manualImages.setManualImage2(nullChecker(1, json, manualImageList));
+        manualImages.setManualImage3(nullChecker(2, json, manualImageList)); manualImages.setManualImage4(nullChecker(3, json, manualImageList));
+        manualImages.setManualImage5(nullChecker(4, json, manualImageList)); manualImages.setManualImage6(nullChecker(5, json, manualImageList));
+        manualImages.setManualImage7(nullChecker(6, json, manualImageList)); manualImages.setManualImage8(nullChecker(7, json, manualImageList));
+        manualImages.setManualImage9(nullChecker(8, json, manualImageList)); manualImages.setManualImage10(nullChecker(9, json, manualImageList));
+        manualImages.setManualImage11(nullChecker(10, json, manualImageList)); manualImages.setManualImage12(nullChecker(11, json, manualImageList));
+        manualImages.setManualImage13(nullChecker(12, json, manualImageList)); manualImages.setManualImage14(nullChecker(13, json, manualImageList));
+        manualImages.setManualImage15(nullChecker(14, json, manualImageList)); manualImages.setManualImage16(nullChecker(15, json, manualImageList));
+        manualImages.setManualImage17(nullChecker(16, json, manualImageList)); manualImages.setManualImage18(nullChecker(17, json, manualImageList));
+        manualImages.setManualImage19(nullChecker(18, json, manualImageList)); manualImages.setManualImage20(nullChecker(19, json, manualImageList));
 
         save(manualImages);
+    }
+
+    @Override
+    public String nullChecker(int idx, JSONObject object, List<String> list) {
+        Object result = object.get(list.get(idx));
+        return result == null ? "": result.toString();
     }
 
     @Override

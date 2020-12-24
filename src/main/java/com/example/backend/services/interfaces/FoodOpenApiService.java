@@ -15,5 +15,5 @@ public interface FoodOpenApiService {
 
     double validation(String data);
 
-    Foods findByNameAndCategory(String name, String category, double total);
+    boolean exceptDuplicatedData(String name, String category, double total);
 }

@@ -82,6 +82,8 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
                     Recipes apiData = new Recipes();
                     String recipeName = recipe.get("RCP_NM").toString();
+                    if(exceptDuplicatedData(recipeName)) continue;
+
                     String category = recipe.get("RCP_PAT2").toString();
                     String cookingCompletionExample = recipe.get("ATT_FILE_NO_MK").toString();
                     String cookingCompletionExample1 = recipe.get("ATT_FILE_NO_MAIN").toString();
@@ -108,10 +110,10 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
                     save(apiData);
 
                     ArrayList<String> manualList = manualBuilder("MANUAL");
-                    manualService.manualListSaver(apiData, manualList);
+                    manualService.manualListSaver(recipe, apiData.getId(), manualList);
 
                     ArrayList<String> manualImageList = manualBuilder("MANUAL_IMG");
-                    manualImageService.manualImageListSaver(apiData, manualImageList);
+                    manualImageService.manualImageListSaver(recipe, apiData.getId(), manualImageList);
                 }
 
             } catch (ParseException parseException) {
@@ -166,16 +168,21 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
     @Override
     public ArrayList<String> manualBuilder(String target) {
         ArrayList<String> list = new ArrayList<>();
+        StringBuilder keyBuilder;
 
         for(int prev = 0; prev <= 2; prev++) {
-            StringBuilder keyBuilder = new StringBuilder();
-
             for(int post = 1; post <= 9; post++) {
+                keyBuilder = new StringBuilder();
                 list.add(keyBuilder.append(target).append(prev).append(post).toString());
             }
         }
 
         return list;
+    }
+
+    @Override
+    public boolean exceptDuplicatedData(String name) {
+        return recipeOpenApiRepository.findByName(name) != null;
     }
 
     @Override

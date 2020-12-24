@@ -1,9 +1,9 @@
 package com.example.backend.services;
 
 import com.example.backend.models.Manuals;
-import com.example.backend.models.Recipes;
 import com.example.backend.repositories.ManualRepository;
 import com.example.backend.services.interfaces.ManualService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +20,27 @@ public class ManualServiceImpl implements ManualService {
     }
 
     @Override
-    public void manualListSaver(Recipes recipe, List<String> manualList) {
+    public void manualListSaver(JSONObject json, long id, List<String> manualList) {
         Manuals manuals = new Manuals();
-        manuals.setRecipeId(recipe.getId());
-        manuals.setManual1(manualList.get(0)); manuals.setManual2(manualList.get(1));
-        manuals.setManual3(manualList.get(2)); manuals.setManual4(manualList.get(3)); manuals.setManual5(manualList.get(4));
-        manuals.setManual6(manualList.get(5)); manuals.setManual7(manualList.get(6)); manuals.setManual8(manualList.get(7));
-        manuals.setManual9(manualList.get(8)); manuals.setManual10(manualList.get(9)); manuals.setManual11(manualList.get(10));
-        manuals.setManual12(manualList.get(11)); manuals.setManual13(manualList.get(12)); manuals.setManual14(manualList.get(13));
-        manuals.setManual15(manualList.get(14)); manuals.setManual16(manualList.get(15)); manuals.setManual17(manualList.get(16));
-        manuals.setManual18(manualList.get(17)); manuals.setManual19(manualList.get(18)); manuals.setManual20(manualList.get(19));
+        manuals.setRecipeId(id);
+        manuals.setManual1(nullChecker(0, json, manualList)); manuals.setManual2(nullChecker(1, json, manualList));
+        manuals.setManual3(nullChecker(2, json, manualList)); manuals.setManual4(nullChecker(3, json, manualList));
+        manuals.setManual5(nullChecker(4, json, manualList)); manuals.setManual6(nullChecker(5, json, manualList));
+        manuals.setManual7(nullChecker(6, json, manualList)); manuals.setManual8(nullChecker(7, json, manualList));
+        manuals.setManual9(nullChecker(8, json, manualList)); manuals.setManual10(nullChecker(9, json, manualList));
+        manuals.setManual11(nullChecker(10, json, manualList)); manuals.setManual12(nullChecker(11, json, manualList));
+        manuals.setManual13(nullChecker(12, json, manualList)); manuals.setManual14(nullChecker(13, json, manualList));
+        manuals.setManual15(nullChecker(14, json, manualList)); manuals.setManual16(nullChecker(15, json, manualList));
+        manuals.setManual17(nullChecker(16, json, manualList)); manuals.setManual18(nullChecker(17, json, manualList));
+        manuals.setManual19(nullChecker(18, json, manualList)); manuals.setManual20(nullChecker(19, json, manualList));
 
         save(manuals);
+    }
+
+    @Override
+    public String nullChecker(int idx, JSONObject object, List<String> list) {
+        Object result = object.get(list.get(idx));
+        return result == null ? "": result.toString();
     }
 
     @Override
