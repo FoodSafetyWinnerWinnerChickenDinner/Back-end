@@ -76,7 +76,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
                     String category = food.get("GROUP_NAME").toString();
                     double total = validation(food.get("SERVING_SIZE").toString());
 
-                    if(findByNameAndCategory(foodName, category, total) != null) continue;
+                    if(exceptDuplicatedData(foodName, category, total)) continue;
 
                     apiData.setFoodName(foodName);
                     apiData.setCategory(category);
@@ -154,7 +154,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     }
 
     @Override
-    public Foods findByNameAndCategory(String name, String category, double total) {
-        return foodOpenApiRepository.findByNameAndCategory(name, category, total);
+    public boolean exceptDuplicatedData(String name, String category, double total) {
+        return foodOpenApiRepository.findByNameAndCategory(name, category, total) != null;
     }
 }

@@ -14,6 +14,8 @@ public interface RecipeOpenApiService {
 
     ArrayList<String> manualBuilder(String target);
 
+    boolean exceptDuplicatedData(String name);
+
     void save(Recipes recipe);
 
     void delete(Recipes recipe);
