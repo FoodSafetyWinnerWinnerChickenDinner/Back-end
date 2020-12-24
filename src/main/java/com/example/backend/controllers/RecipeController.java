@@ -18,18 +18,15 @@ import java.util.Optional;
 @RequestMapping("recipes")
 public class RecipeController {
     private final RecipeServiceImpl recipeServiceImpl;
-    private final RecipeOpenApiService recipeOpenApiService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public RecipeController(RecipeServiceImpl recipeServiceImpl, RecipeOpenApiService recipeOpenApiService) {
+    public RecipeController(RecipeServiceImpl recipeServiceImpl) {
         this.recipeServiceImpl = recipeServiceImpl;
-        this.recipeOpenApiService = recipeOpenApiService;
     }
 
     @PostMapping("/recommend")
     public ResponseEntity<List<Optional>> menuRecommender(@RequestBody Map<String, Double> ate) {
-        recipeOpenApiService.recipesDataBaseUpdateProcessorByRecipeOpenApi();
         List<Optional> recommend = null;
 
         List<Recipes> recipeList = recipeServiceImpl.recipeListExtractFromDB();
