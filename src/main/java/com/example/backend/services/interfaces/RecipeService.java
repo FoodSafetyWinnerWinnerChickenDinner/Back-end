@@ -9,7 +9,7 @@ public interface RecipeService {
 
     List<Recipes> recipeListExtractFromDB();
 
-    List<Optional> termFrequencyInverseDocumentFrequency(double[] ingested, List<Recipes> recipesArrayList, double responseSize);
+    List<Optional> menuRecommendation(double[] ingested, List<Recipes> recipesArrayList, double responseSize);
 
     void save(Recipes recipe);
 

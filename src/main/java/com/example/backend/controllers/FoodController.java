@@ -3,6 +3,7 @@ package com.example.backend.controllers;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.services.FoodServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("foods")
+@RequiredArgsConstructor
 public class FoodController {
     private final FoodServiceImpl foodServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
-
-    public FoodController(FoodServiceImpl foodServiceImpl) {
-        this.foodServiceImpl = foodServiceImpl;
-    }
 
     @PostMapping("/recommend")
     public ResponseEntity<List<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {

@@ -1,10 +1,8 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.NutrientsConfig;
-import com.example.backend.configurations.RDAConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
-import com.example.backend.models.data_enums.RDA;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +17,10 @@ public class FoodServiceImpl implements FoodService {
 
     private final NutrientsConfig nutrientsConfig;
 
-    private final RDAConfig rdaConfig;
-
     @Autowired
-    public FoodServiceImpl(FoodRepository foodRepository, NutrientsConfig nutrientsConfig, RDAConfig rdaConfig) {
+    public FoodServiceImpl(FoodRepository foodRepository, NutrientsConfig nutrientsConfig) {
         this.foodRepository = foodRepository;
         this.nutrientsConfig = nutrientsConfig;
-        this.rdaConfig = rdaConfig;
     }
 
     @Override
@@ -80,9 +75,6 @@ public class FoodServiceImpl implements FoodService {
         return ingestedTotal;
     }
 
-    /**
-     * save DB data in list
-     */
     @Override
     public List<Foods> foodListExtractFromDB() {
         List<Foods> foodDB = new ArrayList<>();
@@ -93,35 +85,21 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public List<Foods> menuRecommendation(double[] ingested, List<Foods> foodDB) {
-        RDA rda = rdaConfig.getRecommendedDailyAllowance();
+        /**
+         *
+         * ingested: 섭취한 영양 성분 분류별 총량
+         * foodDB: local db data
+         *
+         * TF-IDF
+         * try: 범주화
+         * - 타당한 근거: 각 성분별 표준 편차(평균에서 떨어진 정도) 활용, 또는 사분위 수 (평균, 간격 = 상한 - 하한)
+         * - 유용한 범주: 연속형 변수 범주화
+         *
+         * -> 주요 영양소를 뽑아낸다.
+         *
+         */
 
-        double[] remained = new double[3];
-        remained[0] = rda.getCarbohydrate() * 2 - ingested[2];
-        remained[1] = rda.getProtein() * 2 - ingested[3];
-        remained[2] = rda.getFat() * 2 - ingested[4];
-
-        PriorityQueue<Foods> dataArranger = new PriorityQueue<>((f1, f2) ->
-                        f1.getTotal() > f2.getTotal() ? -1: 1);
-
-        for(Foods dbFood: foodDB) {
-            Foods element = dbFood;
-
-            double priors = element.getCarbohydrate() + element.getProtein() + element.getFat();
-            element.setTotal(priors);
-            dataArranger.offer(element);
-        }
-
-        HashSet<String> alreadyCategory = new HashSet<>();
         List<Foods> recommend = new ArrayList<>();
-
-        while(!dataArranger.isEmpty()) {
-            Foods current = dataArranger.poll();
-            if(alreadyCategory.contains(current.getCategory())) continue;
-            if(edible(remained, current)) continue;
-
-            alreadyCategory.add(current.getCategory());
-            recommend.add(current);
-        }
 
         return recommend;
     }
