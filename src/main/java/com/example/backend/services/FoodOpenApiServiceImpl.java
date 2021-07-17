@@ -1,7 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.OpenApiConfig;
-import com.example.backend.configurations.HttpConnectionConfig;
+import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodOpenApiRepository;
 import com.example.backend.services.interfaces.FoodOpenApiService;
@@ -33,7 +33,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private final FoodOpenApiRepository foodOpenApiRepository;
 
-    private final HttpConnectionConfig restTemplate;
+    private final RestTemplateConfig restTemplate;
 
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
@@ -46,7 +46,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Autowired
-    public FoodOpenApiServiceImpl(HttpConnectionConfig restTemplate, OpenApiConfig foodApi, FoodOpenApiRepository foodOpenApiRepository) {
+    public FoodOpenApiServiceImpl(RestTemplateConfig restTemplate, OpenApiConfig foodApi, FoodOpenApiRepository foodOpenApiRepository) {
         this.restTemplate = restTemplate;
         this.foodApi = foodApi;
         this.foodOpenApiRepository = foodOpenApiRepository;

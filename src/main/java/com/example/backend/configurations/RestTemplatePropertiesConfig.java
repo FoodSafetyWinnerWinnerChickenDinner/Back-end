@@ -1,22 +1,23 @@
 package com.example.backend.configurations;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-@Setter
-@PropertySource("classpath:application.properties")
-public class HttpConnectionPropertiesConfig {
-    @Value("${httpconnpool.max-total}")
+@PropertySource("classpath:connection.properties")
+public class RestTemplatePropertiesConfig {
+    @Value("${connpool.max-total}")
     private int maxTotal;
 
-    @Value("${httpconnpool.max-per-route}")
+    @Value("${connpool.max-per-route}")
     private int maxPerRoute;
 
-    @Value("${httpconnpool.timeout}")
+    @Value("${connpool.timeout}")
     private int timeOut;
+
+    @Value("${connpool.keepalive}")
+    private long keepAlive;
 }
