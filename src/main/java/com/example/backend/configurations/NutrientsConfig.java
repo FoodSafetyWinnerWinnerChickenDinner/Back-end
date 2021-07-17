@@ -2,13 +2,12 @@ package com.example.backend.configurations;
 
 import com.example.backend.models.data_enums.Nutrients;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "nut")
-@Getter @Setter
+@Getter
 public class NutrientsConfig {
     private Nutrients chicken;
     private Nutrients pig;
