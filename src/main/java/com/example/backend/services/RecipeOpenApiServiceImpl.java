@@ -1,10 +1,8 @@
 package com.example.backend.services;
 
-import com.example.backend.configurations.HttpConnectionConfig;
+import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.models.Recipes;
-import com.example.backend.repositories.ManualImageRepository;
-import com.example.backend.repositories.ManualRepository;
 import com.example.backend.repositories.RecipeOpenApiRepository;
 import com.example.backend.services.interfaces.RecipeOpenApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,7 +38,7 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final RecipeOpenApiRepository recipeOpenApiRepository;
 
-    private final HttpConnectionConfig restTemplate;
+    private final RestTemplateConfig restTemplate;
 
     private static final String TYPE = "json";
     private static final String FORWARD_SLASH = "/";
@@ -53,7 +51,7 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Autowired
-    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, ManualServiceImpl manualService, ManualImageServiceImpl manualImageService, RecipeOpenApiRepository recipeOpenApiRepository, HttpConnectionConfig restTemplate) {
+    public RecipeOpenApiServiceImpl(OpenApiConfig recipeApi, ManualServiceImpl manualService, ManualImageServiceImpl manualImageService, RecipeOpenApiRepository recipeOpenApiRepository, RestTemplateConfig restTemplate) {
         this.recipeApi = recipeApi;
         this.manualService = manualService;
         this.manualImageService = manualImageService;
