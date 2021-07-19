@@ -1,5 +1,8 @@
 package com.example.backend.models.data_enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Nutrients {
     CHICKEN(154.2355191160072, 297.17152796650964
             , 6.04717021081533, 32.69640545254722, 17.83580210590874
@@ -84,86 +87,6 @@ public enum Nutrients {
         this.sodium = sodium;
         this.cholesterol = cholesterol;
         this.saturatedFattyAcid = saturatedFattyAcid;
-        this.transFat = transFat;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public double getKcal() {
-        return kcal;
-    }
-
-    public double getCarbohydrate() {
-        return carbohydrate;
-    }
-
-    public double getProtein() {
-        return protein;
-    }
-
-    public double getFat() {
-        return fat;
-    }
-
-    public double getSugar() {
-        return sugar;
-    }
-
-    public double getSodium() {
-        return sodium;
-    }
-
-    public double getCholesterol() {
-        return cholesterol;
-    }
-
-    public double getSaturatedFattyAcid() {
-        return saturatedFattyAcid;
-    }
-
-    public double getTransFat() {
-        return transFat;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public void setKcal(double kcal) {
-        this.kcal = kcal;
-    }
-
-    public void setCarbohydrate(double carbohydrate) {
-        this.carbohydrate = carbohydrate;
-    }
-
-    public void setProtein(double protein) {
-        this.protein = protein;
-    }
-
-    public void setFat(double fat) {
-        this.fat = fat;
-    }
-
-    public void setSugar(double sugar) {
-        this.sugar = sugar;
-    }
-
-    public void setSodium(double sodium) {
-        this.sodium = sodium;
-    }
-
-    public void setCholesterol(double cholesterol) {
-        this.cholesterol = cholesterol;
-    }
-
-    public void setSaturatedFattyAcid(double saturatedFattyAcid) {
-        this.saturatedFattyAcid = saturatedFattyAcid;
-    }
-
-    public void setTransFat(double transFat) {
         this.transFat = transFat;
     }
 }
