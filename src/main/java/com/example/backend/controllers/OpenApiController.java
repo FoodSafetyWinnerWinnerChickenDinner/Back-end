@@ -1,7 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.services.FoodOpenApi;
-import com.example.backend.services.interfaces.RecipeOpenApiService;
+import com.example.backend.services.RecipeOpenApiServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OpenApiController {
 
-    private final RecipeOpenApiService recipeOpenApiService;
+    private final RecipeOpenApiServiceImpl recipeOpenApiService;
 
     private final FoodOpenApi foodOpenApi;
 

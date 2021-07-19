@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+@Getter
 @Table(name = "foods", schema = "food_safety")
 public class Foods {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
