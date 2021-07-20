@@ -144,15 +144,14 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
             values.add(valueValidator(object.get(FORMAT)));
         }
 
-        Foods food = new Foods(null
-                , toString(values.get(0)), toString(values.get(1))
-                , toDouble(values.get(2))
-                , toDouble(values.get(3)), toDouble(values.get(4)), toDouble(values.get(5))
-                , toDouble(values.get(6)), toDouble(values.get(7)), toDouble(values.get(8))
-                , toDouble(values.get(9)), toDouble(values.get(10)), toDouble(values.get(11))
-        );
-
-        return food;
+        return Foods.builder()
+                .id(toLong(values.get(0)))
+                .foodName(toString(values.get(1))).category(toString(values.get(2)))
+                .total(toDouble(values.get(3))).kcal(toDouble(values.get(4)))
+                .carbohydrate(toDouble(values.get(5))).protein(toDouble(values.get(6))).fat(toDouble(values.get(7)))
+                .sugar(toDouble(values.get(8))).sodium(toDouble(values.get(9))).cholesterol(toDouble(values.get(10)))
+                .saturatedFattyAcid(toDouble(values.get(11))).transFat(toDouble(values.get(12)))
+                .build();
     }
 
     @Override
@@ -173,7 +172,7 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
 
     @Override
     public Double toDouble(Object value) {
-        String valueString = value.toString();
+        String valueString = toString(value);
 
         if(valueString.matches(IS_NUMERIC)) {
             return Double.parseDouble(valueString);
@@ -183,12 +182,22 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
     }
 
     @Override
+    public Long toLong(Object value) {
+        String valueString = toString(value);
+
+        if(valueString.matches(IS_NUMERIC)) {
+            return Long.parseLong(valueString);
+        }
+
+        return 0L;
+    }
+
+    @Override
     public boolean dbContainsData(Object object) {
         Foods food = (Foods) object;
 
-        String name = food.getFoodName();
-        String category = food.getCategory();
+        long id = food.getId();
 
-        return foodOpenApiRepository.existsByNameAndCategory(name, category);
+        return foodOpenApiRepository.findById(id) != null;
     }
 }

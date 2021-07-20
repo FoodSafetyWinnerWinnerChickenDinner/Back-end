@@ -7,12 +7,11 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
 @Builder
 @Table(name = "recipes", schema = "food_safety")
 public class Recipes {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;                // TODO: remove auto-increment & reset id by RCP_SEQ
 
