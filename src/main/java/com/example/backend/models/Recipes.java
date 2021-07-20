@@ -50,11 +50,11 @@ public class Recipes {
     private double sodium;
 
     @OneToOne
-    @JoinColumn(name = "manual_id")
+    @JoinColumn(name = "manuals_id")
     private Manuals manuals;
 
     @OneToOne
-    @JoinColumn(name = "manual_image_id")
+    @JoinColumn(name = "manual_images_id")
     private ManualImages manualImages;
 
 }

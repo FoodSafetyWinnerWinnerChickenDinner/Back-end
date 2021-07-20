@@ -26,19 +26,19 @@ public class RecipeRepositoryTests {
     @Test
     public void save_recipe(){
         // given
-        Manuals manual = Manuals.builder().id(0L)
+        Manuals manual = Manuals.builder().id(1L)
                 .manual1("").manual2("").manual3("").manual4("").manual5("").manual6("").manual7("").manual8("").manual9("").manual10("")
                 .manual11("").manual12("potato").manual13("").manual14("").manual15("").manual16("").manual17("").manual18("").manual19("").manual20("")
                 .build();
 
-        ManualImages manualImage = ManualImages.builder().id(0L)
+        ManualImages manualImage = ManualImages.builder().id(1L)
                 .manualImage1("").manualImage2("").manualImage3("").manualImage4("").manualImage5("").manualImage6("")
                 .manualImage7("").manualImage8("").manualImage9("apple").manualImage10("").manualImage11("").manualImage12("")
                 .manualImage13("").manualImage14("").manualImage15("").manualImage16("").manualImage17("").manualImage18("")
                 .manualImage19("").manualImage20("")
                 .build();
 
-        Recipes recipe = Recipes.builder().id(0L)
+        Recipes recipe = Recipes.builder().id(1L)
                 .recipeName("삼양 라면").category("라면").cookingMethod("냄비")
                 .cookingMaterialExample("img").cookingCompletionExample("img")
                 .ingredients("라면 스프, 물, 면").kcal(200).carbohydrate(5).protein(4)
