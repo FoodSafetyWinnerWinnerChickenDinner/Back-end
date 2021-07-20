@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "foods", schema = "food_safety")
 public class Foods {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id")
     private Long id;                // TODO: remove auto-increment & reset id by NUM
 

@@ -93,17 +93,17 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
                     double fat = validation(recipe.get("INFO_FAT").toString());
                     double sodium = validation(recipe.get("INFO_NA").toString());
 
-                    apiData.setRecipeName(recipeName);
-                    apiData.setCategory(category);
-                    apiData.setCookingMaterialExample(cookingMaterialExample);
-                    apiData.setCookingCompletionExample(cookingCompletionExample);
-                    apiData.setIngredients(ingredient);
-                    apiData.setCookingMethod(cookingMethod);
-                    apiData.setKcal(kcal);
-                    apiData.setCarbohydrate(carbohydrate);
-                    apiData.setProtein(protein);
-                    apiData.setFat(fat);
-                    apiData.setFat(sodium);
+//                    apiData.setRecipeName(recipeName);
+//                    apiData.setCategory(category);
+//                    apiData.setCookingMaterialExample(cookingMaterialExample);
+//                    apiData.setCookingCompletionExample(cookingCompletionExample);
+//                    apiData.setIngredients(ingredient);
+//                    apiData.setCookingMethod(cookingMethod);
+//                    apiData.setKcal(kcal);
+//                    apiData.setCarbohydrate(carbohydrate);
+//                    apiData.setProtein(protein);
+//                    apiData.setFat(fat);
+//                    apiData.setFat(sodium);
 
                     save(apiData);
 

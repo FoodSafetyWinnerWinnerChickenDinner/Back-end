@@ -173,6 +173,11 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
     }
 
     @Override
+    public Long toLong(Object value) {
+        return null;
+    }
+
+    @Override
     public boolean dbContainsData(Object object) {
         Recipes recipe = (Recipes) object;
 

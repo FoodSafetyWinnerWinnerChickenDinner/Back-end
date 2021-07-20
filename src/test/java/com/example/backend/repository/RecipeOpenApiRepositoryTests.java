@@ -1,29 +1,45 @@
 package com.example.backend.repository;
 
+import com.example.backend.configurations.OpenApiConfig;
+import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.ManualImages;
 import com.example.backend.models.Manuals;
 import com.example.backend.models.Recipes;
-import com.example.backend.repositories.RecipeRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.example.backend.repositories.RecipeOpenApiRepository;
+import com.example.backend.services.ManualImageServiceImpl;
+import com.example.backend.services.ManualServiceImpl;
+import com.example.backend.services.RecipeOpenApiServiceImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class RecipeRepositoryTests {
+public class RecipeOpenApiRepositoryTests {
 
-    @Autowired
-    private RecipeRepository recipeRepository;
+    @Mock private RecipeOpenApiRepository recipeOpenApiRepository;
+    @Mock private OpenApiConfig recipeApi;
+    @Mock private ManualServiceImpl manualService;
+    @Mock private ManualImageServiceImpl manualImageService;
+    @Mock private RestTemplateConfig restTemplate;
+
+    private RecipeOpenApiServiceImpl recipeOpenApiServiceImpl;
+
+    @BeforeEach
+    void setup(){
+        this.recipeOpenApiServiceImpl = new RecipeOpenApiServiceImpl(
+                recipeApi, manualService, manualImageService, recipeOpenApiRepository, restTemplate
+        );
+    }
 
     @Test
+    @DisplayName("1:1 매핑 확인")
     public void save_recipe(){
         // given
         Manuals manual = Manuals.builder().id(1L)
@@ -48,11 +64,14 @@ public class RecipeRepositoryTests {
                 .build();
 
         // when
-        recipeRepository.save(recipe);
+        recipeOpenApiRepository.save(recipe);
 
         // then
-        assertThat(recipe.getManuals().getManual12()).isEqualTo("potato");
-        assertThat(recipe.getManualImages().getManualImage9()).isEqualTo("apple");
+        assertThat(recipeOpenApiRepository.findById(1L).get()
+                .getManuals().getManual12()).isEqualTo("potato");
+
+        assertThat(recipeOpenApiRepository.findById(1L).get()
+                .getManualImages().getManualImage9()).isEqualTo("apple");
     }
 
 }
