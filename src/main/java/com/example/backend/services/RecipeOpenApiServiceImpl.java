@@ -83,8 +83,8 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
                     if(exceptDuplicatedData(recipeName)) continue;
 
                     String category = recipe.get("RCP_PAT2").toString();
-                    String cookingCompletionExample = recipe.get("ATT_FILE_NO_MK").toString();
-                    String cookingCompletionExample1 = recipe.get("ATT_FILE_NO_MAIN").toString();
+                    String cookingMaterialExample = recipe.get("ATT_FILE_NO_MK").toString();
+                    String cookingCompletionExample = recipe.get("ATT_FILE_NO_MAIN").toString();
                     String ingredient = recipe.get("RCP_PARTS_DTLS").toString();
                     String cookingMethod = recipe.get("RCP_WAY2").toString();
                     double kcal = validation(recipe.get("INFO_ENG").toString());
@@ -95,8 +95,8 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
                     apiData.setRecipeName(recipeName);
                     apiData.setCategory(category);
+                    apiData.setCookingMaterialExample(cookingMaterialExample);
                     apiData.setCookingCompletionExample(cookingCompletionExample);
-                    apiData.setCookingCompletionExample1(cookingCompletionExample1);
                     apiData.setIngredients(ingredient);
                     apiData.setCookingMethod(cookingMethod);
                     apiData.setKcal(kcal);

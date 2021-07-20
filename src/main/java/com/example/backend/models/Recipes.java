@@ -1,23 +1,20 @@
 package com.example.backend.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
+@Builder
 @Table(name = "recipes", schema = "food_safety")
 public class Recipes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long id;                // TODO: remove auto-increment & reset id by RCP_SEQ
 
     @Column(name = "recipe_name")
     private String recipeName;
@@ -28,11 +25,11 @@ public class Recipes {
     @Column(name = "cooking_method")
     private String cookingMethod;
 
+    @Column(name = "cooking_material_example")
+    private String cookingMaterialExample;
+
     @Column(name = "cooking_completion_example")
     private String cookingCompletionExample;
-
-    @Column(name = "cooking_completion_example1")
-    private String cookingCompletionExample1;
 
     @Column(name = "ingredients")
     private String ingredients;
@@ -51,4 +48,13 @@ public class Recipes {
 
     @Column(name = "sodium")
     private double sodium;
+
+    @OneToOne
+    @JoinColumn(name = "manual_id")
+    private Manuals manuals;
+
+    @OneToOne
+    @JoinColumn(name = "manual_image_id")
+    private ManualImages manualImages;
+
 }

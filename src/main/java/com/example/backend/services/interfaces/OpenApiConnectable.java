@@ -10,16 +10,14 @@ public interface OpenApiConnectable {
     String FORWARD_SLASH = "/";
     String LIST_FLAG = "row";
     String TOTAL = "total_count";
-    String CURRENT_NO = "NUM";
 
     int INTERVAL = 200;
+    int INIT = 1_000_000_000;
 
     String requestOpenApiData(int START, int END);
 
     void updateByOpenApiData();
 
     String openApiUrlBuilder(int START, int END) throws UnsupportedEncodingException;
-
-    boolean isEndIndex(Object source, String sink);
 
 }
