@@ -1,20 +1,18 @@
 package com.example.backend.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "foods", schema = "food_safety")
 public class Foods {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long id;                // TODO: remove auto-increment & reset id by NUM
 
     @Column(name = "food_name")
     private String foodName;

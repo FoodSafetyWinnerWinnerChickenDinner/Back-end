@@ -22,7 +22,6 @@ public class ManualServiceImpl implements ManualService {
     @Override
     public void manualListSaver(JSONObject json, long id, List<String> manualList) {
         Manuals manuals = new Manuals();
-        manuals.setRecipeId(id);
         manuals.setManual1(nullChecker(0, json, manualList)); manuals.setManual2(nullChecker(1, json, manualList));
         manuals.setManual3(nullChecker(2, json, manualList)); manuals.setManual4(nullChecker(3, json, manualList));
         manuals.setManual5(nullChecker(4, json, manualList)); manuals.setManual6(nullChecker(5, json, manualList));

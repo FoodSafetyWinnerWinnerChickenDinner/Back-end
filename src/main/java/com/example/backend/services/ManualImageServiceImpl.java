@@ -20,7 +20,6 @@ public class ManualImageServiceImpl implements ManualImageService {
     @Override
     public void manualImageListSaver(JSONObject json, long id, List<String> manualImageList) {
         ManualImages manualImages = new ManualImages();
-        manualImages.setRecipeId(id);
         manualImages.setManualImage1(nullChecker(0, json, manualImageList)); manualImages.setManualImage2(nullChecker(1, json, manualImageList));
         manualImages.setManualImage3(nullChecker(2, json, manualImageList)); manualImages.setManualImage4(nullChecker(3, json, manualImageList));
         manualImages.setManualImage5(nullChecker(4, json, manualImageList)); manualImages.setManualImage6(nullChecker(5, json, manualImageList));

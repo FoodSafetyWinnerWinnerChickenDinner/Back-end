@@ -3,7 +3,8 @@ package com.example.backend.services;
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
-import com.example.backend.repositories.FoodOpenApiRepository;
+import com.example.backend.models.Recipes;
+import com.example.backend.repositories.RecipeOpenApiRepository;
 import com.example.backend.services.interfaces.DataAccessible;
 import com.example.backend.services.interfaces.OpenApiConnectable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,11 +32,11 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
+public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
-    private final OpenApiConfig foodApi;
+    private final OpenApiConfig recipeApi;
 
-    private final FoodOpenApiRepository foodOpenApiRepository;
+    private final RecipeOpenApiRepository recipeOpenApiRepository;
 
     private final RestTemplateConfig restTemplate;
 
@@ -63,7 +64,7 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
             jsonInString = mapper.writeValueAsString(resultMap.getBody());
         }
         catch (UnsupportedEncodingException | JsonProcessingException unsupportedEncodingException) {
-            LOGGER.error(">>> FoodOpenApi >> exception >> ", unsupportedEncodingException);
+            LOGGER.error(">>> RecipeOpenApi >> exception >> ", unsupportedEncodingException);
         }
 
         return jsonInString;
@@ -86,19 +87,19 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
             try {
 
                 JSONObject json = (JSONObject) parser.parse(jsonText);
-                JSONObject jsonFood = (JSONObject) json.get(foodApi.getNutrientServiceName());
+                JSONObject jsonFood = (JSONObject) json.get(recipeApi.getNutrientServiceName());
 
-                if (start == INIT) {
+                if (lastIndex == INIT) {
                     lastIndex = Integer.parseInt(jsonFood.get(TOTAL).toString());
                 }
 
                 JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
-                List<Foods> apiDataList = new ArrayList<>();
+                List<Recipes> apiDataList = new ArrayList<>();
 
                 for (Object obj: jsonArray) {
-                    JSONObject food = (JSONObject) obj;
+                    JSONObject recipe = (JSONObject) obj;
 
-                    Foods apiData = (Foods) jsonToModel(food);
+                    Recipes apiData = (Recipes) jsonToModel(recipe);
                     if(dbContainsData(apiData)) {
                         continue;
                     }
@@ -109,7 +110,7 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
                 saveAll(apiDataList);
 
             } catch (ParseException parseException) {
-                LOGGER.error(">>> FoodOpenApi >> exception >> ", parseException);
+                LOGGER.error(">>> RecipeOpenApi >> exception >> ", parseException);
                 parseException.printStackTrace();
             }
 
@@ -120,10 +121,10 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
 
     @Override
     public String openApiUrlBuilder(final int START, final int END) throws UnsupportedEncodingException {
-        StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
+        StringBuilder urlBuilder = new StringBuilder(recipeApi.getUrl());
 
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getNutrientServiceName(), ENCODING_TYPE));
+        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getKey(), ENCODING_TYPE));
+        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getNutrientServiceName(), ENCODING_TYPE));
         urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(FORMAT_TYPE, ENCODING_TYPE));
         urlBuilder.append(FORWARD_SLASH).append(START);
         urlBuilder.append(FORWARD_SLASH).append(END);
@@ -131,28 +132,17 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
         return urlBuilder.toString();
     }
 
-    public void saveAll(List<Foods> foodList) {
-        if(foodList.size() == 0) return;
-        foodOpenApiRepository.saveAll(foodList);
-    }
-
     @Override
     public Object jsonToModel(JSONObject object) {
         List<Object> values = new ArrayList<>();
 
-        for(final String FORMAT: FOOD_JSON_FORMATS){
+        for(final String FORMAT: RECIPE_JSON_FORMATS){
             values.add(valueValidator(object.get(FORMAT)));
         }
 
-        Foods food = new Foods(null
-                , toString(values.get(0)), toString(values.get(1))
-                , toDouble(values.get(2))
-                , toDouble(values.get(3)), toDouble(values.get(4)), toDouble(values.get(5))
-                , toDouble(values.get(6)), toDouble(values.get(7)), toDouble(values.get(8))
-                , toDouble(values.get(9)), toDouble(values.get(10)), toDouble(values.get(11))
-        );
+        Recipes recipe = new Recipes();
 
-        return food;
+        return recipe;
     }
 
     @Override
@@ -184,11 +174,17 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
 
     @Override
     public boolean dbContainsData(Object object) {
-        Foods food = (Foods) object;
+        Recipes recipe = (Recipes) object;
 
-        String name = food.getFoodName();
-        String category = food.getCategory();
+//        String name = food.getFoodName();
+//        String category = food.getCategory();
 
-        return foodOpenApiRepository.existsByNameAndCategory(name, category);
+        // return repository
+        return false;
+    }
+
+    public void saveAll(List<Recipes> recipeList) {
+        if(recipeList.size() == 0) return;
+        recipeOpenApiRepository.saveAll(recipeList);
     }
 }

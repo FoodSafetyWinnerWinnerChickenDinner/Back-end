@@ -1,17 +1,14 @@
 package com.example.backend.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
+@Builder
 @Table(name = "manual_images", schema = "food_safety")
 public class ManualImages {
 
@@ -79,8 +76,5 @@ public class ManualImages {
 
     @Column(name = "manual_image20")
     private String manualImage20;
-
-    @Column(name="recipe_id")
-    private Long recipeId;
 
 }
