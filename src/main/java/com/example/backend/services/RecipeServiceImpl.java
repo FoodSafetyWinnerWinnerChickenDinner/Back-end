@@ -1,26 +1,22 @@
 package com.example.backend.services;
 
 import com.example.backend.models.Recipes;
-import com.example.backend.repositories.ManualImageRepository;
-import com.example.backend.repositories.ManualRepository;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.RecipeService;
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-    private final ManualRepository manualRepository;
-    private final ManualImageRepository manualImageRepository;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, ManualRepository manualRepository, ManualImageRepository manualImageRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.manualRepository = manualRepository;
-        this.manualImageRepository = manualImageRepository;
     }
 
     @Override

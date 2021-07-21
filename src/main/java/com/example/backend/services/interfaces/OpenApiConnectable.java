@@ -11,7 +11,7 @@ public interface OpenApiConnectable {
     String LIST_FLAG = "row";
     String TOTAL = "total_count";
 
-    int INTERVAL = 200;
+    int INTERVAL = 1_000;
     int INIT = 1_000_000_000;
 
     String requestOpenApiData(int START, int END);
