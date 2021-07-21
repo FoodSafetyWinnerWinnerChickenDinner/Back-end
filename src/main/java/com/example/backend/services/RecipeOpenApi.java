@@ -3,8 +3,10 @@ package com.example.backend.services;
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
+import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeOpenApiRepository;
+import com.example.backend.services.interfaces.CuisineService;
 import com.example.backend.services.interfaces.DataAccessible;
 import com.example.backend.services.interfaces.OpenApiConnectable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,6 +38,8 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
     private final OpenApiConfig recipeApi;
 
+    private final PairMaker pairMaker;
+
     private final RecipeOpenApiRepository recipeOpenApiRepository;
 
     private final RestTemplateConfig restTemplate;
@@ -62,6 +66,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(resultMap.getBody());
+
         }
         catch (UnsupportedEncodingException | JsonProcessingException unsupportedEncodingException) {
             LOGGER.error(">>> RecipeOpenApi >> exception >> ", unsupportedEncodingException);
@@ -77,23 +82,23 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
         int lastIndex = INIT;
 
-        while(true) {
+        while(end <= lastIndex) {
 
-            if(start > lastIndex) break;
-
-            String jsonText = requestOpenApiData(start, end);
+            String jsonText = requestOpenApiData(start, Math.min(end, lastIndex));
             JSONParser parser = new JSONParser();
 
             try {
 
                 JSONObject json = (JSONObject) parser.parse(jsonText);
-                JSONObject jsonFood = (JSONObject) json.get(recipeApi.getNutrientServiceName());
+                JSONObject jsonRecipe = (JSONObject) json.get(recipeApi.getRecipeServiceName());
 
                 if (lastIndex == INIT) {
-                    lastIndex = Integer.parseInt(jsonFood.get(TOTAL).toString());
+                    lastIndex = Integer.parseInt(jsonRecipe.get(TOTAL).toString());
                 }
 
-                JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
+                JSONArray jsonArray = (JSONArray) jsonRecipe.get(LIST_FLAG);
+                if(jsonArray == null) break;
+
                 List<Recipes> apiDataList = new ArrayList<>();
 
                 for (Object obj: jsonArray) {
@@ -116,6 +121,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
             start += INTERVAL;
             end += INTERVAL;
+
         }
     }
 
@@ -124,7 +130,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
         StringBuilder urlBuilder = new StringBuilder(recipeApi.getUrl());
 
         urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getKey(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getNutrientServiceName(), ENCODING_TYPE));
+        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getRecipeServiceName(), ENCODING_TYPE));
         urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(FORMAT_TYPE, ENCODING_TYPE));
         urlBuilder.append(FORWARD_SLASH).append(START);
         urlBuilder.append(FORWARD_SLASH).append(END);
@@ -140,16 +146,27 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
             values.add(valueValidator(object.get(FORMAT)));
         }
 
-        Recipes recipe = new Recipes();
+        List<ManualPairs> pairsList = pairMaker.pairListBuilder(object);
 
-        return recipe;
+        return Recipes.builder()
+                .id(toLong(values.get(0)))
+                .recipeName(toString(values.get(1))).category(toString(values.get(2)))
+                .cookingMaterialExample(toString(values.get(3))).cookingCompletionExample(toString(values.get(4)))
+                .ingredients(toString(values.get(5))).cookingMethod(toString(values.get(6)))
+                .kcal(toDouble(values.get(7)))
+                .carbohydrate(toDouble(values.get(8))).protein(toDouble(values.get(9))).fat(toDouble(values.get(10))).sodium(toDouble(values.get(11)))
+                .manualPairsList(pairsList)
+                .build();
     }
 
     @Override
     public Object valueValidator(Object value) {
-        String str = value.toString();
+        if(value == null){
+            return EMPTY_STRING;
+        }
 
-        if(str.length() == 0 || str == null){
+        String str = value.toString();
+        if(str.length() == 0){
             return EMPTY_STRING;
         }
 
@@ -174,18 +191,21 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
 
     @Override
     public Long toLong(Object value) {
-        return null;
+        String valueString = toString(value);
+
+        if(valueString.matches(IS_NUMERIC)) {
+            return Long.parseLong(valueString);
+        }
+
+        return 0L;
     }
 
     @Override
     public boolean dbContainsData(Object object) {
         Recipes recipe = (Recipes) object;
+        long id = recipe.getId();
 
-//        String name = food.getFoodName();
-//        String category = food.getCategory();
-
-        // return repository
-        return false;
+        return recipeOpenApiRepository.findById(id).isPresent();
     }
 
     public void saveAll(List<Recipes> recipeList) {

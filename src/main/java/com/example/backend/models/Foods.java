@@ -10,9 +10,10 @@ import javax.persistence.*;
 @Builder
 @Table(name = "foods", schema = "food_safety")
 public class Foods {
+
     @Id
     @Column(name = "id")
-    private Long id;                // TODO: remove auto-increment & reset id by NUM
+    private Long id;
 
     @Column(name = "food_name")
     private String foodName;

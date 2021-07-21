@@ -9,7 +9,9 @@ public interface DataAccessible {
             "NUTR_CONT5", "NUTR_CONT6", "NUTR_CONT7", "NUTR_CONT8",
             "NUTR_CONT9"};
 
-    String[] RECIPE_JSON_FORMATS = {"RCP_SEQ"};
+    String[] RECIPE_JSON_FORMATS = {"RCP_SEQ", "RCP_NM", "RCP_PAT2"
+            , "ATT_FILE_NO_MK", "ATT_FILE_NO_MAIN", "RCP_PARTS_DTLS", "RCP_WAY2"
+            , "INFO_ENG", "INFO_CAR", "INFO_PRO", "INFO_FAT", "INFO_NA"};
 
     String IS_NUMERIC = "-?\\d+(\\.\\d+)?";
     String EMPTY_STRING = "";

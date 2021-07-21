@@ -21,9 +21,9 @@ public class RestTemplateConfig {
         httpRequestFactory.setConnectTimeout(restTemplatePropertiesConfig.getTimeOut());
 
         HttpClient httpClient = HttpClientBuilder.create()
-                .setMaxConnTotal(restTemplatePropertiesConfig.getMaxTotal())
-                .setMaxConnPerRoute(restTemplatePropertiesConfig.getMaxPerRoute())
-                .setConnectionTimeToLive(restTemplatePropertiesConfig.getKeepAlive(), TimeUnit.SECONDS)           // keep-alive
+//                .setMaxConnTotal(restTemplatePropertiesConfig.getMaxTotal())
+//                .setMaxConnPerRoute(restTemplatePropertiesConfig.getMaxPerRoute())
+//                .setConnectionTimeToLive(restTemplatePropertiesConfig.getKeepAlive(), TimeUnit.SECONDS)           // keep-alive
                 .build();
 
         httpRequestFactory.setHttpClient(httpClient);

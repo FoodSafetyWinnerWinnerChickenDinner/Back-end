@@ -15,7 +15,7 @@ public class LogAspect {
     /*@Around("execution(* com.example.backend.services..*.*(..))")*/
     /*@Around("execution(* com.example.backend..*.*(..))")*/
 
-    @Around("execution(* com.example.backend.controllers..*.*(..))")
+    @Around("execution(* com.example.backend.controllers.*.*(..))")
     public Object controllerLogger(ProceedingJoinPoint pjp) throws Throwable {
         logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
         Object result = pjp.proceed();
@@ -24,7 +24,7 @@ public class LogAspect {
         return result;
     }
 
-    @Around("execution(* com.example.backend.services..*.*(..))")
+    @Around("execution(* com.example.backend.services.*.*(..))")
     public Object serviceLogger(ProceedingJoinPoint pjp) throws Throwable {
         logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
         Object result = pjp.proceed();
@@ -32,4 +32,5 @@ public class LogAspect {
 
         return result;
     }
+
 }

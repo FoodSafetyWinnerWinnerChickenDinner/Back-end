@@ -76,11 +76,9 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
 
         int lastIndex = INIT;
 
-        while(true) {
+        while(end <= lastIndex) {
 
-            if(start > lastIndex) break;
-
-            String jsonText = requestOpenApiData(start, end);
+            String jsonText = requestOpenApiData(start, Math.min(end, lastIndex));
             JSONParser parser = new JSONParser();
 
             try {
@@ -93,6 +91,8 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
                 }
 
                 JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
+                if(jsonArray == null) break;
+
                 List<Foods> apiDataList = new ArrayList<>();
 
                 for (Object obj: jsonArray) {
@@ -195,9 +195,8 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
     @Override
     public boolean dbContainsData(Object object) {
         Foods food = (Foods) object;
-
         long id = food.getId();
 
-        return foodOpenApiRepository.findById(id) != null;
+        return foodOpenApiRepository.findById(id).isPresent();
     }
 }

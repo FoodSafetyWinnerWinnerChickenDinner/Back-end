@@ -3,6 +3,8 @@ package com.example.backend.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -11,9 +13,10 @@ import javax.persistence.*;
 @Builder
 @Table(name = "recipes", schema = "food_safety")
 public class Recipes {
+
     @Id
     @Column(name = "id")
-    private Long id;                // TODO: remove auto-increment & reset id by RCP_SEQ
+    private Long id;
 
     @Column(name = "recipe_name")
     private String recipeName;
@@ -48,12 +51,8 @@ public class Recipes {
     @Column(name = "sodium")
     private double sodium;
 
-    @OneToOne
-    @JoinColumn(name = "manuals_id")
-    private Manuals manuals;
-
-    @OneToOne
-    @JoinColumn(name = "manual_images_id")
-    private ManualImages manualImages;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe_id")
+    private List<ManualPairs> manualPairsList = new ArrayList<>();
 
 }
