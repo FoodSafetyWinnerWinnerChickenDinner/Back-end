@@ -15,5 +15,4 @@ public interface CuisineService {
 
     String tagBuilder(String HEAD, int tenth, int unit);
 
-    String getJsonValue(JSONObject json, String tag);
 }
