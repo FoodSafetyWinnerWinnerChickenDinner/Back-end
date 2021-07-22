@@ -6,9 +6,10 @@ import com.example.backend.models.Foods;
 import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeOpenApiRepository;
-import com.example.backend.services.interfaces.CuisineService;
-import com.example.backend.services.interfaces.DataAccessible;
+import com.example.backend.services.interfaces.DataBaseAccessible;
+import com.example.backend.services.interfaces.JsonDataPreservable;
 import com.example.backend.services.interfaces.OpenApiConnectable;
+import com.example.backend.services.interfaces.TypeConvertable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
+public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable, TypeConvertable, DataBaseAccessible {
 
     private final OpenApiConfig recipeApi;
 
@@ -105,7 +103,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
                     JSONObject recipe = (JSONObject) obj;
 
                     Recipes apiData = (Recipes) jsonToModel(recipe);
-                    if(dbContainsData(apiData)) {
+                    if(isContainsField(apiData)) {
                         continue;
                     }
 
@@ -201,15 +199,21 @@ public class RecipeOpenApi implements OpenApiConnectable, DataAccessible {
     }
 
     @Override
-    public boolean dbContainsData(Object object) {
+    public boolean isContainsField(Object object) {
         Recipes recipe = (Recipes) object;
         long id = recipe.getId();
 
         return recipeOpenApiRepository.findById(id).isPresent();
     }
 
-    public void saveAll(List<Recipes> recipeList) {
+    @Override
+    public void saveAll(List<?> recipeList) {
         if(recipeList.size() == 0) return;
-        recipeOpenApiRepository.saveAll(recipeList);
+
+        recipeOpenApiRepository.saveAll(Arrays.asList(
+                recipeList.stream()
+                        .toArray(Recipes[]::new)
+                        .clone()
+        ));
     }
 }

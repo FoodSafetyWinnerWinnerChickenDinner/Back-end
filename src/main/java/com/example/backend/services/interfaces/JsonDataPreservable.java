@@ -2,7 +2,7 @@ package com.example.backend.services.interfaces;
 
 import org.json.simple.JSONObject;
 
-public interface DataAccessible {
+public interface JsonDataPreservable {
 
     String[] FOOD_JSON_FORMATS = {"NUM", "DESC_KOR", "GROUP_NAME", "SERVING_SIZE",
             "NUTR_CONT1", "NUTR_CONT2", "NUTR_CONT3", "NUTR_CONT4",
@@ -13,18 +13,6 @@ public interface DataAccessible {
             , "ATT_FILE_NO_MK", "ATT_FILE_NO_MAIN", "RCP_PARTS_DTLS", "RCP_WAY2"
             , "INFO_ENG", "INFO_CAR", "INFO_PRO", "INFO_FAT", "INFO_NA"};
 
-    String IS_NUMERIC = "-?\\d+(\\.\\d+)?";
-    String EMPTY_STRING = "";
-
     Object jsonToModel(JSONObject object);
 
-    Object valueValidator(Object value);
-
-    String toString(Object value);
-
-    Double toDouble(Object value);
-
-    Long toLong(Object value);
-
-    boolean dbContainsData(Object object);
 }

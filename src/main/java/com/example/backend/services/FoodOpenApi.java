@@ -4,8 +4,10 @@ import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodOpenApiRepository;
-import com.example.backend.services.interfaces.DataAccessible;
+import com.example.backend.services.interfaces.DataBaseAccessible;
+import com.example.backend.services.interfaces.JsonDataPreservable;
 import com.example.backend.services.interfaces.OpenApiConnectable;
+import com.example.backend.services.interfaces.TypeConvertable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +26,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
+public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable, TypeConvertable, DataBaseAccessible {
 
     private final OpenApiConfig foodApi;
 
@@ -99,7 +100,7 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
                     JSONObject food = (JSONObject) obj;
 
                     Foods apiData = (Foods) jsonToModel(food);
-                    if(dbContainsData(apiData)) {
+                    if(isContainsField(apiData)) {
                         continue;
                     }
 
@@ -131,9 +132,15 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
         return urlBuilder.toString();
     }
 
-    public void saveAll(List<Foods> foodList) {
+    @Override
+    public void saveAll(List<?> foodList) {
         if(foodList.size() == 0) return;
-        foodOpenApiRepository.saveAll(foodList);
+
+        foodOpenApiRepository.saveAll(Arrays.asList(
+                foodList.stream()
+                        .toArray(Foods[]::new)
+                        .clone()
+        ));
     }
 
     @Override
@@ -193,7 +200,7 @@ public class FoodOpenApi implements OpenApiConnectable, DataAccessible {
     }
 
     @Override
-    public boolean dbContainsData(Object object) {
+    public boolean isContainsField(Object object) {
         Foods food = (Foods) object;
         long id = food.getId();
 
