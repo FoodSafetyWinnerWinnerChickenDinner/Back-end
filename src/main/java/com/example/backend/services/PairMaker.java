@@ -1,7 +1,9 @@
 package com.example.backend.services;
 
 import com.example.backend.models.ManualPairs;
+import com.example.backend.repositories.ManualPairRepository;
 import com.example.backend.services.interfaces.CuisineService;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PairMaker implements CuisineService {
+
+    private final ManualPairRepository manualPairRepository;
 
     @Override
     public List<ManualPairs> pairListBuilder(JSONObject object) {

@@ -3,7 +3,7 @@ package com.example.backend.services;
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
-import com.example.backend.repositories.FoodOpenApiRepository;
+import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.DataBaseAccessible;
 import com.example.backend.services.interfaces.JsonDataPreservable;
 import com.example.backend.services.interfaces.OpenApiConnectable;
@@ -27,8 +27,6 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +35,7 @@ public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable
 
     private final OpenApiConfig foodApi;
 
-    private final FoodOpenApiRepository foodOpenApiRepository;
+    private final FoodRepository foodRepository;
 
     private final RestTemplateConfig restTemplate;
 
@@ -137,7 +135,7 @@ public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable
     public void saveAll(List<?> foodList) {
         if(foodList.size() == 0) return;
 
-        foodOpenApiRepository.saveAll(Arrays.asList(
+        foodRepository.saveAll(Arrays.asList(
                 foodList.stream()
                         .toArray(Foods[]::new)
                         .clone()
@@ -205,6 +203,6 @@ public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable
         Foods food = (Foods) object;
         long id = food.getId();
 
-        return foodOpenApiRepository.findById(id).isPresent();
+        return foodRepository.existsById(id);
     }
 }

@@ -2,9 +2,7 @@ package com.example.backend.services.interfaces;
 
 import java.util.List;
 
-public interface DataBaseAccessible {
-
-    boolean isContainsField(Object object);
+public interface DataBaseAccessible extends Selectable{
 
     void saveAll(List<?> list);
 

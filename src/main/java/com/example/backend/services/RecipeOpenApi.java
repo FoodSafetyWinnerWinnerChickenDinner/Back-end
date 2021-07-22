@@ -2,10 +2,9 @@ package com.example.backend.services;
 
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
-import com.example.backend.models.Foods;
 import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
-import com.example.backend.repositories.RecipeOpenApiRepository;
+import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.DataBaseAccessible;
 import com.example.backend.services.interfaces.JsonDataPreservable;
 import com.example.backend.services.interfaces.OpenApiConnectable;
@@ -39,7 +38,7 @@ public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable
 
     private final PairMaker pairMaker;
 
-    private final RecipeOpenApiRepository recipeOpenApiRepository;
+    private final RecipeRepository recipeRepository;
 
     private final RestTemplateConfig restTemplate;
 
@@ -204,14 +203,14 @@ public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable
         Recipes recipe = (Recipes) object;
         long id = recipe.getId();
 
-        return recipeOpenApiRepository.findById(id).isPresent();
+        return recipeRepository.existsById(id);
     }
 
     @Override
     public void saveAll(List<?> recipeList) {
         if(recipeList.size() == 0) return;
 
-        recipeOpenApiRepository.saveAll(Arrays.asList(
+        recipeRepository.saveAll(Arrays.asList(
                 recipeList.stream()
                         .toArray(Recipes[]::new)
                         .clone()
