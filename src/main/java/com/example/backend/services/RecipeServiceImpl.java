@@ -2,8 +2,8 @@ package com.example.backend.services;
 
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
-import com.example.backend.services.interfaces.Recommendable;
-import com.example.backend.services.interfaces.Selectable;
+import com.example.backend.services.interfaces.recommend.Recommendable;
+import com.example.backend.services.interfaces.db_access.Readable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeServiceImpl implements Recommendable, Selectable {
+public class RecipeServiceImpl implements Recommendable, Readable {
 
     private final RecipeRepository recipeRepository;
 
     @Override
-    public List<Recipes> menuRecommender(double[] ingested, List<?> listAll) {
-        List<Recipes> dbFields = (List<Recipes>) listAll;
+    public List<Recipes> menuRecommender(double[] ingested) {
+        List<Recipes> dbFields = getListAll();
 
         /**
          *

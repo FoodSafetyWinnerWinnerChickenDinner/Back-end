@@ -3,8 +3,9 @@ package com.example.backend.services;
 import com.example.backend.models.Foods;
 import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.repositories.FoodRepository;
-import com.example.backend.services.interfaces.Recommendable;
-import com.example.backend.services.interfaces.Selectable;
+import com.example.backend.services.interfaces.categorize.Categorizable;
+import com.example.backend.services.interfaces.recommend.Recommendable;
+import com.example.backend.services.interfaces.db_access.Readable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,13 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class FoodServiceImpl implements Recommendable, Selectable {
+public class FoodServiceImpl implements Recommendable, Readable, Categorizable {
 
     private final FoodRepository foodRepository;
 
     @Override
-    public List<Foods> menuRecommender(double[] ingested, List<?> listAll) {
-        List<Foods> dbFields = (List<Foods>) listAll;
+    public List<Foods> menuRecommender(double[] ingested) {
+        List<Foods> dbFields = getListAll();
 
         /**
          *
@@ -41,7 +42,8 @@ public class FoodServiceImpl implements Recommendable, Selectable {
         return recommend;
     }
 
-    public Map<String, Nutrients> categoryConfigurationSettings(){
+    @Override
+    public Map<String, Nutrients> configurationSettingsCategorize(){
         Map<String, Nutrients> categories = new HashMap<>();
 
         for(Nutrients nutrient:
@@ -55,33 +57,39 @@ public class FoodServiceImpl implements Recommendable, Selectable {
         return categories;
     }
 
-//    @Override
-//    public double[] ingestedTotalNutrientsGetter(List<String> eats, HashMap<String, Nutrients> categories) {
-//        double[] ingestedTotal = new double[10];
-//
-//        for(String eat: eats) {
-//            StringTokenizer separator = new StringTokenizer(eat);
-//            String category = separator.nextToken();
-//            int amount = Integer.parseInt(separator.nextToken());
-//
-//            if(!categories.containsKey(category)) return null;
-//
-//            Nutrients nutrients = categories.get(category);
-//
-//            ingestedTotal[0] += nutrients.getTotal() * amount;
-//            ingestedTotal[1] += nutrients.getKcal() * amount;
-//            ingestedTotal[2] += nutrients.getCarbohydrate() * amount;
-//            ingestedTotal[3] += nutrients.getProtein() * amount;
-//            ingestedTotal[4] += nutrients.getFat() * amount;
-//            ingestedTotal[5] += nutrients.getSugar() * amount;
-//            ingestedTotal[6] += nutrients.getSodium() * amount;
-//            ingestedTotal[7] += nutrients.getCholesterol() * amount;
-//            ingestedTotal[8] += nutrients.getSaturatedFattyAcid() * amount;
-//            ingestedTotal[9] += nutrients.getTransFat() * amount;
-//        }
-//
-//        return ingestedTotal;
-//    }
+    @Override
+    public List<Object> ingestedNutrientsCategorize(Nutrients nutrient) {
+        return Stream.builder()
+                .add(nutrient.getTotal()).add(nutrient.getKcal())
+                .add(nutrient.getCarbohydrate()).add(nutrient.getProtein()).add(nutrient.getFat())
+                .add(nutrient.getSugar()).add(nutrient.getSodium()).add(nutrient.getCholesterol())
+                .add(nutrient.getSaturatedFattyAcid()).add(nutrient.getTransFat())
+                .build()
+                .collect(Collectors.toList());
+    }
+
+    public double[] ingestedNutrientsTotal(List<String> ate) {
+        Map<String, Nutrients> categories = configurationSettingsCategorize();
+        double[] ingestedTotal = new double[10];
+
+        for(String eat: ate) {
+            StringTokenizer separator = new StringTokenizer(eat);
+
+            String category = separator.nextToken();
+            int amount = Integer.parseInt(separator.nextToken());
+            if(!categories.containsKey(category)) return null;
+
+            List<Object> nutrienntList = ingestedNutrientsCategorize(categories.get(category));
+
+            int index = 0;
+            for(Object ing: nutrienntList) {
+                ingestedTotal[index++] += Double.parseDouble(ing.toString()) * amount;
+            }
+
+        }
+
+        return ingestedTotal;
+    }
 
     @Override
     public boolean isContainsField(Object object) {
@@ -98,5 +106,4 @@ public class FoodServiceImpl implements Recommendable, Selectable {
 
         return foodDB;
     }
-
 }

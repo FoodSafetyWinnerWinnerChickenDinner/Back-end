@@ -28,11 +28,9 @@ public class RecipeController {
     public ResponseEntity<List<Recipes>> menuRecommender(@RequestBody Map<String, Double> ate) {
         List<Recipes> recommend = null;
 
-        List<Recipes> recipeList = recipeServiceImpl.getListAll();
-
         try {
             double[] ingested = {ate.get("Carbohydrate"), ate.get("Protein"), ate.get("Fat")};
-            recommend = recipeServiceImpl.menuRecommender(ingested, recipeList);
+            recommend = recipeServiceImpl.menuRecommender(ingested);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);

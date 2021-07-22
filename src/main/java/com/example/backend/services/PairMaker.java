@@ -2,7 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.models.ManualPairs;
 import com.example.backend.repositories.ManualPairRepository;
-import com.example.backend.services.interfaces.CuisineService;
+import com.example.backend.services.interfaces.string_manipulation.CuisinePairBuilder;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PairMaker implements CuisineService {
+public class PairMaker implements CuisinePairBuilder {
 
     private final ManualPairRepository manualPairRepository;
 
