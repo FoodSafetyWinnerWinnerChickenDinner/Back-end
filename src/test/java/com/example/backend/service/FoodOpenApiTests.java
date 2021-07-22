@@ -2,7 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
-import com.example.backend.repositories.FoodOpenApiRepository;
+import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.FoodOpenApi;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class FoodOpenApiTests {
 
-    @Mock private FoodOpenApiRepository foodOpenApiRepository;
+    @Mock private FoodRepository foodRepository;
     @Mock private OpenApiConfig foodApiConfig;
     @Mock private RestTemplateConfig restTemplate;
 
@@ -27,7 +27,7 @@ public class FoodOpenApiTests {
     void setup(){
         MockitoAnnotations.initMocks(this);
         foodOpenApi = new FoodOpenApi(
-                foodApiConfig, foodOpenApiRepository, restTemplate
+                foodApiConfig, foodRepository, restTemplate
         );
     }
 

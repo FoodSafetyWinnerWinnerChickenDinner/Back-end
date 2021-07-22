@@ -2,7 +2,7 @@ package com.example.backend.repository;
 
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
-import com.example.backend.repositories.RecipeOpenApiRepository;
+import com.example.backend.repositories.RecipeRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 public class RecipeOpenApiRepositoryTests {
 
-    @Mock private RecipeOpenApiRepository recipeOpenApiRepository;
+    @Mock private RecipeRepository recipeRepository;
     @Mock private OpenApiConfig recipeApi;
     @Mock private RestTemplateConfig restTemplate;
 
@@ -31,7 +31,7 @@ public class RecipeOpenApiRepositoryTests {
 
 
         // when
-        recipeOpenApiRepository.save(null);
+        recipeRepository.save(null);
 
         // then
 //        assertThat(recipeOpenApiRepository.findById(1L).get()

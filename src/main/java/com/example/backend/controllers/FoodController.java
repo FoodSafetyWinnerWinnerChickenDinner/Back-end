@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("foods")
@@ -30,12 +31,12 @@ public class FoodController {
     public ResponseEntity<List<Foods>> menuRecommender(@RequestBody ArrayList<String> ate) {
         List<Foods> recommends = null;
 
-        List<Foods> foodList = foodServiceImpl.foodListExtractFromDB();
-        HashMap<String, Nutrients> categories = foodServiceImpl.categorySetter();
+        List<Foods> foodList = foodServiceImpl.getListAll();
+        Map<String, Nutrients> categories = foodServiceImpl.categoryConfigurationSettings();
 
         try {
-            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate, categories);
-            recommends = foodServiceImpl.menuRecommendation(ingested, foodList);
+//            double[] ingested = foodServiceImpl.ingestedTotalNutrientsGetter(ate, categories);
+//            recommends = foodServiceImpl.menuRecommendation(ingested, foodList);
         }
         catch (NullPointerException nullPointerException) {
             LOGGER.error(">>> FoodController >> exception >> ", nullPointerException);
