@@ -1,15 +1,15 @@
 package com.example.backend.configurations;
 
 import com.example.backend.models.data_enums.Nutrients;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "nut")
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NutrientsConfig {
 
     private Nutrients chicken;
