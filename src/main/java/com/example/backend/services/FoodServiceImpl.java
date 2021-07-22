@@ -6,7 +6,7 @@ import com.example.backend.models.data_enums.Nutrients;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.Recommendable;
 import com.example.backend.services.interfaces.Selectable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,17 +14,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@RequiredArgsConstructor
 public class FoodServiceImpl implements Recommendable, Selectable {
 
     private final FoodRepository foodRepository;
-
-    private final NutrientsConfig nutrientsConfig;
-
-    @Autowired
-    public FoodServiceImpl(FoodRepository foodRepository, NutrientsConfig nutrientsConfig) {
-        this.foodRepository = foodRepository;
-        this.nutrientsConfig = nutrientsConfig;
-    }
 
     @Override
     public List<Foods> menuRecommender(double[] ingested, List<?> listAll) {
