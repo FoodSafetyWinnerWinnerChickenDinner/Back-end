@@ -32,7 +32,8 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable, TypeConvertable, DataBaseAccessible {
+public class FoodOpenApi implements OpenApiConnectable, JsonDataPreservable
+        , TypeConvertable, DataBaseAccessible {
 
     private final OpenApiConfig foodApi;
 

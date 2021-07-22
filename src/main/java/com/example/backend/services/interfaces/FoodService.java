@@ -17,8 +17,6 @@ public interface FoodService {
 
     List<Foods> menuRecommendation(double[] ingested, List<Foods> foodDB);
 
-    boolean edible(double[] remained, Foods food);
-
     void save(Foods food);
 
     void delete(Foods food);
