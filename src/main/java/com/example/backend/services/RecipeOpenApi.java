@@ -32,7 +32,8 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable, TypeConvertable, DataBaseAccessible {
+public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable
+        , TypeConvertable, DataBaseAccessible {
 
     private final OpenApiConfig recipeApi;
 
