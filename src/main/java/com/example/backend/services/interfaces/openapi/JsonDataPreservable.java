@@ -1,4 +1,4 @@
-package com.example.backend.services.interfaces;
+package com.example.backend.services.interfaces.openapi;
 
 import org.json.simple.JSONObject;
 

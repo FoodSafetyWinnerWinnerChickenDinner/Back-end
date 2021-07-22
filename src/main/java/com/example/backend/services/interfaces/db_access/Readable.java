@@ -1,9 +1,9 @@
-package com.example.backend.services.interfaces;
+package com.example.backend.services.interfaces.db_access;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface Selectable {
+public interface Readable {
 
     boolean isContainsField(Object object);
 
