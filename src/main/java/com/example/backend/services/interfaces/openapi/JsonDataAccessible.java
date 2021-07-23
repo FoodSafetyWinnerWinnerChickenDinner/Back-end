@@ -2,7 +2,9 @@ package com.example.backend.services.interfaces.openapi;
 
 import org.json.simple.JSONObject;
 
-public interface JsonDataPreservable {
+import java.io.UnsupportedEncodingException;
+
+public interface JsonDataAccessible {
 
     String[] FOOD_JSON_FORMATS = {"NUM", "DESC_KOR", "GROUP_NAME", "SERVING_SIZE",
             "NUTR_CONT1", "NUTR_CONT2", "NUTR_CONT3", "NUTR_CONT4",
@@ -15,4 +17,5 @@ public interface JsonDataPreservable {
 
     Object jsonToModel(JSONObject object);
 
+    String openApiUrlBuilder(int START, int END) throws UnsupportedEncodingException;
 }
