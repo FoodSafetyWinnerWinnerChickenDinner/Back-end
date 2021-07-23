@@ -1,20 +1,15 @@
-package com.example.backend.services;
+package com.example.backend.utils;
 
 import com.example.backend.models.ManualPairs;
-import com.example.backend.repositories.ManualPairRepository;
-import com.example.backend.services.interfaces.string_manipulation.CuisinePairBuilder;
-import lombok.RequiredArgsConstructor;
+import com.example.backend.utils.interfaces.string.CuisinePairBuilder;
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
+@Component
 public class PairMaker implements CuisinePairBuilder {
-
-    private final ManualPairRepository manualPairRepository;
 
     @Override
     public List<ManualPairs> pairListBuilder(JSONObject object) {

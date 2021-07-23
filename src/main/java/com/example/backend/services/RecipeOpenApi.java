@@ -6,9 +6,9 @@ import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
-import com.example.backend.services.interfaces.openapi.JsonDataPreservable;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
 import com.example.backend.services.interfaces.converter.TypeConvertable;
+import com.example.backend.utils.PairMaker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable
-        , TypeConvertable, DataBaseAccessible {
+public class RecipeOpenApi implements OpenApiConnectable, TypeConvertable
+        , DataBaseAccessible {
 
     private final OpenApiConfig recipeApi;
 
@@ -58,9 +58,9 @@ public class RecipeOpenApi implements OpenApiConnectable, JsonDataPreservable
             ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
                     .exchange(foodOpenApiUrl, HttpMethod.GET, entity, Map.class);
 
-            jsonData.put("statusCode", resultMap.getStatusCodeValue());   // http status
-            jsonData.put("header", resultMap.getHeaders());               // header
-            jsonData.put("body", resultMap.getBody());                    // body
+            jsonData.put(STATUS_CODE, resultMap.getStatusCodeValue());   // http status
+            jsonData.put(HEADER, resultMap.getHeaders());               // header
+            jsonData.put(BODY, resultMap.getBody());                    // body
 
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(resultMap.getBody());

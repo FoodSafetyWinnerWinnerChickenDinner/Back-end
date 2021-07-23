@@ -2,36 +2,34 @@ package com.example.backend.services;
 
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
-import com.example.backend.services.interfaces.recommend.Recommendable;
 import com.example.backend.services.interfaces.db_access.Readable;
+import com.example.backend.services.interfaces.recommend.Recommendable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeServiceImpl implements Recommendable, Readable {
+public class RecipeService implements Recommendable, Readable {
 
     private final RecipeRepository recipeRepository;
 
     @Override
     public List<Recipes> menuRecommender(double[] ingested) {
+        Map<Recipes, Double> similar = new HashMap<>();
         List<Recipes> dbFields = getListAll();
+
 
         /**
          *
-         * ingested: 섭취한 영양 성분 분류별 총량
-         * foodDB: local db data
+         * ingestedAge: 사용자의 특정 기간 섭취 영양 성분 평균
+         * dbFields: local db data
          *
-         * TF-IDF
-         * try: 범주화, 전체 영양 성분 정규 분포 배치
-         * - 타당한 근거: 6시그마 분할? -> 영양 성분 별 collecting -> tf-idf
-         * - 유용한 범주: 연속형 변수 범주화
-         *
-         * -> 주요 영양소를 뽑아낸다.
+         * dbFields :: ingestedAge 유사도 계산
+         * vertex 선정: 전체 유사도 (양수) 중 특정 범위 내 위치하는 요소 추출 (range 양수 유사도의 평균: 0.5 ~ 1)
+         * edge 셋팅: vertex 표준 편차 get, 임의의 두 요소의 차이가 표준 편차보다 작다면 linked
+         * Text Rank 알고리즘을 통한 메인 요소 추출, 반환
          *
          */
 

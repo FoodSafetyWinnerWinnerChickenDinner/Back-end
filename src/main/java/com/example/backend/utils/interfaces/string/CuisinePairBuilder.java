@@ -1,4 +1,4 @@
-package com.example.backend.services.interfaces.string_manipulation;
+package com.example.backend.utils.interfaces.string;
 
 import com.example.backend.models.ManualPairs;
 import org.json.simple.JSONObject;
