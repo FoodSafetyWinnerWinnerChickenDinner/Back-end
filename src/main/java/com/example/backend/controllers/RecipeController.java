@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Recipes;
+import com.example.backend.services.NutrientService;
 import com.example.backend.services.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,20 +24,22 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
+    private final NutrientService nutrientService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @PostMapping("/recommend")
-    public ResponseEntity<List<Recipes>> menuRecommender(@RequestBody Map<String, Double> ate) {
+    public ResponseEntity<List<Recipes>> menuRecommender(@RequestBody Map<String, Integer> ate) {
         List<Recipes> recommend = null;
 
         try {
 
-            double[] ingested = {ate.get("Carbohydrate"), ate.get("Protein"), ate.get("Fat")};
+            double[] ingested = nutrientService.ingestedNutrientsAvg(ate);
             recommend = recipeService.menuRecommender(ingested);
 
         }
         catch (NullPointerException nullPointerException) {
-            LOGGER.error(">>> FoodController >> exception >> ", nullPointerException, " >> wrong food list !!");
+            LOGGER.error(">>> FoodController >> exception >> ", nullPointerException, " >> wrong recipe list !!");
             nullPointerException.printStackTrace();
         }
 

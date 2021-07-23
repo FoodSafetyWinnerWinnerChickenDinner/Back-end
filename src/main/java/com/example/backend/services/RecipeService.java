@@ -1,13 +1,18 @@
 package com.example.backend.services;
 
+import com.example.backend.configurations.ComparableConfig;
+import com.example.backend.models.Foods;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.Readable;
 import com.example.backend.services.interfaces.recommend.Recommendable;
+import com.example.backend.utils.CosineSimilarity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -15,27 +20,37 @@ public class RecipeService implements Recommendable, Readable {
 
     private final RecipeRepository recipeRepository;
 
+    private final CosineSimilarity cosineSimilarity;
+
     @Override
     public List<Recipes> menuRecommender(double[] ingested) {
-        Map<Recipes, Double> similar = new HashMap<>();
-        List<Recipes> dbFields = getListAll();
+        List<Recipes> fields = getListAll();
+        PriorityQueue<ComparableConfig> similar = new PriorityQueue<>();
 
+        for (Recipes field: fields) {
 
-        /**
-         *
-         * ingestedAge: 사용자의 특정 기간 섭취 영양 성분 평균
-         * dbFields: local db data
-         *
-         * dbFields :: ingestedAge 유사도 계산
-         * vertex 선정: 전체 유사도 (양수) 중 특정 범위 내 위치하는 요소 추출 (range 양수 유사도의 평균: 0.5 ~ 1)
-         * edge 셋팅: vertex 표준 편차 get, 임의의 두 요소의 차이가 표준 편차보다 작다면 linked
-         * Text Rank 알고리즘을 통한 메인 요소 추출, 반환
-         *
-         */
+            double[] contains = new double[10];
+            List<Object> nutrientList = categorize(field);
 
-        List<Recipes> recommend = new ArrayList<>();
+            int index = 0;
+            for(Object ing: nutrientList) {
+                contains[index++] += Double.parseDouble(ing.toString());
+            }
 
-        return recommend;
+            double scalar = cosineSimilarity.scalarProduct(ingested, contains);
+            double vector = cosineSimilarity.vectorProduct(ingested, contains);
+
+            similar.offer(new ComparableConfig(field, cosineSimilarity.division(vector, scalar)));
+
+        }
+
+        int min = Math.min(10, similar.size());
+        return Arrays
+                .stream(similar.toArray())
+                .map(i -> similar.poll().getRecipes())
+                .limit(min)
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -52,5 +67,14 @@ public class RecipeService implements Recommendable, Readable {
         recipeDB.addAll((Collection<? extends Recipes>) recipeRepository.findAll());
 
         return recipeDB;
+    }
+
+    private List<Object> categorize(Recipes recipe) {
+        return Stream.builder()
+                .add(recipe.getKcal())
+                .add(recipe.getCarbohydrate()).add(recipe.getProtein()).add(recipe.getFat())
+                .add(recipe.getSodium())
+                .build()
+                .collect(Collectors.toList());
     }
 }
