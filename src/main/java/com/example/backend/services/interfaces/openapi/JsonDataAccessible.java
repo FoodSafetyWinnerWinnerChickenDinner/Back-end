@@ -2,8 +2,6 @@ package com.example.backend.services.interfaces.openapi;
 
 import org.json.simple.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-
 public interface JsonDataAccessible {
 
     String[] FOOD_JSON_FORMATS = {"NUM", "DESC_KOR", "GROUP_NAME", "SERVING_SIZE",
@@ -17,5 +15,4 @@ public interface JsonDataAccessible {
 
     Object jsonToModel(JSONObject object);
 
-    String openApiUrlBuilder(int START, int END) throws UnsupportedEncodingException;
 }

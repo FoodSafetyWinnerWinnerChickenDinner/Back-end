@@ -6,14 +6,14 @@ import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
-import com.example.backend.services.interfaces.converter.TypeConvertable;
+import com.example.backend.utils.Cast;
+import com.example.backend.utils.OpenApiJsonDataParse;
+import com.example.backend.utils.OpenApiUrlBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -24,24 +24,25 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class FoodOpenApi implements OpenApiConnectable, TypeConvertable
-        , DataBaseAccessible {
-
-    private final OpenApiConfig foodApi;
+public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
     private final FoodRepository foodRepository;
 
     private final RestTemplateConfig restTemplate;
+    private final OpenApiConfig foodApi;
+
+    private final Cast cast;
+    private final OpenApiUrlBuilder urlBuilder;
+    private final OpenApiJsonDataParse openApiJsonDataParse;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public String requestOpenApiData(final int START, final int END) {
+    public String requestOpenApiData(int start, int end) {
         String jsonInString = null;
         Map<String, Object> jsonData = new HashMap<>();
 
@@ -49,10 +50,13 @@ public class FoodOpenApi implements OpenApiConnectable, TypeConvertable
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
 
-            String foodOpenApiUrl = openApiUrlBuilder(START, END);
+            String openApiUrl = urlBuilder.openApiUrlBuilder(
+                    foodApi.getUrl(),
+                    foodApi.getKey(),
+                    foodApi.getNutrientServiceName() ,start ,end);
 
             ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
-                    .exchange(foodOpenApiUrl, HttpMethod.GET, entity, Map.class);
+                    .exchange(openApiUrl, HttpMethod.GET, entity, Map.class);
 
             jsonData.put(STATUS_CODE, resultMap.getStatusCodeValue());   // http status
             jsonData.put(HEADER, resultMap.getHeaders());               // header
@@ -77,57 +81,36 @@ public class FoodOpenApi implements OpenApiConnectable, TypeConvertable
 
         while(end <= lastIndex) {
 
-            String jsonText = requestOpenApiData(start, Math.min(end, lastIndex));
-            JSONParser parser = new JSONParser();
+            String jsonText = requestOpenApiData(start, end);
+            Map<JSONArray, Integer> jsonMap
+                    = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), jsonText, lastIndex);
 
-            try {
+            JSONArray jsonArray = null;
 
-                JSONObject json = (JSONObject) parser.parse(jsonText);
-                JSONObject jsonFood = (JSONObject) json.get(foodApi.getNutrientServiceName());
-
-                if (start == INIT) {
-                    lastIndex = Integer.parseInt(jsonFood.get(TOTAL).toString());
-                }
-
-                JSONArray jsonArray = (JSONArray) jsonFood.get(LIST_FLAG);
-                if(jsonArray == null) break;
-
-                List<Foods> apiDataList = new ArrayList<>();
-
-                for (Object obj: jsonArray) {
-                    JSONObject food = (JSONObject) obj;
-
-                    Foods apiData = (Foods) jsonToModel(food);
-                    if(isContainsField(apiData)) {
-                        continue;
-                    }
-
-                    apiDataList.add(apiData);
-                }
-
-                saveAll(apiDataList);
-
-            } catch (ParseException parseException) {
-                LOGGER.error(">>> FoodOpenApi >> exception >> ", parseException);
-                parseException.printStackTrace();
+            for(Map.Entry<JSONArray, Integer> entry: jsonMap.entrySet()) {
+                jsonArray = entry.getKey();
+                lastIndex = entry.getValue();
             }
+
+            if(jsonArray == null) break;
+            List<Foods> apiDataList = new ArrayList<>();
+
+            for (Object obj: jsonArray) {
+                JSONObject food = (JSONObject) obj;
+
+                Foods apiData = (Foods) jsonToModel(food);
+                if(isContainsField(apiData)) {
+                    continue;
+                }
+
+                apiDataList.add(apiData);
+            }
+
+            saveAll(apiDataList);
 
             start += INTERVAL;
             end += INTERVAL;
         }
-    }
-
-    @Override
-    public String openApiUrlBuilder(final int START, final int END) throws UnsupportedEncodingException {
-        StringBuilder urlBuilder = new StringBuilder(foodApi.getUrl());
-
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getKey(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(foodApi.getNutrientServiceName(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(FORMAT_TYPE, ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(START);
-        urlBuilder.append(FORWARD_SLASH).append(END);
-
-        return urlBuilder.toString();
     }
 
     @Override
@@ -146,55 +129,17 @@ public class FoodOpenApi implements OpenApiConnectable, TypeConvertable
         List<Object> values = new ArrayList<>();
 
         for(final String FORMAT: FOOD_JSON_FORMATS){
-            values.add(valueValidator(object.get(FORMAT)));
+            values.add(cast.valueValidator(object.get(FORMAT)));
         }
 
         return Foods.builder()
-                .id(toLong(values.get(0)))
-                .foodName(toString(values.get(1))).category(toString(values.get(2)))
-                .total(toDouble(values.get(3))).kcal(toDouble(values.get(4)))
-                .carbohydrate(toDouble(values.get(5))).protein(toDouble(values.get(6))).fat(toDouble(values.get(7)))
-                .sugar(toDouble(values.get(8))).sodium(toDouble(values.get(9))).cholesterol(toDouble(values.get(10)))
-                .saturatedFattyAcid(toDouble(values.get(11))).transFat(toDouble(values.get(12)))
+                .id(cast.toLong(values.get(0)))
+                .foodName(cast.toString(values.get(1))).category(cast.toString(values.get(2)))
+                .total(cast.toDouble(values.get(3))).kcal(cast.toDouble(values.get(4)))
+                .carbohydrate(cast.toDouble(values.get(5))).protein(cast.toDouble(values.get(6))).fat(cast.toDouble(values.get(7)))
+                .sugar(cast.toDouble(values.get(8))).sodium(cast.toDouble(values.get(9))).cholesterol(cast.toDouble(values.get(10)))
+                .saturatedFattyAcid(cast.toDouble(values.get(11))).transFat(cast.toDouble(values.get(12)))
                 .build();
-    }
-
-    @Override
-    public Object valueValidator(Object value) {
-        String str = value.toString();
-
-        if(str.length() == 0 || str == null){
-            return EMPTY_STRING;
-        }
-
-        return value;
-    }
-
-    @Override
-    public String toString(Object value) {
-        return value.toString();
-    }
-
-    @Override
-    public Double toDouble(Object value) {
-        String valueString = toString(value);
-
-        if(valueString.matches(IS_NUMERIC)) {
-            return Double.parseDouble(valueString);
-        }
-
-        return 0.0;
-    }
-
-    @Override
-    public Long toLong(Object value) {
-        String valueString = toString(value);
-
-        if(valueString.matches(IS_NUMERIC)) {
-            return Long.parseLong(valueString);
-        }
-
-        return 0L;
     }
 
     @Override
