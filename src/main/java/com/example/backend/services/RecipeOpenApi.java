@@ -7,15 +7,15 @@ import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
-import com.example.backend.services.interfaces.converter.TypeConvertable;
+import com.example.backend.utils.Cast;
+import com.example.backend.utils.OpenApiJsonDataParse;
+import com.example.backend.utils.OpenApiUrlBuilder;
 import com.example.backend.utils.PairMaker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -26,26 +26,26 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeOpenApi implements OpenApiConnectable, TypeConvertable
-        , DataBaseAccessible {
-
-    private final OpenApiConfig recipeApi;
-
-    private final PairMaker pairMaker;
+public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
     private final RecipeRepository recipeRepository;
 
+    private final OpenApiConfig recipeApi;
     private final RestTemplateConfig restTemplate;
+
+    private final PairMaker pairMaker;
+    private final Cast cast;
+    private final OpenApiUrlBuilder urlBuilder;
+    private final OpenApiJsonDataParse openApiJsonDataParse;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public String requestOpenApiData(final int START, final int END) {
+    public String requestOpenApiData(int start, int end) {
         String jsonInString = null;
         Map<String, Object> jsonData = new HashMap<>();
 
@@ -53,10 +53,13 @@ public class RecipeOpenApi implements OpenApiConnectable, TypeConvertable
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
 
-            String foodOpenApiUrl = openApiUrlBuilder(START, END);
+            String openApiUrl = urlBuilder.openApiUrlBuilder(
+                    recipeApi.getUrl(),
+                    recipeApi.getKey(),
+                    recipeApi.getRecipeServiceName(), start, end);
 
             ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
-                    .exchange(foodOpenApiUrl, HttpMethod.GET, entity, Map.class);
+                    .exchange(openApiUrl, HttpMethod.GET, entity, Map.class);
 
             jsonData.put(STATUS_CODE, resultMap.getStatusCodeValue());   // http status
             jsonData.put(HEADER, resultMap.getHeaders());               // header
@@ -82,40 +85,32 @@ public class RecipeOpenApi implements OpenApiConnectable, TypeConvertable
 
         while(end <= lastIndex) {
 
-            String jsonText = requestOpenApiData(start, Math.min(end, lastIndex));
-            JSONParser parser = new JSONParser();
+            String jsonText = requestOpenApiData(start, end);
+            Map<JSONArray, Integer> jsonMap
+                    = openApiJsonDataParse.jsonDataParser(recipeApi.getRecipeServiceName(), jsonText, lastIndex);
 
-            try {
+            JSONArray jsonArray = null;
 
-                JSONObject json = (JSONObject) parser.parse(jsonText);
-                JSONObject jsonRecipe = (JSONObject) json.get(recipeApi.getRecipeServiceName());
-
-                if (lastIndex == INIT) {
-                    lastIndex = Integer.parseInt(jsonRecipe.get(TOTAL).toString());
-                }
-
-                JSONArray jsonArray = (JSONArray) jsonRecipe.get(LIST_FLAG);
-                if(jsonArray == null) break;
-
-                List<Recipes> apiDataList = new ArrayList<>();
-
-                for (Object obj: jsonArray) {
-                    JSONObject recipe = (JSONObject) obj;
-
-                    Recipes apiData = (Recipes) jsonToModel(recipe);
-                    if(isContainsField(apiData)) {
-                        continue;
-                    }
-
-                    apiDataList.add(apiData);
-                }
-
-                saveAll(apiDataList);
-
-            } catch (ParseException parseException) {
-                LOGGER.error(">>> RecipeOpenApi >> exception >> ", parseException);
-                parseException.printStackTrace();
+            for(Map.Entry<JSONArray, Integer> entry: jsonMap.entrySet()) {
+                jsonArray = entry.getKey();
+                lastIndex = entry.getValue();
             }
+
+            if(jsonArray == null) break;
+            List<Recipes> apiDataList = new ArrayList<>();
+
+            for (Object obj: jsonArray) {
+                JSONObject recipe = (JSONObject) obj;
+
+                Recipes apiData = (Recipes) jsonToModel(recipe);
+                if(isContainsField(apiData)) {
+                    continue;
+                }
+
+                apiDataList.add(apiData);
+            }
+
+            saveAll(apiDataList);
 
             start += INTERVAL;
             end += INTERVAL;
@@ -124,78 +119,26 @@ public class RecipeOpenApi implements OpenApiConnectable, TypeConvertable
     }
 
     @Override
-    public String openApiUrlBuilder(final int START, final int END) throws UnsupportedEncodingException {
-        StringBuilder urlBuilder = new StringBuilder(recipeApi.getUrl());
-
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getKey(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(recipeApi.getRecipeServiceName(), ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(FORMAT_TYPE, ENCODING_TYPE));
-        urlBuilder.append(FORWARD_SLASH).append(START);
-        urlBuilder.append(FORWARD_SLASH).append(END);
-
-        return urlBuilder.toString();
-    }
-
-    @Override
     public Object jsonToModel(JSONObject object) {
         List<Object> values = new ArrayList<>();
 
         for(final String FORMAT: RECIPE_JSON_FORMATS){
-            values.add(valueValidator(object.get(FORMAT)));
+            values.add(cast.valueValidator(object.get(FORMAT)));
         }
 
         List<ManualPairs> pairsList = pairMaker.pairListBuilder(object);
 
         return Recipes.builder()
-                .id(toLong(values.get(0)))
-                .recipeName(toString(values.get(1))).category(toString(values.get(2)))
-                .cookingMaterialExample(toString(values.get(3))).cookingCompletionExample(toString(values.get(4)))
-                .ingredients(toString(values.get(5))).cookingMethod(toString(values.get(6)))
-                .kcal(toDouble(values.get(7)))
-                .carbohydrate(toDouble(values.get(8))).protein(toDouble(values.get(9))).fat(toDouble(values.get(10))).sodium(toDouble(values.get(11)))
+                .id(cast.toLong(values.get(0)))
+                .recipeName(cast.toString(values.get(1))).category(cast.toString(values.get(2)))
+                .cookingMaterialExample(cast.toString(values.get(3))).cookingCompletionExample(cast.toString(values.get(4)))
+                .ingredients(cast.toString(values.get(5))).cookingMethod(cast.toString(values.get(6)))
+                .kcal(cast.toDouble(values.get(7)))
+                .carbohydrate(cast.toDouble(values.get(8))).protein(cast.toDouble(values.get(9))).fat(cast.toDouble(values.get(10)))
+                .sodium(cast.toDouble(values.get(11)))
                 .manualPairsList(pairsList)
                 .build();
-    }
 
-    @Override
-    public Object valueValidator(Object value) {
-        if(value == null){
-            return EMPTY_STRING;
-        }
-
-        String str = value.toString();
-        if(str.length() == 0){
-            return EMPTY_STRING;
-        }
-
-        return value;
-    }
-
-    @Override
-    public String toString(Object value) {
-        return value.toString();
-    }
-
-    @Override
-    public Double toDouble(Object value) {
-        String valueString = value.toString();
-
-        if(valueString.matches(IS_NUMERIC)) {
-            return Double.parseDouble(valueString);
-        }
-
-        return 0.0;
-    }
-
-    @Override
-    public Long toLong(Object value) {
-        String valueString = toString(value);
-
-        if(valueString.matches(IS_NUMERIC)) {
-            return Long.parseLong(valueString);
-        }
-
-        return 0L;
     }
 
     @Override

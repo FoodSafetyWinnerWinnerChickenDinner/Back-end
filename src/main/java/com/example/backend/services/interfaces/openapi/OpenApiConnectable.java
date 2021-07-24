@@ -2,10 +2,6 @@ package com.example.backend.services.interfaces.openapi;
 
 public interface OpenApiConnectable extends JsonDataAccessible {
 
-    String FORMAT_TYPE = "json";
-    String ENCODING_TYPE = "UTF-8";
-
-    String FORWARD_SLASH = "/";
     String LIST_FLAG = "row";
     String TOTAL = "total_count";
 

@@ -4,6 +4,7 @@ import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.FoodOpenApi;
+import com.example.backend.utils.Cast;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ public class FoodOpenApiTests {
     @Mock private FoodRepository foodRepository;
     @Mock private OpenApiConfig foodApiConfig;
     @Mock private RestTemplateConfig restTemplate;
+    @Mock private Cast cast;
 
     @InjectMocks
     private FoodOpenApi foodOpenApi;
@@ -26,9 +28,9 @@ public class FoodOpenApiTests {
     @BeforeEach
     void setup(){
         MockitoAnnotations.initMocks(this);
-        foodOpenApi = new FoodOpenApi(
-                foodApiConfig, foodRepository, restTemplate
-        );
+//        foodOpenApi = new FoodOpenApi(
+//                foodApiConfig, foodRepository, restTemplate, cast
+//        );
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.ComparableConfig;
-import com.example.backend.models.Foods;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.Readable;
