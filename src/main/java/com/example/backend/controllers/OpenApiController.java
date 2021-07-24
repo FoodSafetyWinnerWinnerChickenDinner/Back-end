@@ -18,9 +18,9 @@ public class OpenApiController {
 
     private final FoodOpenApi foodOpenApi;
 
-    @Scheduled(cron = "0 26 11 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     public void dataUpdateScheduler() {
         recipeOpenApi.updateByOpenApiData();
-//        foodOpenApi.updateByOpenApiData();
+        foodOpenApi.updateByOpenApiData();
     }
 }

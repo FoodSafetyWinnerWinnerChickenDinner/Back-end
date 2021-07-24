@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PairMaker implements CuisinePairBuilder {
+public class PairTagBuilder implements CuisinePairBuilder {
 
     @Override
     public List<ManualPairs> pairListBuilder(JSONObject object) {
