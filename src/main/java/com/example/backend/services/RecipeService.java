@@ -5,7 +5,7 @@ import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.Readable;
 import com.example.backend.services.interfaces.recommend.Recommendable;
-import com.example.backend.utils.CosineSimilarity;
+import com.example.backend.util_components.CosineSimilarity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

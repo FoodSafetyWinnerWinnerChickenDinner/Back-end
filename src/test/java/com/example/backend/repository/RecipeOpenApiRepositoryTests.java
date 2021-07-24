@@ -1,7 +1,7 @@
 package com.example.backend.repository;
 
 import com.example.backend.configurations.OpenApiConfig;
-import com.example.backend.configurations.RestTemplateConfig;
+import com.example.backend.configurations.rest_template.RestTemplateConfig;
 import com.example.backend.repositories.RecipeRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
