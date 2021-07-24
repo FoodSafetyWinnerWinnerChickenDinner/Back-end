@@ -1,10 +1,10 @@
 package com.example.backend.service;
 
 import com.example.backend.configurations.OpenApiConfig;
-import com.example.backend.configurations.RestTemplateConfig;
+import com.example.backend.configurations.rest_template.RestTemplateConfig;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.FoodOpenApi;
-import com.example.backend.utils.Cast;
+import com.example.backend.util_components.Cast;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
