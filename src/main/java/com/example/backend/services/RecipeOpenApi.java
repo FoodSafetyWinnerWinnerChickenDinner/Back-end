@@ -1,32 +1,24 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.OpenApiConfig;
-import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
 import com.example.backend.utils.Cast;
+import com.example.backend.utils.OpenApiConnectorByRestTemplate;
 import com.example.backend.utils.OpenApiJsonDataParse;
-import com.example.backend.utils.OpenApiUrlBuilder;
-import com.example.backend.utils.PairMaker;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.backend.utils.PairTagBuilder;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -35,46 +27,11 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
     private final RecipeRepository recipeRepository;
 
     private final OpenApiConfig recipeApi;
-    private final RestTemplateConfig restTemplate;
 
-    private final PairMaker pairMaker;
+    private final PairTagBuilder pairTagBuilder;
     private final Cast cast;
-    private final OpenApiUrlBuilder urlBuilder;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
-
-    @Override
-    public String requestOpenApiData(int start, int end) {
-        String jsonInString = null;
-        Map<String, Object> jsonData = new HashMap<>();
-
-        try {
-            HttpHeaders header = new HttpHeaders();
-            HttpEntity<?> entity = new HttpEntity<>(header);
-
-            String openApiUrl = urlBuilder.openApiUrlBuilder(
-                    recipeApi.getUrl(),
-                    recipeApi.getKey(),
-                    recipeApi.getRecipeServiceName(), start, end);
-
-            ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
-                    .exchange(openApiUrl, HttpMethod.GET, entity, Map.class);
-
-            jsonData.put(STATUS_CODE, resultMap.getStatusCodeValue());   // http status
-            jsonData.put(HEADER, resultMap.getHeaders());               // header
-            jsonData.put(BODY, resultMap.getBody());                    // body
-
-            ObjectMapper mapper = new ObjectMapper();
-            jsonInString = mapper.writeValueAsString(resultMap.getBody());
-
-        }
-        catch (UnsupportedEncodingException | JsonProcessingException unsupportedEncodingException) {
-            LOGGER.error(">>> RecipeOpenApi >> exception >> ", unsupportedEncodingException);
-        }
-
-        return jsonInString;
-    }
+    private final OpenApiConnectorByRestTemplate byRestTemplate;
 
     @Override
     public void updateByOpenApiData() {
@@ -85,7 +42,8 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
         while(end <= lastIndex) {
 
-            String jsonText = requestOpenApiData(start, end);
+            String jsonText
+                    = byRestTemplate.requestOpenApiData(recipeApi.getUrl(), recipeApi.getKey(), recipeApi.getRecipeServiceName(), start, end);
             Map<JSONArray, Integer> jsonMap
                     = openApiJsonDataParse.jsonDataParser(recipeApi.getRecipeServiceName(), jsonText, lastIndex);
 
@@ -126,7 +84,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
             values.add(cast.valueValidator(object.get(FORMAT)));
         }
 
-        List<ManualPairs> pairsList = pairMaker.pairListBuilder(object);
+        List<ManualPairs> pairsList = pairTagBuilder.pairListBuilder(object);
 
         return Recipes.builder()
                 .id(cast.toLong(values.get(0)))

@@ -1,30 +1,22 @@
 package com.example.backend.services;
 
 import com.example.backend.configurations.OpenApiConfig;
-import com.example.backend.configurations.RestTemplateConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
 import com.example.backend.utils.Cast;
+import com.example.backend.utils.OpenApiConnectorByRestTemplate;
 import com.example.backend.utils.OpenApiJsonDataParse;
-import com.example.backend.utils.OpenApiUrlBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,45 +24,11 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
     private final FoodRepository foodRepository;
 
-    private final RestTemplateConfig restTemplate;
     private final OpenApiConfig foodApi;
 
     private final Cast cast;
-    private final OpenApiUrlBuilder urlBuilder;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
-
-    @Override
-    public String requestOpenApiData(int start, int end) {
-        String jsonInString = null;
-        Map<String, Object> jsonData = new HashMap<>();
-
-        try {
-            HttpHeaders header = new HttpHeaders();
-            HttpEntity<?> entity = new HttpEntity<>(header);
-
-            String openApiUrl = urlBuilder.openApiUrlBuilder(
-                    foodApi.getUrl(),
-                    foodApi.getKey(),
-                    foodApi.getNutrientServiceName() ,start ,end);
-
-            ResponseEntity<Map> resultMap = restTemplate.getCustomRestTemplate()
-                    .exchange(openApiUrl, HttpMethod.GET, entity, Map.class);
-
-            jsonData.put(STATUS_CODE, resultMap.getStatusCodeValue());   // http status
-            jsonData.put(HEADER, resultMap.getHeaders());               // header
-            jsonData.put(BODY, resultMap.getBody());                    // body
-
-            ObjectMapper mapper = new ObjectMapper();
-            jsonInString = mapper.writeValueAsString(resultMap.getBody());
-        }
-        catch (UnsupportedEncodingException | JsonProcessingException unsupportedEncodingException) {
-            LOGGER.error(">>> FoodOpenApi >> exception >> ", unsupportedEncodingException);
-        }
-
-        return jsonInString;
-    }
+    private final OpenApiConnectorByRestTemplate byRestTemplate;
 
     @Override
     public void updateByOpenApiData() {
@@ -81,7 +39,8 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
         while(end <= lastIndex) {
 
-            String jsonText = requestOpenApiData(start, end);
+            String jsonText
+                    = byRestTemplate.requestOpenApiData(foodApi.getUrl(), foodApi.getKey(), foodApi.getNutrientServiceName(), start, end);
             Map<JSONArray, Integer> jsonMap
                     = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), jsonText, lastIndex);
 
