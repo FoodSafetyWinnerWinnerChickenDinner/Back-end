@@ -37,7 +37,8 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
         int lastIndex = INIT;
 
-        while(end <= lastIndex) {
+        while(start <= lastIndex) {
+            end = Math.min(end, lastIndex);
 
             String jsonText
                     = byRestTemplate.requestOpenApiData(foodApi.getUrl(), foodApi.getKey(), foodApi.getNutrientServiceName(), start, end);

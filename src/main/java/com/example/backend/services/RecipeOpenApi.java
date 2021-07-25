@@ -40,7 +40,8 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
         int lastIndex = INIT;
 
-        while(end <= lastIndex) {
+        while(start <= lastIndex) {
+            end = Math.min(end, lastIndex);
 
             String jsonText
                     = byRestTemplate.requestOpenApiData(recipeApi.getUrl(), recipeApi.getKey(), recipeApi.getRecipeServiceName(), start, end);
