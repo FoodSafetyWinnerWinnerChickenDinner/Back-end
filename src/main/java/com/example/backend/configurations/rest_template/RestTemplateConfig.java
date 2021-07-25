@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @RequiredArgsConstructor
 public class RestTemplateConfig {
+
     private final RestTemplatePropertiesConfig restTemplatePropertiesConfig;
 
     @Bean
