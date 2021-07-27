@@ -9,10 +9,10 @@ import java.net.URLEncoder;
 @Component
 public class OpenApiUrlBuilder implements UrlBuilder {
     @Override
-    public String openApiUrlBuilder(String url, String key, String name, int startIdx, int endIdx)
+    public String openApiUrlBuilder(String key, String name, int startIdx, int endIdx)
             throws UnsupportedEncodingException {
 
-        StringBuilder urlBuilder = new StringBuilder(url);
+        StringBuilder urlBuilder = new StringBuilder();
 
         urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(key, ENCODING_TYPE));
         urlBuilder.append(FORWARD_SLASH).append(URLEncoder.encode(name, ENCODING_TYPE));

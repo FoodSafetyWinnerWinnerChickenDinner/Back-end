@@ -2,7 +2,6 @@ package com.example.backend.configurations.jobs;
 
 import com.example.backend.services.FoodOpenApi;
 import com.example.backend.services.RecipeOpenApi;
-import com.example.backend.tasklets.OpenApiTasklet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -15,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class SchedulerConfig {
+    public static final String JOB_NAME = "Open-API_Batch";
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -22,25 +22,18 @@ public class SchedulerConfig {
     private final FoodOpenApi foodOpenApi;
     private final RecipeOpenApi recipeOpenApi;
 
-    @Bean
+    @Bean(name = JOB_NAME)
     public Job openApiJob() {
-        return jobBuilderFactory.get("Open-API connecting")
-                .start(initStep())
-                .next(step1())
+        return jobBuilderFactory.get(JOB_NAME)
+                .start(step1())
                 .next(step2())
+                .preventRestart()
                 .build();
     }
 
-    @Bean
-    public Step initStep() {
-        return stepBuilderFactory.get("initializr")
-                .tasklet(new OpenApiTasklet())
-                .build();
-    }
-
-    @Bean
+    @Bean(name = JOB_NAME + "_Recipe Open-API")
     public Step step1() {
-        return stepBuilderFactory.get("Recipe Open-API")
+        return stepBuilderFactory.get(JOB_NAME + "_Recipe Open-API")
                 .tasklet((contribution, chunkContext) -> {
                     recipeOpenApi.updateByOpenApiData();
 
@@ -49,9 +42,9 @@ public class SchedulerConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(name = JOB_NAME + "_Food Open-API")
     public Step step2() {
-        return stepBuilderFactory.get("Food Open-API")
+        return stepBuilderFactory.get(JOB_NAME + "_Food Open-API")
                 .tasklet((contribution, chunkContext) -> {
                     foodOpenApi.updateByOpenApiData();
 
