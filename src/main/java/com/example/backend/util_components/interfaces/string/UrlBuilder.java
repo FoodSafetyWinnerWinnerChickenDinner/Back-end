@@ -10,6 +10,6 @@ public interface UrlBuilder {
 
     String FORWARD_SLASH = "/";
 
-    String openApiUrlBuilder(String url, String key, String name, int startIdx, int endIdx) throws UnsupportedEncodingException;
+    String openApiUrlBuilder(String key, String name, int startIdx, int endIdx) throws UnsupportedEncodingException;
 
 }
