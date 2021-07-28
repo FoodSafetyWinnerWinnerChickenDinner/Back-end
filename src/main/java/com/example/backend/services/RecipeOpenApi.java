@@ -6,11 +6,9 @@ import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
-import com.example.backend.util_components.Cast;
-import com.example.backend.util_components.OpenApiConnectorByWebClient;
-import com.example.backend.util_components.OpenApiJsonDataParse;
-import com.example.backend.util_components.PairTagBuilder;
+import com.example.backend.util_components.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -23,8 +21,8 @@ import org.springframework.web.client.UnknownContentTypeException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableAsync
@@ -37,7 +35,8 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
     private final PairTagBuilder pairTagBuilder;
     private final Cast cast;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-    private final OpenApiConnectorByWebClient byRestTemplate;
+    private final OpenApiConnectorByWebClient byWebClient;
+    private final LastIndexTracker tracker;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
@@ -46,35 +45,30 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
         int start = 1;
         int end = INTERVAL;
 
-        int lastIndex = INIT;
+        final int SIZE = tracker.findTag(recipeApi.getKey(), recipeApi.getRecipeServiceName());
 
-        while(start <= lastIndex) {
-            end = Math.min(end, lastIndex);
+        List<Recipes> apiDataList = new ArrayList<>();
+
+        while(start <= SIZE) {
+            end = Math.min(end, SIZE);
             String jsonText;
 
             try {
-                jsonText = byRestTemplate
+                jsonText = byWebClient
                         .requestOpenApiData(recipeApi.getKey(), recipeApi.getRecipeServiceName(), start, end);
+
             }
             catch (UnknownContentTypeException unknownContentTypeException) {
                 LOGGER.error(">>> Open API >> End of pages >> ", unknownContentTypeException);
                 break;
             }
 
-            Map<JSONArray, Integer> jsonMap
-                    = openApiJsonDataParse.jsonDataParser(recipeApi.getRecipeServiceName(), jsonText, lastIndex);
 
-            JSONArray jsonArray = null;
+            JSONArray jsonRecipe = openApiJsonDataParse
+                    .jsonDataParser(recipeApi.getRecipeServiceName(), jsonText);
+            if(jsonRecipe == null) return;
 
-            for(Map.Entry<JSONArray, Integer> entry: jsonMap.entrySet()) {
-                jsonArray = entry.getKey();
-                lastIndex = entry.getValue();
-            }
-
-            if(jsonArray == null) break;
-            List<Recipes> apiDataList = new ArrayList<>();
-
-            for (Object obj: jsonArray) {
+            for (Object obj: jsonRecipe) {
                 JSONObject recipe = (JSONObject) obj;
 
                 Recipes apiData = (Recipes) jsonToModel(recipe);
@@ -90,6 +84,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
             start += INTERVAL;
             end += INTERVAL;
         }
+
     }
 
     @Override

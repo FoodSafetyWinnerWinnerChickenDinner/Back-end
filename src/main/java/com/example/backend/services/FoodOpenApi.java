@@ -6,6 +6,7 @@ import com.example.backend.repositories.FoodRepository;
 import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
 import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
 import com.example.backend.util_components.Cast;
+import com.example.backend.util_components.LastIndexTracker;
 import com.example.backend.util_components.OpenApiConnectorByWebClient;
 import com.example.backend.util_components.OpenApiJsonDataParse;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,8 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
 
     private final Cast cast;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-    private final OpenApiConnectorByWebClient byRestTemplate;
+    private final OpenApiConnectorByWebClient byWebClient;
+    private final LastIndexTracker tracker;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
@@ -41,14 +43,14 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
         int start = 1;
         int end = INTERVAL;
 
-        int lastIndex = INIT;
+        final int SIZE = tracker.findTag(foodApi.getKey(), foodApi.getNutrientServiceName());
 
-        while(start <= lastIndex) {
-            end = Math.min(end, lastIndex);
+        while(start <= SIZE) {
+            end = Math.min(end, SIZE);
             String jsonText;
 
             try {
-                jsonText = byRestTemplate
+                jsonText = byWebClient
                         .requestOpenApiData(foodApi.getKey(), foodApi.getNutrientServiceName(), start, end);
             }
             catch (UnknownContentTypeException unknownContentTypeException) {
@@ -56,20 +58,13 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
                 break;
             }
 
-            Map<JSONArray, Integer> jsonMap
-                    = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), jsonText, lastIndex);
+            JSONArray jsonFood
+                    = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), jsonText);
 
-            JSONArray jsonArray = null;
-
-            for(Map.Entry<JSONArray, Integer> entry: jsonMap.entrySet()) {
-                jsonArray = entry.getKey();
-                lastIndex = entry.getValue();
-            }
-
-            if(jsonArray == null) break;
+            if(jsonFood == null) break;
             List<Foods> apiDataList = new ArrayList<>();
 
-            for (Object obj: jsonArray) {
+            for (Object obj: jsonFood) {
                 JSONObject food = (JSONObject) obj;
 
                 Foods apiData = (Foods) jsonToModel(food);
