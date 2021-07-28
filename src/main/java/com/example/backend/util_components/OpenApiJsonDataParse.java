@@ -10,37 +10,50 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public class OpenApiJsonDataParse implements JsonParsable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public Map<JSONArray, Integer> jsonDataParser(String name, String jsonText, int last) {
+    public JSONArray jsonDataParser(String name, String jsonText) {
         JSONParser parser = new JSONParser();
-        Map<JSONArray, Integer> jsonMap = new HashMap<>();
+        JSONArray jsonArray = null;
 
         try {
 
             JSONObject json = (JSONObject) parser.parse(jsonText);
             JSONObject jsonData = (JSONObject) json.get(name);
 
-            if (last == INIT) {
-                last = Integer.parseInt(jsonData.get(TOTAL).toString());
-            }
-
-            JSONArray jsonArray = (JSONArray) jsonData.get(LIST_FLAG);
-            jsonMap.put(jsonArray, last);
+            jsonArray = (JSONArray) jsonData.get(LIST_FLAG);
 
         }  catch(ParseException parseException) {
             LOGGER.error(">>> JsonParsing >> exception >> ", parseException);
             parseException.printStackTrace();
         }
 
-        return jsonMap;
+        return jsonArray;
+    }
+
+    @Override
+    public int onlyTakeIndex(String name, String jsonText) {
+
+        JSONParser parser = new JSONParser();
+        int index = 0;
+
+        try {
+
+            JSONObject json = (JSONObject) parser.parse(jsonText);
+            JSONObject jsonData = (JSONObject) json.get(name);
+
+            index = Integer.parseInt(jsonData.get(TOTAL).toString());
+
+        }  catch(ParseException parseException) {
+            LOGGER.error(">>> JsonParsing >> exception >> ", parseException);
+            parseException.printStackTrace();
+        }
+
+        return index;
     }
 
 }
