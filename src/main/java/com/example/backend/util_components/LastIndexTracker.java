@@ -14,7 +14,7 @@ public class LastIndexTracker {
     public int findTag(String key, String name) {
 
         String jsonText = byWebClient
-                .requestOpenApiData(key, name, 1, 2);
+                .responseTotalIndex(key, name, 1, 2);
 
         return jsonDataParser
                 .onlyTakeIndex(name, jsonText);

@@ -21,6 +21,7 @@ import org.springframework.web.client.UnknownContentTypeException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
@@ -41,21 +42,21 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    public void updateByOpenApiData() {
+    public void updateByOpenApiData() throws ExecutionException, InterruptedException {
         int start = 1;
         int end = INTERVAL;
 
         final int SIZE = tracker.findTag(recipeApi.getKey(), recipeApi.getRecipeServiceName());
 
-        List<Recipes> apiDataList = new ArrayList<>();
+        List<String> responses = new ArrayList<>();
 
         while(start <= SIZE) {
             end = Math.min(end, SIZE);
-            String jsonText;
 
             try {
-                jsonText = byWebClient
-                        .requestOpenApiData(recipeApi.getKey(), recipeApi.getRecipeServiceName(), start, end);
+
+                responses.add(byWebClient
+                        .requestOpenApiData(recipeApi.getKey(), recipeApi.getRecipeServiceName(), start ,end));
 
             }
             catch (UnknownContentTypeException unknownContentTypeException) {
@@ -63,16 +64,24 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
                 break;
             }
 
+            start += INTERVAL;
+            end += INTERVAL;
+
+        }
+
+        for(String response: responses) {
 
             JSONArray jsonRecipe = openApiJsonDataParse
-                    .jsonDataParser(recipeApi.getRecipeServiceName(), jsonText);
-            if(jsonRecipe == null) return;
+                    .jsonDataParser(recipeApi.getRecipeServiceName(), response);
 
-            for (Object obj: jsonRecipe) {
+            if(jsonRecipe == null) break;
+            List<Recipes> apiDataList = new ArrayList<>();
+
+            for (Object obj : jsonRecipe) {
                 JSONObject recipe = (JSONObject) obj;
 
                 Recipes apiData = (Recipes) jsonToModel(recipe);
-                if(isContainsField(apiData)) {
+                if (isContainsField(apiData)) {
                     continue;
                 }
 
@@ -80,11 +89,7 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
             }
 
             saveAll(apiDataList);
-
-            start += INTERVAL;
-            end += INTERVAL;
         }
-
     }
 
     @Override
