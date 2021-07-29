@@ -24,7 +24,7 @@ public class OpenApiConnectorByWebClient implements Connectable {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
-    @Async
+//    @Async
     public String requestOpenApiData(String key, String name, int start, int end) throws UnknownContentTypeException, ExecutionException, InterruptedException {
 
         String openApiUrl = null;
