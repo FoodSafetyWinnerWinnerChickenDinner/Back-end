@@ -1,21 +1,23 @@
-package com.example.backend.services;
+package com.example.backend.services.service_foods;
 
 import com.example.backend.configurations.ComparableConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodRepository;
-import com.example.backend.services.interfaces.db_access.Readable;
-import com.example.backend.services.interfaces.recommend.Recommendable;
-import com.example.backend.util_components.CosineSimilarity;
+import com.example.backend.services.service_foods.interface_foods.FoodService;
+import com.example.backend.util_components.util_math.CosineSimilarity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class FoodService implements Recommendable, Readable {
+public class FoodServiceImpl implements FoodService {
 
     private final FoodRepository foodRepository;
 
@@ -28,7 +30,7 @@ public class FoodService implements Recommendable, Readable {
 
         for (Foods field: fields) {
 
-            double[] contains = new double[10];
+            double[] contains = new double[NUTRIENT_TYPES];
             List<Object> nutrientList = categorize(field);
 
             int index = 0;
@@ -43,11 +45,11 @@ public class FoodService implements Recommendable, Readable {
 
         }
 
-        int min = Math.min(10, similar.size());
+        int size = Math.min(PACK, similar.size());
         return Arrays
                 .stream(similar.toArray())
                 .map(i -> similar.poll().getFoods())
-                .limit(min)
+                .limit(size)
                 .collect(Collectors.toList());
 
     }
@@ -63,7 +65,7 @@ public class FoodService implements Recommendable, Readable {
     @Override
     public List<Foods> getListAll() {
         List<Foods> foodDB = new ArrayList<>();
-        foodDB.addAll((Collection<? extends Foods>) foodRepository.findAll());
+        foodDB.addAll(foodRepository.findAll());
 
         return foodDB;
     }

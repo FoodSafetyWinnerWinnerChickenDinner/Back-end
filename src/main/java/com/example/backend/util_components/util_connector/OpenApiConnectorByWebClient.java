@@ -1,11 +1,11 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_connector;
 
+import com.example.backend.util_components.util_string.OpenApiUrlBuilder;
 import com.example.backend.util_components.interfaces.connecting.Connectable;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.UnknownContentTypeException;
 import org.springframework.web.reactive.function.client.WebClient;

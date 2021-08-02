@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
-public class RecipeOpenApiRepositoryTests {
+public class RecipeOpenApiServiceImplRepositoryTests {
 
     @Mock private RecipeRepository recipeRepository;
     @Mock private OpenApiConfig recipeApi;

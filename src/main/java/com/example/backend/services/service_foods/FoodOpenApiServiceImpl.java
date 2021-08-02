@@ -1,14 +1,13 @@
-package com.example.backend.services;
+package com.example.backend.services.service_foods;
 
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.models.Foods;
 import com.example.backend.repositories.FoodRepository;
-import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
-import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
-import com.example.backend.util_components.Cast;
-import com.example.backend.util_components.LastIndexTracker;
-import com.example.backend.util_components.OpenApiConnectorByWebClient;
-import com.example.backend.util_components.OpenApiJsonDataParse;
+import com.example.backend.services.service_foods.interface_foods.FoodOpenApiService;
+import com.example.backend.util_components.util_connector.OpenApiConnectorByWebClient;
+import com.example.backend.util_components.util_string.Casting;
+import com.example.backend.util_components.util_string.parse.LastIndexTracker;
+import com.example.backend.util_components.util_string.parse.OpenApiJsonDataParse;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,13 +24,13 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
-public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
+public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private final FoodRepository foodRepository;
 
     private final OpenApiConfig foodApi;
 
-    private final Cast cast;
+    private final Casting casting;
     private final OpenApiJsonDataParse openApiJsonDataParse;
     private final OpenApiConnectorByWebClient byWebClient;
     private final LastIndexTracker tracker;
@@ -118,16 +117,16 @@ public class FoodOpenApi implements OpenApiConnectable, DataBaseAccessible {
         List<Object> values = new ArrayList<>();
 
         for(final String FORMAT: FOOD_JSON_FORMATS){
-            values.add(cast.valueValidator(object.get(FORMAT)));
+            values.add(casting.valueValidator(object.get(FORMAT)));
         }
 
         return Foods.builder()
-                .id(cast.toLong(values.get(0)))
-                .foodName(cast.toString(values.get(1))).category(cast.toString(values.get(2)))
-                .total(cast.toDouble(values.get(3))).kcal(cast.toDouble(values.get(4)))
-                .carbohydrate(cast.toDouble(values.get(5))).protein(cast.toDouble(values.get(6))).fat(cast.toDouble(values.get(7)))
-                .sugar(cast.toDouble(values.get(8))).sodium(cast.toDouble(values.get(9))).cholesterol(cast.toDouble(values.get(10)))
-                .saturatedFattyAcid(cast.toDouble(values.get(11))).transFat(cast.toDouble(values.get(12)))
+                .id(casting.toLong(values.get(0)))
+                .foodName(casting.toString(values.get(1))).category(casting.toString(values.get(2)))
+                .total(casting.toDouble(values.get(3))).kcal(casting.toDouble(values.get(4)))
+                .carbohydrate(casting.toDouble(values.get(5))).protein(casting.toDouble(values.get(6))).fat(casting.toDouble(values.get(7)))
+                .sugar(casting.toDouble(values.get(8))).sodium(casting.toDouble(values.get(9))).cholesterol(casting.toDouble(values.get(10)))
+                .saturatedFattyAcid(casting.toDouble(values.get(11))).transFat(casting.toDouble(values.get(12)))
                 .build();
     }
 

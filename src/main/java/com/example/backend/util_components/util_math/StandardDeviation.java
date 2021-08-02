@@ -1,4 +1,4 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_math;
 
 import com.example.backend.util_components.interfaces.math.Deviation;
 import org.springframework.stereotype.Component;

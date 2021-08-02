@@ -1,10 +1,10 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_string;
 
 import com.example.backend.util_components.interfaces.string.casting.Castable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Cast implements Castable {
+public class Casting implements Castable {
 
     @Override
     public Object valueValidator(Object value) {

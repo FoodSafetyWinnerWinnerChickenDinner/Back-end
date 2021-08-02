@@ -1,7 +1,7 @@
-package com.example.backend.services;
+package com.example.backend.services.service_nutrients;
 
 import com.example.backend.models.data_enums.Nutrients;
-import com.example.backend.services.interfaces.categorize.Categorizable;
+import com.example.backend.services.service_nutrients.interface_nutrients.NutrientService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class NutrientService implements Categorizable {
+public class NutrientServiceImpl implements NutrientService {
 
     @Override
     public Map<String, Nutrients> configurationSettingsCategorize(){

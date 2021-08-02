@@ -1,21 +1,23 @@
-package com.example.backend.services;
+package com.example.backend.services.service_recipes;
 
 import com.example.backend.configurations.ComparableConfig;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
-import com.example.backend.services.interfaces.db_access.Readable;
-import com.example.backend.services.interfaces.recommend.Recommendable;
-import com.example.backend.util_components.CosineSimilarity;
+import com.example.backend.services.service_recipes.interface_recipes.RecipeService;
+import com.example.backend.util_components.util_math.CosineSimilarity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeService implements Recommendable, Readable {
+public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
 
@@ -28,7 +30,7 @@ public class RecipeService implements Recommendable, Readable {
 
         for (Recipes field: fields) {
 
-            double[] contains = new double[10];
+            double[] contains = new double[NUTRIENT_TYPES];
             List<Object> nutrientList = categorize(field);
 
             int index = 0;
@@ -43,11 +45,11 @@ public class RecipeService implements Recommendable, Readable {
 
         }
 
-        int min = Math.min(10, similar.size());
+        int size = Math.min(PACK, similar.size());
         return Arrays
                 .stream(similar.toArray())
                 .map(i -> similar.poll().getRecipes())
-                .limit(min)
+                .limit(size)
                 .collect(Collectors.toList());
 
     }
@@ -63,7 +65,7 @@ public class RecipeService implements Recommendable, Readable {
     @Override
     public List<Recipes> getListAll() {
         List<Recipes> recipeDB = new ArrayList<>();
-        recipeDB.addAll((Collection<? extends Recipes>) recipeRepository.findAll());
+        recipeDB.addAll(recipeRepository.findAll());
 
         return recipeDB;
     }
