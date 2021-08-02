@@ -1,4 +1,4 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_string.parse;
 
 import com.example.backend.models.ManualPairs;
 import com.example.backend.util_components.interfaces.string.CuisinePairBuilder;

@@ -1,7 +1,7 @@
 package com.example.backend.configurations.jobs;
 
-import com.example.backend.services.FoodOpenApi;
-import com.example.backend.services.RecipeOpenApi;
+import com.example.backend.services.service_foods.FoodOpenApiServiceImpl;
+import com.example.backend.services.service_recipes.RecipeOpenApiServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -19,8 +19,8 @@ public class SchedulerConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-    private final FoodOpenApi foodOpenApi;
-    private final RecipeOpenApi recipeOpenApi;
+    private final FoodOpenApiServiceImpl foodOpenApiServiceImpl;
+    private final RecipeOpenApiServiceImpl recipeOpenApiServiceImpl;
 
     @Bean(name = JOB_NAME)
     public Job openApiJob() {
@@ -35,7 +35,7 @@ public class SchedulerConfig {
     public Step step1() {
         return stepBuilderFactory.get(JOB_NAME + "_Recipe Open-API")
                 .tasklet((contribution, chunkContext) -> {
-                    recipeOpenApi.updateByOpenApiData();
+                    recipeOpenApiServiceImpl.updateByOpenApiData();
 
                     return RepeatStatus.FINISHED;
                 })
@@ -46,7 +46,7 @@ public class SchedulerConfig {
     public Step step2() {
         return stepBuilderFactory.get(JOB_NAME + "_Food Open-API")
                 .tasklet((contribution, chunkContext) -> {
-                    foodOpenApi.updateByOpenApiData();
+                    foodOpenApiServiceImpl.updateByOpenApiData();
 
                     return RepeatStatus.FINISHED;
                 })

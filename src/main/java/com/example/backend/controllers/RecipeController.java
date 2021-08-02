@@ -1,8 +1,8 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Recipes;
-import com.example.backend.services.NutrientService;
-import com.example.backend.services.RecipeService;
+import com.example.backend.services.service_nutrients.NutrientServiceImpl;
+import com.example.backend.services.service_recipes.RecipeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeService recipeService;
+    private final RecipeServiceImpl recipeServiceImpl;
 
-    private final NutrientService nutrientService;
+    private final NutrientServiceImpl nutrientServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
@@ -34,8 +34,8 @@ public class RecipeController {
 
         try {
 
-            double[] ingested = nutrientService.ingestedNutrientsAvg(ate);
-            recommend = recipeService.menuRecommender(ingested);
+            double[] ingested = nutrientServiceImpl.ingestedNutrientsAvg(ate);
+            recommend = recipeServiceImpl.menuRecommender(ingested);
 
         }
         catch (NullPointerException nullPointerException) {

@@ -1,4 +1,4 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_string.parse;
 
 import com.example.backend.util_components.interfaces.string.parsing.JsonParsable;
 import org.json.simple.JSONArray;

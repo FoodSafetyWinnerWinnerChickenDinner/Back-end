@@ -1,4 +1,4 @@
-package com.example.backend.util_components;
+package com.example.backend.util_components.util_string;
 
 import com.example.backend.util_components.interfaces.string.UrlBuilder;
 import org.springframework.stereotype.Component;

@@ -1,12 +1,15 @@
-package com.example.backend.services;
+package com.example.backend.services.service_recipes;
 
 import com.example.backend.configurations.OpenApiConfig;
 import com.example.backend.models.ManualPairs;
 import com.example.backend.models.Recipes;
 import com.example.backend.repositories.RecipeRepository;
-import com.example.backend.services.interfaces.db_access.DataBaseAccessible;
-import com.example.backend.services.interfaces.openapi.OpenApiConnectable;
-import com.example.backend.util_components.*;
+import com.example.backend.services.service_recipes.interface_recipes.RecipeOpenApiService;
+import com.example.backend.util_components.util_connector.OpenApiConnectorByWebClient;
+import com.example.backend.util_components.util_string.Casting;
+import com.example.backend.util_components.util_string.parse.LastIndexTracker;
+import com.example.backend.util_components.util_string.parse.OpenApiJsonDataParse;
+import com.example.backend.util_components.util_string.parse.PairTagBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -14,7 +17,6 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.UnknownContentTypeException;
 
@@ -26,15 +28,14 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@EnableAsync
-public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
+public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final RecipeRepository recipeRepository;
 
     private final OpenApiConfig recipeApi;
 
     private final PairTagBuilder pairTagBuilder;
-    private final Cast cast;
+    private final Casting casting;
     private final OpenApiJsonDataParse openApiJsonDataParse;
     private final OpenApiConnectorByWebClient byWebClient;
     private final LastIndexTracker tracker;
@@ -97,19 +98,19 @@ public class RecipeOpenApi implements OpenApiConnectable, DataBaseAccessible {
         List<Object> values = new ArrayList<>();
 
         for(final String FORMAT: RECIPE_JSON_FORMATS){
-            values.add(cast.valueValidator(object.get(FORMAT)));
+            values.add(casting.valueValidator(object.get(FORMAT)));
         }
 
         List<ManualPairs> pairsList = pairTagBuilder.pairListBuilder(object);
 
         return Recipes.builder()
-                .id(cast.toLong(values.get(0)))
-                .recipeName(cast.toString(values.get(1))).category(cast.toString(values.get(2)))
-                .cookingMaterialExample(cast.toString(values.get(3))).cookingCompletionExample(cast.toString(values.get(4)))
-                .ingredients(cast.toString(values.get(5))).cookingMethod(cast.toString(values.get(6)))
-                .kcal(cast.toDouble(values.get(7)))
-                .carbohydrate(cast.toDouble(values.get(8))).protein(cast.toDouble(values.get(9))).fat(cast.toDouble(values.get(10)))
-                .sodium(cast.toDouble(values.get(11)))
+                .id(casting.toLong(values.get(0)))
+                .recipeName(casting.toString(values.get(1))).category(casting.toString(values.get(2)))
+                .cookingMaterialExample(casting.toString(values.get(3))).cookingCompletionExample(casting.toString(values.get(4)))
+                .ingredients(casting.toString(values.get(5))).cookingMethod(casting.toString(values.get(6)))
+                .kcal(casting.toDouble(values.get(7)))
+                .carbohydrate(casting.toDouble(values.get(8))).protein(casting.toDouble(values.get(9))).fat(casting.toDouble(values.get(10)))
+                .sodium(casting.toDouble(values.get(11)))
                 .manualPairsList(pairsList)
                 .build();
 
