@@ -25,7 +25,7 @@ public class OpenApiScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 32 13 * * *")
     public void executeOpenApiConnection() {
 
         try {
@@ -42,7 +42,7 @@ public class OpenApiScheduler {
                 | JobParametersInvalidException
                 | JobExecutionAlreadyRunningException jobException) {
 
-            LOGGER.error(">>> FoodOpenApi >> exception >> ", jobException);
+            LOGGER.error(">>> OpenApi >> exception >> ", jobException);
 
         }
 
