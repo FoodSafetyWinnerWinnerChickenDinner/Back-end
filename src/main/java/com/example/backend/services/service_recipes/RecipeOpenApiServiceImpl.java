@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.UnknownContentTypeException;
 
@@ -34,21 +35,22 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
     private final OpenApiConfig recipeApi;
 
+//    private final AsyncOpenApiConnectorByWebClient asyncOpenApiConnectorByWebClient;
+    private final OpenApiConnectorByWebClient byWebClient;
     private final PairTagBuilder pairTagBuilder;
     private final Casting casting;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-    private final OpenApiConnectorByWebClient byWebClient;
     private final LastIndexTracker tracker;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
 
     @Override
+    @Async
     public void updateByOpenApiData() throws ExecutionException, InterruptedException {
         int start = 1;
         int end = INTERVAL;
 
-        final int SIZE = tracker.findTag(recipeApi.getKey(), recipeApi.getRecipeServiceName());
-
+        final int SIZE = tracker.findTag(recipeApi.getKey1(), recipeApi.getRecipeServiceName());
         List<String> responses = new ArrayList<>();
 
         while(start <= SIZE) {
@@ -57,7 +59,7 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
             try {
 
                 responses.add(byWebClient
-                        .requestOpenApiData(recipeApi.getKey(), recipeApi.getRecipeServiceName(), start ,end));
+                        .requestOpenApiData(recipeApi.getKey1(), recipeApi.getRecipeServiceName(), start ,end));
 
             }
             catch (UnknownContentTypeException unknownContentTypeException) {
@@ -67,7 +69,6 @@ public class RecipeOpenApiServiceImpl implements RecipeOpenApiService {
 
             start += INTERVAL;
             end += INTERVAL;
-
         }
 
         for(String response: responses) {

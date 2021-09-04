@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 @Getter
 @PropertySource("classpath:openapi.properties")
 public class OpenApiConfig {
-    @Value("${apiAuthKey}")
-    private String key;
+    @Value("${apiAuthKey1}")
+    private String key1;
+
+    @Value("${apiAuthKey2}")
+    private String key2;
 
     @Value("${foodSafetyUrl}")
     private String url;

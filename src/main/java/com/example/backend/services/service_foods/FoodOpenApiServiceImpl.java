@@ -30,9 +30,10 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
     private final OpenApiConfig foodApi;
 
+//    private final AsyncOpenApiConnectorByWebClient asyncOpenApiConnectorByWebClient;
+    private final OpenApiConnectorByWebClient byWebClient;
     private final Casting casting;
     private final OpenApiJsonDataParse openApiJsonDataParse;
-    private final OpenApiConnectorByWebClient byWebClient;
     private final LastIndexTracker tracker;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcTemplate.class);
@@ -42,9 +43,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
         int start = 1;
         int end = INTERVAL;
 
-        final int SIZE = tracker.findTag(foodApi.getKey(), foodApi.getNutrientServiceName());
-
-//        List<CompletableFuture<String>> futures = new ArrayList<>();
+        final int SIZE = tracker.findTag(foodApi.getKey1(), foodApi.getNutrientServiceName());
         List<String> responses = new ArrayList<>();
 
         while(start <= SIZE) {
@@ -52,16 +51,7 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
 
             try {
 
-//                int finalStart = start;
-//                int finalEnd = end;
-//
-//                Callable<CompletableFuture<String>> callable = () ->
-//                        byWebClient
-//                                .requestOpenApiData(foodApi.getKey(), foodApi.getNutrientServiceName(), finalStart, finalEnd);
-//
-//                futures.add(Executors.newCachedThreadPool().submit(callable).get());
-
-                responses.add(byWebClient.requestOpenApiData(foodApi.getKey(), foodApi.getNutrientServiceName(), start ,end));
+                responses.add(byWebClient.requestOpenApiData(foodApi.getKey1(), foodApi.getNutrientServiceName(), start ,end));
 
             }
             catch (UnknownContentTypeException unknownContentTypeException) {
@@ -73,15 +63,10 @@ public class FoodOpenApiServiceImpl implements FoodOpenApiService {
             end += INTERVAL;
         }
 
-//        for(CompletableFuture<String> future: futures) {
-
-//            JSONArray jsonFood
-//                    = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), future.get());
-
         for(String response: responses){
 
-            JSONArray jsonFood
-                    = openApiJsonDataParse.jsonDataParser(foodApi.getNutrientServiceName(), response);
+            JSONArray jsonFood = openApiJsonDataParse
+                    .jsonDataParser(foodApi.getNutrientServiceName(), response);
 
             if(jsonFood == null) break;
             List<Foods> apiDataList = new ArrayList<>();
